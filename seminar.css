@@ -1,0 +1,153 @@
+/* ===========================================================
+   AI Agent 활용 세미나 — 공통 테마
+   thinkagent 프레젠테이션 패턴 기반 (다크 테마 + 한글 + 인쇄 폴백)
+   슬라이드 덱(session_*.html)과 index.html에서 공유한다.
+   =========================================================== */
+
+:root{
+  --bg:#0a0a0a;
+  --bg-card:#111825;
+  --bg-card-2:#0f1f2f;
+  --line:#1a2a3a;
+  --text:#e8e8e8;
+  --text-dim:#ccc;
+  --text-mute:#888;
+  --accent:#4ecdc4;   /* teal  - 핵심/긍정 */
+  --blue:#7eb8ff;     /* blue  - 제목/정보 */
+  --warn:#ff6b6b;     /* red   - 주의/금지 */
+  --gold:#ffd93d;     /* gold  - 강조/팁  */
+  --purple:#c084fc;   /* purple- 보조    */
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:var(--bg);color:var(--text);overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- 슬라이드 골격 ---------- */
+.slide{
+  width:100vw;height:100vh;display:none;
+  flex-direction:column;justify-content:center;
+  padding:4.5% 7%;position:absolute;top:0;left:0;background:var(--bg);
+}
+.slide.active{display:flex;animation:fade .4s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ---------- 타이포 ---------- */
+h1{font-size:3em;font-weight:800;line-height:1.15;margin-bottom:.3em}
+h2{font-size:1.95em;font-weight:700;color:var(--blue);margin-bottom:.6em;line-height:1.2}
+h3{font-size:1.2em;font-weight:600;color:#aaa;margin-bottom:.4em}
+p,.item,li{font-size:1.12em;line-height:1.55;color:var(--text-dim)}
+ul,ol{margin:.3em 0 .3em 1.2em}
+li{margin:.25em 0}
+.lead{font-size:1.35em;color:#bbb;margin-bottom:.8em}
+.small{font-size:.85em;color:var(--text-mute)}
+
+.accent{color:var(--accent)}
+.blue{color:var(--blue)}
+.warn{color:var(--warn)}
+.gold{color:var(--gold)}
+.purple{color:var(--purple)}
+.b{font-weight:700}
+
+.big-num{font-size:3.4em;font-weight:900;color:var(--accent);line-height:1}
+.mid-num{font-size:2.2em;font-weight:800;color:var(--blue)}
+
+/* ---------- 카드/그리드 ---------- */
+.grid{display:grid;gap:1.3em;margin-top:.8em}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:1fr 1fr 1fr}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:1.2em}
+.card.hi{border-color:var(--accent)}
+.card.warn{border-color:var(--warn)}
+.card.gold{border-color:var(--gold)}
+.card.blue{border-color:var(--blue)}
+.card h3{color:var(--accent);margin-bottom:.4em;font-size:1.15em}
+.card.warn h3{color:var(--warn)}
+.card.gold h3{color:var(--gold)}
+.card p,.card li{font-size:1em;line-height:1.5}
+
+/* ---------- 표 ---------- */
+table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.98em}
+th{background:#1a2a3a;padding:.55em .8em;text-align:left;font-weight:600;color:var(--blue);border-bottom:2px solid #2a4a6a}
+td{padding:.5em .8em;border-bottom:1px solid var(--line);color:var(--text-dim);vertical-align:top}
+tr:hover td{background:var(--bg-card-2)}
+
+/* ---------- 태그/콜아웃/코드 ---------- */
+.tag{display:inline-block;background:#1a2a3a;color:var(--blue);padding:.25em .8em;border-radius:20px;font-size:.85em;margin:.2em .2em .2em 0}
+.title-tag{display:inline-block;background:#1a2a3a;color:var(--blue);padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+.quote{font-style:italic;color:#aaa;border-left:3px solid var(--accent);padding-left:1em;margin:.6em 0}
+
+.callout{border-radius:10px;padding:.9em 1.1em;margin:.6em 0;font-size:1em;border-left:4px solid var(--blue);background:#0e1722}
+.callout.tip{border-left-color:var(--accent);background:#0c1a18}
+.callout.warn{border-left-color:var(--warn);background:#1a0e0e}
+.callout.do{border-left-color:var(--accent)}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:var(--blue)}
+.callout.tip .label{color:var(--accent)}
+.callout.warn .label{color:var(--warn)}
+
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-size:.92em}
+pre{background:#0d141d;border:1px solid var(--line);border-radius:10px;padding:1em 1.2em;margin:.6em 0;overflow:auto}
+pre code{background:none;color:#d6e3ee;padding:0;font-size:.95em;line-height:1.6;display:block;white-space:pre-wrap}
+.cmd{color:var(--accent)}        /* 사용자가 입력하는 명령 */
+.cmt{color:#6a8294}              /* 주석 */
+
+/* 핸즈온 단계 박스 */
+.steps{counter-reset:step;list-style:none;margin:.6em 0 .2em}
+.steps li{counter-increment:step;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid var(--line);font-size:1.05em}
+.steps li::before{content:counter(step);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:var(--accent);color:#062;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em;color:#04201d}
+
+/* 핸즈온 배지 */
+.badge{display:inline-block;font-size:.78em;font-weight:700;padding:.2em .7em;border-radius:5px;margin-left:.4em;vertical-align:middle}
+.badge.hands{background:#0c2e2a;color:var(--accent);border:1px solid var(--accent)}
+.badge.app{background:#11233a;color:var(--blue);border:1px solid var(--blue)}
+.badge.code{background:#2a210c;color:var(--gold);border:1px solid var(--gold)}
+
+/* ---------- 내비게이션 ---------- */
+.nav{position:fixed;bottom:16px;right:26px;z-index:100;font-size:.85em;color:#667;letter-spacing:.05em}
+.nav b{color:var(--accent)}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:100;transition:width .25s}
+.hint{position:fixed;bottom:16px;left:26px;z-index:100;font-size:.78em;color:#445}
+.kicker{position:fixed;top:14px;left:26px;z-index:100;font-size:.8em;color:#556}
+
+/* ---------- 커버 슬라이드 ---------- */
+.cover h1{font-size:3.4em}
+.cover .sub{font-size:1.4em;color:#aaa;margin-top:1em;line-height:1.4}
+.cover .foot{margin-top:3em;color:#666}
+
+/* 세션 인덱스 카드(허브) */
+a.session-card{text-decoration:none;color:inherit;display:block;transition:transform .15s,border-color .15s}
+a.session-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.num-chip{display:inline-block;background:#0c2e2a;color:var(--accent);font-weight:800;border-radius:8px;padding:.1em .6em;font-size:.9em;margin-bottom:.4em}
+
+/* ---------- 인쇄(PDF) 폴백: 라이트 모드 ---------- */
+@media print{
+  @page{size:landscape;margin:12mm}
+  body{background:#fff;color:#111;overflow:visible}
+  .slide{display:flex !important;position:relative;opacity:1;height:auto;min-height:96vh;
+         page-break-after:always;padding:6% 7%;background:#fff;animation:none}
+  h1{color:#0b2545}h2{color:#0055aa}h3{color:#444}
+  p,li,td{color:#222}
+  .accent{color:#0a8a7d}.blue{color:#0055aa}.gold{color:#9a7b00}.warn{color:#c0392b}
+  .big-num,.mid-num{color:#0a8a7d}
+  .card{background:#f5f8fc;border-color:#cdd8e6}
+  .card h3{color:#0a8a7d}
+  th{background:#e7eef7;color:#003366}td{border-bottom:1px solid #d3dce6}
+  code{background:#eef3f8;color:#0a5}pre{background:#f6f8fa;border-color:#dde}
+  pre code{color:#222}
+  .callout{background:#f3f7fb}
+  .nav,.hint,.kicker,.progress{display:none !important}
+}
+
+@media(prefers-reduced-motion:reduce){.slide{animation:none}.progress{transition:none}}
+
+/* 작은 화면 보호 */
+@media(max-width:900px){
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  h1{font-size:2.2em}h2{font-size:1.5em}
+  .slide{padding:6% 6%}
+}
