@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 비용 최적화 — 실전 적용 가이드</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:5vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.5em 0 2vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3.4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.6vh}
+h3{font-size:1.1em;color:#4ecdc4;margin:1.6vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.3em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.rec{border-color:#4ecdc4;background:#0c1a18}.card.warn{border-color:#ff6b6b;background:#160e0e}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.5em 0;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.9em;white-space:pre-wrap;display:block;line-height:1.65}
+.cmd{color:#4ecdc4}.cmt{color:#6a8294}.var{color:#ffd93d}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.92em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .65em;vertical-align:top}
+td{padding:.48em .65em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+td.h{color:#9fb4c8;font-weight:600;white-space:nowrap}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.auto{display:inline-block;font-size:.78em;font-weight:700;padding:.12em .6em;border-radius:5px;background:#0c2e2a;color:#4ecdc4;border:1px solid #4ecdc4}
+.you{display:inline-block;font-size:.78em;font-weight:700;padding:.12em .6em;border-radius:5px;background:#2a210c;color:#ffd93d;border:1px solid #ffd93d}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.82em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}.callout{background:#f3f7fb}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">실전 가이드 · Claude Code(Enterprise) 비용 최적화</span>
+  <h1>Claude Code <span class="accent">비용 최적화</span> 실전 적용</h1>
+  <p class="sub">"개발자당 월 $300"을 낮추는 레버를 <b>지금 쓰는 Claude Code 환경에서 실제로 어떻게 적용하는가</b>. 명령·설정·습관 단위로 정리했습니다.</p>
+
+  <div class="callout"><span class="label">먼저 — 무엇이 자동이고 무엇이 우리 몫인가</span>
+    <span class="auto">자동</span> 프롬프트 캐싱은 Claude Code가 <b>기본으로 적용</b>합니다(켤 것 없음). 우리가 하는 건 <b>캐시를 깨지 않는 습관</b>입니다.
+    <span class="you">우리 설정</span> 모델 라우팅 · 컨텍스트 관리 · 배치 파이프라인 · 측정은 우리가 정합니다.</div>
+
+  <!-- 1 캐싱 -->
+  <h2>1. 프롬프트 캐싱 <span class="auto">자동</span> — "깨지 않게" 쓰는 법</h2>
+  <div class="card"><h3>작동 원리(요약)</h3>
+    <p>동일한 <b>앞부분(prefix)</b>(시스템 프롬프트·도구 정의·CLAUDE.md·이미 읽은 파일·대화 누적)을 재사용하면 그 부분 입력 토큰이 <b class="accent">약 90% 저렴</b>(캐시 read)해집니다. 캐시는 <b>기본 5분</b>(옵션 1시간) 유지되고, <b>prefix가 바뀌면 캐시가 깨져</b> 다시 정가로 청구됩니다. Claude Code가 이걸 자동으로 합니다.</p></div>
+  <div class="card rec"><h3>캐시 히트를 높이는 습관 (= 비용↓)</h3>
+    <p>· <b>한 작업은 끊기지 말고 연속</b>으로 — 5분 이상 멈추면 캐시 만료 → 다음 턴이 정가. 자리 비울 거면 굵직한 질문을 몰아서.</p>
+    <p>· <b>CLAUDE.md·자주 읽는 파일을 안정적으로</b> 유지 — 세션 중 자주 바꾸면 매번 캐시 무효화. (편집 잦은 파일을 prefix 앞쪽에 고정하지 말 것)</p>
+    <p>· <b>같은 컨텍스트 재사용</b> — 큰 파일을 대화 중간에 계속 새로 통째 주입하지 말고, 한 번 읽힌 걸 이어서 활용.</p>
+    <p>· <b><code>/clear</code>는 캐시도 리셋</b> — 무관한 작업으로 넘어갈 때만(같은 작업 중엔 남발 금지).</p>
+    <p>· 대형 코드베이스를 오래(5분 이상 간격으로) 다루면 <b>1시간 캐시</b>로 히트율↑: <code>export <span class="var">ENABLE_PROMPT_CACHING_1H</span>=1</code>. <b>구독(Max/Team/Ent)에선 추가비 없음</b>(플랜에 포함). API 종량은 캐시 write가 더 비싸지므로 장시간 재사용 워크로드에서만 유리.</p></div>
+
+  <!-- 2 모델 라우팅 -->
+  <h2>2. 모델 라우팅 <span class="you">우리 설정</span> — 가장 큰 레버</h2>
+  <p>Haiku는 Opus 대비 약 <b>25배</b> 저렴(입력 $1 vs $5 등), Sonnet은 Opus의 절반대. 단순 작업을 비싼 Opus로 돌리는 게 가장 흔한 낭비입니다.</p>
+  <table>
+    <tr><th>방법</th><th>적용</th></tr>
+    <tr><td class="h">세션 중 전환</td><td><code>/model</code> 입력 → Sonnet/Haiku/Opus 선택. 어려운 설계·디버깅만 Opus, 기본은 Sonnet, 잡일·요약은 Haiku.</td></tr>
+    <tr><td class="h">팀 기본 모델 고정</td><td>환경변수 또는 settings로 기본을 Sonnet으로(불필요한 Opus 사용 차단).</td></tr>
+    <tr><td class="h">배경작업 저가화</td><td>요약 등 배경 호출에 쓰는 small/fast 모델을 Haiku로 지정.</td></tr>
+    <tr><td class="h">서브에이전트</td><td>조사·리뷰 서브에이전트에 저가 모델 지정.</td></tr>
+  </table>
+  <pre><code><span class="cmt"># 세션에서</span>
+<span class="cmd">/model</span> sonnet        <span class="cmt"># 기본 작업</span>
+<span class="cmd">/model</span> haiku         <span class="cmt"># 단순/대량 작업</span>
+
+<span class="cmt"># 팀 기본값 고정 (셸 프로필 또는 CI)</span>
+export <span class="var">ANTHROPIC_MODEL</span>="claude-sonnet-4-5"
+export <span class="var">ANTHROPIC_SMALL_FAST_MODEL</span>="claude-haiku-4-5"  <span class="cmt"># 배경작업용</span></code></pre>
+  <div class="callout warn"><span class="label">주의</span>정확한 모델 ID·가용 모델은 플랜/버전에 따라 다릅니다 — <code>/model</code> 목록과 공식 문서에서 현재 ID 확인 후 적용하세요.</div>
+
+  <!-- 3 컨텍스트 -->
+  <h2>3. 컨텍스트·반복 다이어트 <span class="you">우리 습관</span></h2>
+  <div class="card">
+    <p>· <b><code>/clear</code></b> — 무관한 작업으로 전환 시 누적 컨텍스트 비우기(매 턴 딸려가는 토큰 제거).</p>
+    <p>· <b><code>/compact "지시"</code></b> — 긴 세션을 요약 압축. "수정 파일 목록·테스트 명령은 보존" 같은 지시를 함께.</p>
+    <p>· <b>Plan Mode</b> — 코딩 전 계획을 세워 <b>헛반복(잘못된 길 되돌리기)</b>을 줄임. 다중 파일·불확실 작업일수록 효과.</p>
+    <p>· <b>CLAUDE.md 간결하게</b> — 비대하면 <b>매 요청마다</b> 그 토큰을 싣는다. "이 줄 빼면 실수하나?"로 가지치기. 가끔 쓰는 지식은 Skills로 온디맨드.</p>
+    <p>· <b>범위 지정 읽기</b> — 거대한 파일을 통째 read 시키지 말고 필요한 부분/디렉터리로 한정.</p>
+    <p>· <b>서브에이전트로 조사 격리</b> — 테스트 실행·문서 조회·로그 처리 등 장황한 작업을 서브에이전트에 위임(출력은 요약만 메인에).</p>
+    <p>· <b>확장적 사고(thinking) 조절</b> — thinking 토큰은 <b class="warn">출력 토큰으로 과금</b>(기본 ON, 요청당 수만 토큰까지). 단순 작업은 <code>/effort</code>를 낮추거나 <code>/config</code>에서 thinking 끄기, 또는 <code>export <span class="var">MAX_THINKING_TOKENS</span>=8000</code>.</p>
+    <p>· <b>MCP 대신 CLI</b> — <code>gh·aws·gcloud</code> 등 CLI가 MCP보다 컨텍스트 효율적. <code>/mcp</code>로 안 쓰는 서버 끄고, <code>/context</code>로 무엇이 컨텍스트를 먹는지 점검.</p>
+    <p>· <b>Hooks로 전처리</b> — 1만 줄 로그를 통째로 읽히는 대신, PreToolUse 훅으로 <code>grep ERROR</code>만 남겨 토큰을 수만→수백으로.</p>
+    <p>· <b>구체적 프롬프트</b> — "코드베이스 개선" 같은 막연한 요청은 광범위 스캔 유발. "auth.ts의 login에 입력검증 추가"처럼 좁히면 파일 read 최소화. 길 잘못 들면 <code>Esc</code>로 즉시 중단·<code>/rewind</code>.</p>
+  </div>
+
+  <!-- 4 배치 -->
+  <h2>4. 배치(−50%) × 캐싱(−90%) — 대량 비대화형 작업</h2>
+  <div class="callout warn"><span class="label">중요</span>인터랙티브 Claude Code 세션에는 <b>배치 할인이 자동 적용되지 않습니다.</b> 배치(−50%)는 <b>Message Batches API</b>의 비동기 작업용입니다.</div>
+  <div class="card"><h3>적용법</h3>
+    <p>· 대량·반복 작업(전 파일 테스트 생성, 일괄 리팩터, 문서 자동화, 코드 주석)은 <b>야간 배치 파이프라인</b>으로 분리.</p>
+    <p>· <b>헤드리스 Claude Code</b>를 스크립트로 파일별 루프(권한 스코핑 포함):</p>
+    <pre><code><span class="cmt"># 파일 목록을 만들어 파일별로 비대화형 실행</span>
+for f in $(cat files.txt); do
+  <span class="cmd">claude</span> -p "이 파일에 단위 테스트 추가, 운영코드 변경 금지: $f" \
+    --allowedTools "Edit,Bash(npm test)" --output-format json
+done</code></pre>
+    <p>· 진짜 −50%가 필요한 정형 대량 작업은 <b>Message Batches API</b>로 작성(엔지니어링 파이프라인). 캐싱과 겹치면 표준가의 ~5%까지.</p>
+  </div>
+
+  <!-- 5 캡 -->
+  <h2>5. 지출 상한(캡) 걸기 <span class="you">관리자/개인</span></h2>
+  <table>
+    <tr><th>방법</th><th>적용</th></tr>
+    <tr><td class="h">워크스페이스 지출 한도<br>(API/Enterprise)</td><td>Console의 <b>"Claude Code" 워크스페이스</b>에 <b>spend limit</b> 설정 → 전사 Claude Code 총지출 상한. <b>rate limit(TPM/RPM)</b>도 걸어 다른 운영 워크로드 보호.</td></tr>
+    <tr><td class="h">개인 월 한도<br>(Pro/Max)</td><td><code>/usage-credits</code>로 월 사용크레딧 상한 설정(초과 시 CLI에서 상향/해제 프롬프트).</td></tr>
+    <tr><td class="h">정액 구독 전환</td><td>헤비 dev를 <b>Max 20x($200) 또는 Team Premium 좌석</b>으로 → 종량을 정액 상한으로 고정($300→$200). 단 <b>5h 롤링 한도/throttle</b> 감수, 워크로드가 한도에 맞아야.</td></tr>
+  </table>
+  <p class="small" style="color:#888">관리자 권장 rate limit(공식): 사용자 5~20명이면 1인 100k~150k TPM, 20~50명이면 50k~75k TPM 등 — 조직이 커질수록 1인 할당↓. 동시 사용이 적기 때문.</p>
+
+  <!-- 6 측정 -->
+  <h2>6. 측정·가시화 <span class="you">선결 조건</span></h2>
+  <p>"누가 / 어떤 모델 / 어떤 작업"이 비싼지 모르면 절감 우선순위를 못 정합니다. 먼저 계측하세요.</p>
+  <table>
+    <tr><th>수준</th><th>방법</th></tr>
+    <tr><td class="h">개인 세션</td><td><code>/usage</code> — 세션 토큰·비용 + 플랜 한도 대비 사용량(스킬·서브에이전트·MCP별 분해, 24h/7d 전환). <code>/context</code>로 현재 컨텍스트 점유 확인. ※ 구독자는 비용 대신 사용량 바 표시</td></tr>
+    <tr><td class="h">관리자(Console)</td><td>Anthropic Console <b>Usage 페이지</b> — 일별 비용·사용자 수·1인당 월 지출. 권위 있는 청구 기준.</td></tr>
+    <tr><td class="h">팀/Enterprise</td><td>관리자용 <b>Claude Code Analytics 대시보드</b>(사용자·팀별 활동·토큰).</td></tr>
+    <tr><td class="h">상세 관측</td><td><b>OpenTelemetry</b> 내보내기 → Grafana/SigNoz/Datadog(토큰·비용·캐시효율·세션·1인별 분해). MDM 관리설정으로 전사 일괄 켜기.</td></tr>
+  </table>
+  <div class="callout warn"><span class="label">⚠ Bedrock/Vertex/Foundry로 Claude를 돌리면</span>Claude Code가 <b>클라우드에서 비용 메트릭을 보내지 않습니다.</b> 이 경우 <b>LiteLLM</b>(오픈소스 LLM 게이트웨이)으로 키별 지출을 추적하는 방식이 많이 쓰입니다(비공식·보안 자체검토 필요).</div>
+  <pre><code><span class="cmt"># Claude Code OpenTelemetry 활성화 (예시)</span>
+export <span class="var">CLAUDE_CODE_ENABLE_TELEMETRY</span>=1
+export <span class="var">OTEL_METRICS_EXPORTER</span>=otlp
+export <span class="var">OTEL_EXPORTER_OTLP_ENDPOINT</span>="http://<collector>:4317"
+<span class="cmt"># → dev별·모델별·작업별 토큰/비용을 대시보드로 추적</span></code></pre>
+  <p class="small" style="color:#888">공식 Grafana "Claude Code Usage" 대시보드 등 기성 템플릿 활용 가능. 정확한 env 변수/메트릭명은 공식 monitoring 문서 확인.</p>
+
+  <!-- 30일 -->
+  <h2>7. 30일 실행 플랜</h2>
+  <table>
+    <tr><th>주차</th><th>할 일</th></tr>
+    <tr><td class="h accent">Week 1</td><td>OTEL/Analytics로 <b>baseline 측정</b>(dev별·모델별 토큰/비용). 상위 헤비 dev·고비용 작업 식별.</td></tr>
+    <tr><td class="h accent">Week 2</td><td>팀 기본 모델 <b>Sonnet 고정</b> + 배경모델 <b>Haiku</b>, <b>CLAUDE.md 다이어트</b>, Plan Mode 가이드 배포.</td></tr>
+    <tr><td class="h accent">Week 3</td><td>캐싱 친화 습관(연속 세션·안정 prefix·<code>/clear</code> 규율) 교육 + <b>대량작업 배치 파이프라인 1개</b> 구축.</td></tr>
+    <tr><td class="h accent">Week 4</td><td>재측정·효과 검증. 상위 헤비 dev에 <b>정액 캡</b> 검토. 목표 <b class="accent">$300 → $150~200</b>.</td></tr>
+  </table>
+
+  <div class="callout tip"><span class="label">우선순위 한 줄</span><b>측정 → 모델 라우팅(가장 큰 효과) → 컨텍스트 다이어트 → 캐싱 습관 → 배치/캡.</b> 벤더 교체는 단가 패리티로 효과가 작으니 마지막에.</div>
+
+  <p class="small" style="color:#888">관련: <a href="tco_compare.html">TCO 비교($300/dev)</a> · <a href="handout_개발_sw.html">개발(SW/QA) 고급 활용</a> · <a href="agents_landscape.html">에이전트 지형도</a></p>
+
+  <div class="foot">
+    출처: <a href="https://code.claude.com/docs/en/costs">Claude Code — Manage costs</a> · <a href="https://code.claude.com/docs/en/monitoring-usage">Monitoring(OpenTelemetry)</a> · <a href="https://code.claude.com/docs/en/prompt-caching">Claude Code prompt caching</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Prompt caching(API)</a> · <a href="https://signoz.io/docs/claude-code-monitoring/">SigNoz/Grafana 대시보드</a>.
+    <br>명령·env 변수·모델 ID·캐시 TTL/요율은 버전·플랜에 따라 변동 — 적용 전 공식 문서로 현재값 확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

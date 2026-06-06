@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>직무별 핸드아웃 — 개발(SW/QA) 고급 활용</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:940px;margin:0 auto;padding:5vh 6vw 10vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.5em 0 2vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.4vh}
+h3{font-size:1.08em;color:#4ecdc4;margin:1.2vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.warn{border-color:#ff6b6b}.card.tip{border-color:#4ecdc4}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.9em;white-space:pre-wrap;display:block;line-height:1.6}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.95em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .7em;vertical-align:top}
+td{padding:.5em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+.num{color:#4ecdc4;font-weight:700}
+.foot{margin-top:4vh;border-top:1px solid #1a2a3a;padding-top:1.6vh;color:#667;font-size:.82em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.num{color:#0a8a7d}}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">직무별 핸드아웃 · 개발(SW/QA) — 이미 쓰는 팀을 위한 '고급'편</span>
+  <h1>Claude를 <span class="accent">더 잘</span> 쓰는 법 (SW/QA)</h1>
+  <p class="sub">입문 핸즈온이 아니라, 2025–2026 최신 베스트프랙티스 + 측정된 근거 기반의 <b>고급 활용·팀 도입</b> 가이드입니다.</p>
+
+  <h2>① 성과를 가르는 고급 실천</h2>
+  <div class="grid2">
+    <div class="card tip"><h3>검증 루프를 '코드'가 닫게</h3><p>테스트·빌드·린터·스크린샷 등 에이전트가 직접 읽는 pass/fail 신호를 주면 사람이 검증 루프가 되지 않고 자율 반복이 됨. (Anthropic 공식 1순위 원칙)</p></div>
+    <div class="card tip"><h3>Explore→Plan→Implement→Commit</h3><p>다중 파일·불확실 작업은 <b>Plan Mode</b>로 탐색·계획 분리. 한 문장으로 diff 설명되는 작은 변경엔 생략.</p></div>
+    <div class="card tip"><h3>컨텍스트를 최우선 자원으로</h3><p>차면 성능 저하(context rot). 작업 전환 시 <code>/clear</code>, 같은 버그를 2번 이상 못 고치면 누적 실패 맥락 버리고 재시작.</p></div>
+    <div class="card tip"><h3>서브에이전트로 격리</h3><p>코드베이스 조사·리뷰는 독립 컨텍스트 서브에이전트에 위임 → 메인은 구현에 집중.</p></div>
+    <div class="card tip"><h3>적대적 리뷰 단계</h3><p>종료 전 신선한 컨텍스트가 diff만 보고 계획 대비 누락 점검(<code>/code-review</code>). "정확성·요구사항만" 지적하게 해 과잉설계 방지.</p></div>
+    <div class="card tip"><h3>CLAUDE.md는 짧게·가지치기</h3><p>"이 줄 빼면 실수하나?"로 판단. 비대해지면 무시됨. 가끔 쓰는 도메인 지식은 <b>Skills</b>로 온디맨드 로드.</p></div>
+    <div class="card tip"><h3>결정론은 Hooks로</h3><p>권고인 CLAUDE.md와 달리 hooks는 매번 강제(예: edit 후 eslint, 특정 폴더 쓰기 차단).</p></div>
+    <div class="card tip"><h3>MCP + CLI 연결</h3><p>이슈트래커·DB·Figma는 MCP로, GitHub·AWS는 <code>gh</code>/<code>aws</code> CLI로(토큰 효율↑).</p></div>
+    <div class="card tip"><h3>병렬 세션 + git worktrees</h3><p>세션별 독립 체크아웃으로 충돌 없이 병렬. 실무 권장 <b>2–4개</b>(이상은 리뷰 부담·rate limit).</p></div>
+    <div class="card tip"><h3>대규모 마이그레이션 fan-out</h3><p>파일 목록 생성 → <code>claude -p</code> 파일별 루프 + <code>--allowedTools</code>로 권한 스코핑. 2–3개로 다듬은 뒤 전량.</p></div>
+    <div class="card tip"><h3>Spec-driven</h3><p>Claude가 먼저 인터뷰→SPEC.md→<b>새 세션(클린 컨텍스트)</b>에서 실행. 자족적 spec(파일/인터페이스/범위외/E2E 검증)이 핵심.</p></div>
+    <div class="card tip"><h3>Headless/CI 통합</h3><p><code>claude -p ... --output-format json</code>으로 CI·pre-commit·파이프라인에 삽입.</p></div>
+    <div class="card tip"><h3>플러그인은 스코프로 배포</h3><p>커맨드·스킬·hooks·MCP를 한 패키지로. <code>/plugin install &lt;name&gt; --scope project</code>로 팀 표준은 <code>.claude/settings.json</code>에 커밋, 개인 실험은 <code>--scope local</code>. 우선순위 <b>Managed &gt; Local &gt; Project &gt; User</b> — 조직 정책은 개인이 못 끄고, Local로 팀 설정을 나만 오버라이드 가능.</p></div>
+  </div>
+
+  <h2>② 측정된 효과·연구 (근거 기반)</h2>
+  <table>
+    <tr><th>지표/연구</th><th>핵심 수치</th><th>시사점</th></tr>
+    <tr><td class="b">코딩 역량 (SWE-bench Verified)</td><td><span class="num">Claude Opus 4.5 80.9%</span>, Sonnet 4.5 77.2% (GPT-5.1 76.3%, Gemini 3 Pro 76.2%)</td><td>모델 역량은 최상위. 단 ≠ 팀 생산성 보장</td></tr>
+    <tr><td class="b">METR RCT (반례)</td><td>숙련 OSS 개발자, 친숙 대형 레포에서 <span class="warn">19% 더 느림</span> (개발자는 20% 빨랐다 착각)</td><td>친숙한 레거시 레포 + 숙련자엔 역효과 가능 — 측정하며 도입</td></tr>
+    <tr><td class="b">DORA 2025 (Google, ~5천명)</td><td>개발자 ~90% 사용, AI가 delivery throughput 증가와 연관</td><td>"AI는 고치지 않고 <b>증폭</b>한다" — 좋은 팀은 더 좋게, 약한 팀은 약점 노출</td></tr>
+    <tr><td class="b">AI 코드 보안 (Veracode 2025)</td><td>안전/위험 선택지 중 <span class="warn">45%에서 위험한 방식</span> 선택 (Java 72%)</td><td>모델이 커져도 보안 자동 개선 안 됨 → CI에 SAST/시크릿 스캔 필수</td></tr>
+    <tr><td class="b">코드 품질 추세 (GitClear)</td><td>중복 코드 8.3%→12.3%(약 4배), churn↑, 리팩터링↓</td><td>속도 위해 품질 희생 가능 → 리뷰·테스트 게이트로 상쇄</td></tr>
+  </table>
+  <p class="b" style="color:#9fb4c8">"70% 문제": AI가 스캐폴딩 ~70%는 빠르게, 엣지케이스·보안·프로덕션 통합 마지막 30%는 여전히 사람 몫.</p>
+
+  <h2>③ 주의 · 한계</h2>
+  <div class="card warn">
+    <p>· <b class="warn">친숙한 대형/복잡 레포</b>(오래된 임베디드·펌웨어 포함)에선 단순 도입이 느려질 수 있음 → eval로 검증하며 확장.</p>
+    <p>· 생산성 향상은 종종 "작성→리뷰"로 부담 이동. 적대적 리뷰·테스트 게이트 없으면 기술부채↑.</p>
+    <p>· 보안은 자동으로 좋아지지 않음. CI 게이트 + 보안 서브에이전트 필수.</p>
+    <p>· 신뢰 ≠ 자율 허용. 권한 allowlist·샌드박스·hooks·eval로 통제.</p>
+  </div>
+
+  <h2>④ 멀티벤더 전략 (Claude + Codex + Gemini)</h2>
+  <p>Claude Code를 1차 표준으로 두고, OpenAI Codex(장기 자율·이중화)·Google Gemini(초대형 컨텍스트·멀티모달, 파일럿)를 태스크별로 라우팅하는 전략을 검토할 수 있습니다. 단, <b class="warn">소스코드가 3개 벤더로 송신</b>되므로 데이터·거버넌스 설계가 전제입니다.
+  자세한 비교·운영 권장안은 <b><a href="agents_landscape.html">AI 에이전트 지형도</a></b> 문서의 "멀티벤더" 섹션 참고.</p>
+
+  <h2>⑤ 다음 한 걸음 (리더라면)</h2>
+  <div class="card tip"><p>① 팀 레포에 <b>CLAUDE.md</b>(코딩 규칙·금지·테스트 정책) + 자주 쓰는 작업을 <b>슬래시 커맨드</b>로 표준화. ② CI에 SAST·시크릿 스캔·테스트 게이트. ③ 내부 <b>골든 태스크셋</b>으로 분기별 효과 측정. ④ SW팀의 CLAUDE.md·Skills 자산을 HW/ME팀 온보딩에 재사용.</p></div>
+
+  <div class="foot">
+    출처: Anthropic <a href="https://code.claude.com/docs/en/best-practices">Claude Code best practices</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Context engineering</a> ·
+    SWE-bench: <a href="https://www.anthropic.com/news/claude-opus-4-5">Opus 4.5</a> ·
+    <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR</a> ·
+    <a href="https://dora.dev/dora-report-2025/">DORA 2025</a> ·
+    <a href="https://www.veracode.com/blog/genai-code-security-report/">Veracode 2025</a> ·
+    <a href="https://www.gitclear.com/ai_assistant_code_quality_2025_research">GitClear</a> ·
+    <a href="https://addyo.substack.com/p/the-70-problem-hard-truths-about">70% problem</a>.
+    벤치마크·모델 버전은 빠르게 변하므로 세미나 직전 재확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

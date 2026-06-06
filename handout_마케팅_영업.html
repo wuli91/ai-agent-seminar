@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>직무별 핸드아웃 — 마케팅 · 영업</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:5vh 6vw 10vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.4em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.15em;margin:.5em 0 2vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.4vh}
+h3{font-size:1.1em;color:#4ecdc4;margin:1.2vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.02em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.25em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.warn{border-color:#ff6b6b}.card.tip{border-color:#4ecdc4}
+.scn{border-left:3px solid #4ecdc4;padding:.5em 0 .5em 1em;margin:.7em 0;background:#0c1a18;border-radius:0 8px 8px 0}
+.scn .t{color:#4ecdc4;font-weight:700}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.92em;white-space:pre-wrap;display:block;line-height:1.6}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .7em}
+td{padding:.5em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+.badge{display:inline-block;font-size:.78em;font-weight:700;padding:.15em .6em;border-radius:5px}
+.badge.app{background:#11233a;color:#7eb8ff;border:1px solid #7eb8ff}
+.badge.code{background:#2a210c;color:#ffd93d;border:1px solid #ffd93d}
+.foot{margin-top:4vh;border-top:1px solid #1a2a3a;padding-top:1.6vh;color:#667;font-size:.88em}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}.scn{background:#eef7f5}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">직무별 활용 핸드아웃 · 인쇄해 책상에 두세요</span>
+  <h1>마케팅 · 영업 <span class="accent">×</span> Claude</h1>
+  <p class="sub">메시지를 빠르게 여러 버전으로 만들고, 고객 관점으로 다듬고, 제안을 설득력 있게 — 카피·캠페인·세일즈를 가속합니다.</p>
+
+  <h2>① 바로 쓰는 대표 시나리오 5</h2>
+  <div class="scn"><span class="t">1. 광고·SNS 카피 다량 생성</span><p>제품 설명 → 톤·채널별 카피 5~10종. A/B 테스트 후보 확보.</p></div>
+  <div class="scn"><span class="t">2. 캠페인 기획 초안</span><p>타깃·메시지·채널·일정·KPI를 표로 빠르게 스케치.</p></div>
+  <div class="scn"><span class="t">3. 제안서·세일즈 자료</span><p>고객 니즈에 맞춘 제안서 구조와 핵심 슬라이드 문구 초안.</p></div>
+  <div class="scn"><span class="t">4. 고객 반론 대응(세일즈 스크립트)</span><p>예상 반론과 답변, 가격·경쟁사 대응 화법.</p></div>
+  <div class="scn"><span class="t">5. 후기·문의 요약 분석</span><p>리뷰/문의 텍스트를 긍·부정·주요 키워드로 요약.</p></div>
+
+  <h2>② 복사해서 쓰는 프롬프트</h2>
+  <pre><code>아래 제품 설명으로 광고 카피를 만들어줘.
+- 채널: 인스타 / 네이버 / 이메일 제목 각각
+- 톤: 신뢰감 있게, 과장 광고 표현은 피하기
+- 각 5종, 짧게. 가장 추천 1개 표시
+(제품 설명 붙여넣기)</code></pre>
+  <pre><code>너는 우리 영업담당이야. 이 고객(업종/규모/관심사: ...)에게
+보낼 제안 이메일을 써줘. 정중하고 간결하게, 다음 미팅 제안으로 마무리.</code></pre>
+
+  <h2>③ 언제 앱, 언제 Code</h2>
+  <table>
+    <tr><th>상황</th><th>도구</th></tr>
+    <tr><td>카피·제안·스크립트 작성, 아이데이션</td><td><span class="badge app">Claude 앱</span></td></tr>
+    <tr><td>브랜드 톤·금지 표현을 저장해 일관 생성</td><td><span class="badge app">앱 · Projects</span></td></tr>
+    <tr><td>리뷰·문의 CSV 수백 건 일괄 분류·요약</td><td><span class="badge code">Claude Code</span></td></tr>
+    <tr><td>고객 명단으로 맞춤 안내문 대량 생성</td><td><span class="badge code">Claude Code</span></td></tr>
+  </table>
+
+  <h2>④ 주의 · 검증</h2>
+  <div class="card warn">
+    <p>· <b class="warn">고객 개인정보·연락처</b>는 넣지 않기. 분석은 익명화 후.</p>
+    <p>· 광고 표현은 <b>과장·허위 금지</b> 규정 확인. 효능·수치 주장은 근거 필수.</p>
+    <p>· 경쟁사 비교·인용은 사실 검증. 브랜드 톤은 사람이 최종 검수.</p>
+  </div>
+
+  <h2>⑤ 다음 한 걸음</h2>
+  <div class="card tip"><p>이번 주, <b>다음 캠페인 카피</b>를 Claude로 10종 뽑아 팀과 고르기 → 브랜드 톤 지침을 Project에 저장해 표준화.</p></div>
+
+  <div class="foot">AI Agent 활용 세미나 · 직무별 핸드아웃 · 마케팅/영업 · 팅크웨어 선행개발부</div>
+</div>
+</body>
+</html>

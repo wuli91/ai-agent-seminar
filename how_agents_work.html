@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>에이전트 AI 작동 원리 — 용어·하네스·멀티모달 (시각 설명)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1060px;margin:0 auto;padding:5vh 5vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.6em 0 1vh}
+.toc{background:#0e1722;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.3em;margin:2vh 0}
+.toc a{color:#7eb8ff;text-decoration:none;margin-right:1.2em;font-size:.95em;white-space:nowrap}
+h2{font-size:1.55em;color:#7eb8ff;margin:4.5vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.18em;color:#4ecdc4;margin:2vh 0 .5vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.3em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.purple{color:#c084fc}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.rec{border-color:#4ecdc4;background:#0c1a18}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.8em}
+.foot a{color:#5a7da0}
+
+/* ===== 용어 카드 ===== */
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:.8em;margin:1em 0}
+.term{background:#111825;border:1px solid #1a2a3a;border-radius:10px;padding:.8em 1em}
+.term .n{color:#4ecdc4;font-weight:700;font-size:1.05em}
+.term .d{font-size:.95em;margin:.2em 0}
+.term .a{font-size:.85em;color:#8aa;font-style:italic}
+
+/* ===== 다이어그램 공통 ===== */
+.diagram{background:#0c1320;border:1px solid #1f2e40;border-radius:14px;padding:1.6em 1.2em;margin:1.2em 0}
+.dtitle{text-align:center;color:#7eb8ff;font-weight:700;margin-bottom:1.2em;font-size:1.02em}
+.node{border-radius:10px;padding:.6em .8em;text-align:center;font-size:.9em;font-weight:600;border:1.5px solid}
+.n-model{background:#10302b;border-color:#4ecdc4;color:#bff5ee}
+.n-harness{background:#11233a;border-color:#7eb8ff;color:#cfe4ff}
+.n-tool{background:#2a210c;border-color:#ffd93d;color:#ffe9a8}
+.n-env{background:#1a1020;border-color:#c084fc;color:#e6cffc}
+.n-rule{background:#1a0e0e;border-color:#ff6b6b;color:#ffc9c9}
+.arrow{text-align:center;color:#4ecdc4;font-size:1.3em;line-height:1}
+.small{font-size:.85em;color:#889}
+
+/* 루프 다이어그램 */
+.loop{display:grid;grid-template-columns:1fr;gap:.5em;max-width:560px;margin:0 auto}
+.loop .step{display:flex;align-items:center;gap:.7em}
+.loop .num{flex:0 0 1.9em;height:1.9em;border-radius:50%;background:#4ecdc4;color:#04201d;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.85em}
+.loop .box{flex:1;border-radius:8px;padding:.5em .8em;font-size:.9em;border:1.5px solid}
+.loop .ret{text-align:center;color:#ffd93d;font-size:.85em;margin:.3em 0}
+
+/* 계층 동심 */
+.layers{max-width:640px;margin:0 auto}
+.layer{border-radius:12px;padding:.8em 1em;margin:.45em 0;text-align:center;border:1.5px solid}
+.l1{background:#1a0e0e;border-color:#ff6b6b}
+.l2{background:#11233a;border-color:#7eb8ff}
+.l3{background:#10302b;border-color:#4ecdc4}
+.l4{background:#2a210c;border-color:#ffd93d}
+.l-lab{font-weight:700;font-size:.95em}
+.l-desc{font-size:.82em;color:#aab;margin-top:.15em}
+
+/* MCP 다이어그램 */
+.mcp{display:grid;grid-template-columns:1fr auto 1fr;gap:.6em;align-items:center;max-width:720px;margin:0 auto}
+.mcp .col{display:grid;gap:.5em}
+.mcp .conn{text-align:center;color:#7eb8ff}
+
+/* 멀티모달 파이프라인 */
+.pipe{display:grid;grid-template-columns:auto auto auto auto auto;gap:.4em .5em;align-items:center;font-size:.82em;overflow-x:auto}
+.pipe .cell{border-radius:8px;padding:.5em .6em;text-align:center;border:1.5px solid;min-width:90px}
+.pipe .head{font-weight:700;color:#7eb8ff;border:none;background:none;font-size:.85em}
+.pin{background:#1a1020;border-color:#c084fc;color:#e6cffc}
+.penc{background:#11233a;border-color:#7eb8ff;color:#cfe4ff}
+.pshare{background:#10302b;border-color:#4ecdc4;color:#bff5ee}
+.pcore{background:#2a210c;border-color:#ffd93d;color:#ffe9a8}
+.pout{background:#1a1a2a;border-color:#9aa;color:#dde}
+.pipe .ar{text-align:center;color:#4ecdc4;font-weight:700}
+
+@media print{
+  body{background:#fff;color:#111}.wrap{max-width:100%}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}
+  .card,.term,.diagram{background:#f7f9fc;border-color:#cdd8e6}
+  .term .n{color:#0a8a7d}.dtitle{color:#0055aa}.callout{background:#f3f7fb}
+  .accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.toc{display:none}
+  .n-model,.l3,.pshare{background:#dff3ef}.n-harness,.l2,.penc{background:#e7eef7}
+  .n-tool,.l4,.pcore{background:#fbf3d6}.n-env,.pin{background:#f0e6fa}.n-rule,.l1{background:#fbe3e3}
+  .node,.box,.layer,.cell{color:#111 !important}
+}
+@media(max-width:820px){.terms,.grid2{grid-template-columns:1fr}.pipe{font-size:.7em}.pipe .cell{min-width:70px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">기술 설명(시각) · 비개발자도 이해하도록 · 2025–2026</span>
+  <h1>에이전트 AI는 <span class="accent">어떻게 작동하나</span></h1>
+  <p class="sub">자주 나오는 용어(MCP·Skill·Tool·Agent·Subagent·Rules), <b>하네스가 LLM을 에이전트로 감싸는 구조</b>, 그리고 <b>LLM이 텍스트 외 데이터(이미지·음성)를 처리하는 법</b>을 그림으로 설명합니다.</p>
+
+  <div class="toc"><b style="color:#aaa">목차 </b>
+    <a href="#terms">1. 핵심 용어</a> <a href="#harness">2. 하네스 = LLM을 에이전트로</a> <a href="#layers">3. 구성 계층</a> <a href="#mcp">4. MCP·Skill·Subagent</a> <a href="#multi">5. 멀티모달 입출력</a> <a href="#evolution">6. 패러다임 변천</a></div>
+
+  <!-- ===================== 1. 용어 ===================== -->
+  <h2 id="terms">1. 핵심 용어 한눈에</h2>
+  <div class="terms">
+    <div class="term"><div class="n">LLM (거대 언어 모델)</div><div class="d">텍스트(멀티모달) 입력으로 <b>다음 토큰을 예측</b>하는 <b class="warn">기억·행동 없는</b> 함수.</div><div class="a">비유: 손도 기억도 없이 한 문장씩 받아쓰는 천재</div></div>
+    <div class="term"><div class="n">Agent (에이전트)</div><div class="d">LLM이 도구를 쓰며 <b>피드백을 받아 루프 안에서 다음 행동을 스스로 결정</b>. = LLM + 루프 + 도구 + 메모리</div><div class="a">비유: 천재에게 손·메모·"끝까지 반복" 지시를 준 것</div></div>
+    <div class="term"><div class="n">Harness (하네스/스캐폴딩)</div><div class="d">LLM을 감싸는 <b>프로그램 계층</b> — 루프·컨텍스트 조립·도구 실행·파싱·메모리·가드레일.</div><div class="a">비유: 천재를 일하게 만드는 사무실·비서·결재 시스템</div></div>
+    <div class="term"><div class="n">Tool / Function Calling</div><div class="d">모델이 <b>JSON 스키마</b>대로 호출(함수명+인자)을 내면 하네스가 실행하고 결과를 되돌려줌.</div><div class="a">비유: 양식에 맞춘 심부름 주문서 → 비서가 실행</div></div>
+    <div class="term"><div class="n">MCP (Model Context Protocol)</div><div class="d">AI와 외부 도구/데이터를 잇는 <b>개방 표준</b>(Anthropic '24.11 → '25.12 Linux Foundation). 클라이언트-서버.</div><div class="a">비유: <b>"AI용 USB-C"</b> — 한 번 만들면 어디에나 꽂힘</div></div>
+    <div class="term"><div class="n">Skill (스킬)</div><div class="d"><code>SKILL.md</code>+스크립트 폴더. <b>필요할 때만 단계적 로드</b>(점진적 공개).</div><div class="a">비유: MCP=도구 접근, Skill=그 도구로 <b>무엇을 어떻게</b></div></div>
+    <div class="term"><div class="n">Subagent (서브에이전트)</div><div class="d"><b>자체 컨텍스트·도구 권한</b>을 가진 별도 에이전트에 하위작업 위임 → <b>요약만</b> 회수.</div><div class="a">비유: 전문팀에 조사 맡기고 한 장 요약만 받기</div></div>
+    <div class="term"><div class="n">Rules / CLAUDE.md / Memory</div><div class="d">세션마다 주입되는 <b>지속 지시·가드레일</b>. <b class="warn">권고</b>(따를 수도 안 따를 수도) ↔ 강제는 <b>Hook</b>.</div><div class="a">비유: CLAUDE.md=사내 위키 / Hook=출입 보안게이트</div></div>
+  </div>
+  <div class="callout warn"><span class="label">⚠ 정확성</span>"agent = LLM+loop+tools+memory"는 교육용 요약입니다(Anthropic 공식 표현은 "LLM이 프로세스·도구 사용을 동적으로 주도"). CLAUDE.md는 시스템 프롬프트 뒤 메시지로 전달되는 <b>권고</b>이지 강제 설정이 아닙니다.</div>
+
+  <!-- ===================== 2. 하네스 ===================== -->
+  <h2 id="harness">2. 하네스가 LLM을 에이전트로 만든다</h2>
+  <p>LLM은 한 번 부르면 <b>텍스트 한 덩어리만</b> 뱉는 정지 함수입니다. 하네스는 이걸 <b>while 루프</b>로 감싸고, 매 턴 컨텍스트를 재조립하며, <b>도구 실행 결과를 다시 모델 입력으로 넣습니다</b>. 이 되먹임이 "예측기"를 "행동하는 에이전트"로 바꿉니다.</p>
+
+  <div class="diagram">
+    <div class="dtitle">▶ 에이전트 루프 (하네스가 돌리는 사이클)</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart TB
+      U["① 사용자 목표"] ==> A["② 컨텍스트 조립<br/>(규칙+도구 스키마+대화·메모리+직전 결과)"]
+      A ==> D["③ LLM 호출 — Decide"]
+      D ==>|"④ 도구 호출이면"| T["⑤ 도구 실행 — Act"]
+      T ==> O["⑥ 관찰 — Observe"]
+      O ==>|"⑦ 결과를 컨텍스트에 추가 ⟲"| A
+      D -.->|"텍스트 답변이면"| E["⑧ 종료 — 최종 답변"]
+    -->
+    <svg viewBox="0 0 840 470" role="img" aria-label="에이전트 루프: 컨텍스트 조립, LLM 결정, 도구 실행, 관찰이 순환하고 답변 시 종료" style="width:100%;max-width:780px;display:block;margin:0 auto;font-family:inherit">
+      <defs>
+        <marker id="arL1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+        <marker id="arL2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ecdc4"/></marker>
+        <marker id="arL3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd93d"/></marker>
+      </defs>
+      <text x="425" y="218" text-anchor="middle" font-size="15" font-weight="800" fill="#2e4258">HARNESS LOOP</text>
+      <text x="425" y="240" text-anchor="middle" font-size="11" fill="#4a627c">하네스가 매 턴 컨텍스트를 재조립하며 루프를 구동</text>
+      <rect x="30" y="30" width="170" height="46" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/>
+      <text x="115" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#cfe4ff">① 사용자 목표</text>
+      <rect x="300" y="24" width="250" height="64" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/>
+      <text x="425" y="50" text-anchor="middle" font-size="14" font-weight="800" fill="#7eb8ff">② 컨텍스트 조립</text>
+      <text x="425" y="72" text-anchor="middle" font-size="10.5" fill="#abc">규칙 + 도구 스키마 + 대화·메모리 + 직전 결과</text>
+      <rect x="610" y="180" width="210" height="64" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.5"/>
+      <text x="715" y="206" text-anchor="middle" font-size="14" font-weight="800" fill="#4ecdc4">③ LLM 호출 — Decide</text>
+      <text x="715" y="228" text-anchor="middle" font-size="10.5" fill="#bff5ee">텍스트 답변 또는 도구 호출(JSON) 생성</text>
+      <rect x="300" y="360" width="250" height="64" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.5"/>
+      <text x="425" y="386" text-anchor="middle" font-size="14" font-weight="800" fill="#ffd93d">⑤ 도구 실행 — Act</text>
+      <text x="425" y="408" text-anchor="middle" font-size="10.5" fill="#ffe9a8">스키마 검증 후 실제 함수·API·MCP 실행</text>
+      <rect x="30" y="180" width="210" height="64" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.5"/>
+      <text x="135" y="206" text-anchor="middle" font-size="14" font-weight="800" fill="#ffd93d">⑥ 관찰 — Observe</text>
+      <text x="135" y="228" text-anchor="middle" font-size="10.5" fill="#ffe9a8">실행 결과 수신</text>
+      <rect x="640" y="330" width="180" height="56" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="730" y="353" text-anchor="middle" font-size="13.5" font-weight="800" fill="#4ecdc4">⑧ 종료</text>
+      <text x="730" y="372" text-anchor="middle" font-size="10.5" fill="#bff5ee">최종 답변 출력</text>
+      <line x1="200" y1="53" x2="296" y2="53" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arL1)"/>
+      <path d="M550 56 Q 715 56 715 176" fill="none" stroke="#4ecdc4" stroke-width="2" marker-end="url(#arL2)"/>
+      <path d="M715 244 Q 715 392 554 392" fill="none" stroke="#ffd93d" stroke-width="2" marker-end="url(#arL3)"/>
+      <text x="668" y="312" text-anchor="middle" font-size="11" fill="#ffd93d">④ 파싱 — 도구 호출이면</text>
+      <path d="M296 392 Q 135 392 135 248" fill="none" stroke="#ffd93d" stroke-width="2" marker-end="url(#arL3)"/>
+      <path d="M135 176 Q 135 56 296 56" fill="none" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arL1)"/>
+      <text x="148" y="120" font-size="11" fill="#7eb8ff">⑦ 결과를 컨텍스트에 추가 ⟲</text>
+      <line x1="742" y1="248" x2="734" y2="326" stroke="#4ecdc4" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arL2)"/>
+      <text x="772" y="292" text-anchor="middle" font-size="10.5" fill="#8aa">답변이면</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:1em">점선처럼 루프 전체에 얹히는 하네스 부가물: <b>가드레일·권한(Hook·승인)</b>, <b>메모리 읽기/쓰기</b>, <b>컨텍스트 압축(요약)</b>, <b>로깅/관측</b> · 구조 출처: <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic — Building Effective Agents (2024.12)</a></p>
+  </div>
+  <div class="callout tip"><span class="label">D-level 핵심 메시지</span><b>"성능 병목은 모델이 아니라 하네스"</b> — 같은 LLM이라도 루프·도구·컨텍스트 설계(=하네스)가 실제 업무 성과를 가릅니다. 두뇌는 LLM, <b>일하는 능력은 하네스</b>입니다.</div>
+
+  <!-- ===================== 3. 계층 ===================== -->
+  <h2 id="layers">3. 구성 계층 — 무엇이 무엇을 감싸나</h2>
+  <div class="diagram">
+    <div class="dtitle">▶ 에이전트 시스템의 4계층 (바깥이 안을 감쌈) + 실제 환경</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      subgraph R["① Rules / Memory — 행동 지침"]
+        subgraph H["② Harness — 제어 평면 (루프·조립·파싱)"]
+          M["③ Model (LLM) — 상태 없는 토큰 예측기"]
+        end
+      end
+      H <==>|"호출/결과"| C["④ Capabilities<br/>Tools · MCP · Skills · Subagents"]
+      C <==> E["실제 환경 — 파일 · DB · API · 웹"]
+    -->
+    <svg viewBox="0 0 880 470" role="img" aria-label="4계층 구조: Rules가 Harness를, Harness가 Model을 감싸고, Capabilities를 통해 실제 환경과 연결" style="width:100%;max-width:820px;display:block;margin:0 auto;font-family:inherit">
+      <defs>
+        <marker id="arY1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd93d"/></marker>
+        <marker id="arY2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+        <marker id="arY3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c084fc"/></marker>
+      </defs>
+      <rect x="20" y="20" width="560" height="360" rx="14" fill="#1a0e0e" stroke="#ff6b6b" stroke-width="1.6"/>
+      <text x="40" y="50" font-size="13.5" font-weight="800" fill="#ff6b6b">① Rules / Memory — 행동 지침</text>
+      <text x="40" y="69" font-size="10.5" fill="#d9a">System Prompt · CLAUDE.md(권고) · Hooks(강제) · 장기 메모리</text>
+      <rect x="50" y="90" width="500" height="270" rx="12" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/>
+      <text x="70" y="119" font-size="13.5" font-weight="800" fill="#7eb8ff">② Harness — 제어 평면</text>
+      <text x="70" y="138" font-size="10.5" fill="#abc">루프 · 컨텍스트 조립 · 파싱 · 압축 · 로깅 — "두뇌를 일하게 만드는 접착제"</text>
+      <rect x="85" y="160" width="430" height="170" rx="12" fill="#10302b" stroke="#4ecdc4" stroke-width="1.6"/>
+      <text x="300" y="237" text-anchor="middle" font-size="16" font-weight="800" fill="#4ecdc4">③ Model (LLM)</text>
+      <text x="300" y="262" text-anchor="middle" font-size="11.5" fill="#bff5ee">상태 없는 토큰 예측기 — 단독으론 행동·기억 없음</text>
+      <rect x="640" y="90" width="220" height="270" rx="12" fill="#2a210c" stroke="#ffd93d" stroke-width="1.6"/>
+      <text x="750" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#ffd93d">④ Capabilities</text>
+      <text x="750" y="160" text-anchor="middle" font-size="12" fill="#ffe9a8">Tools (직접 함수)</text>
+      <text x="750" y="190" text-anchor="middle" font-size="12" fill="#ffe9a8">MCP (표준 플러그)</text>
+      <text x="750" y="220" text-anchor="middle" font-size="12" fill="#ffe9a8">Skills (절차 노하우)</text>
+      <text x="750" y="250" text-anchor="middle" font-size="12" fill="#ffe9a8">Subagents (위임)</text>
+      <text x="750" y="300" text-anchor="middle" font-size="10.5" fill="#ba8">하네스가 호출하는 손·연장</text>
+      <line x1="554" y1="200" x2="636" y2="200" stroke="#ffd93d" stroke-width="2" marker-end="url(#arY1)"/>
+      <line x1="636" y1="252" x2="554" y2="252" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arY2)"/>
+      <text x="595" y="190" text-anchor="middle" font-size="10.5" fill="#ffd93d">호출</text>
+      <text x="595" y="274" text-anchor="middle" font-size="10.5" fill="#7eb8ff">결과</text>
+      <rect x="20" y="406" width="840" height="48" rx="10" fill="#1a1020" stroke="#c084fc" stroke-width="1.4" stroke-dasharray="6 5"/>
+      <text x="440" y="435" text-anchor="middle" font-size="12.5" fill="#e6cffc">실제 환경 — 파일 · DB · API · 웹 · 사내 시스템</text>
+      <line x1="750" y1="364" x2="750" y2="402" stroke="#c084fc" stroke-width="2" marker-start="url(#arY3)" marker-end="url(#arY3)"/>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">구조 출처: <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic — Building Effective Agents</a> · 계층 구분은 교육용 재구성</p>
+  </div>
+
+  <!-- ===================== 4. MCP/Skill/Subagent ===================== -->
+  <h2 id="mcp">4. MCP · Skill · Subagent 자세히</h2>
+
+  <h3>MCP — "AI용 USB-C"</h3>
+  <p>앱마다 도구마다 따로 연동하면 <b class="warn">M×N개</b>의 통합이 필요합니다. MCP라는 공통 규격을 쓰면 <b class="accent">M+N개</b>로 줄어듭니다(한 번 만든 서버를 모든 앱이 재사용).</p>
+  <div class="diagram">
+    <div class="dtitle">▶ 왜 표준인가 — 연동 수가 곱(M×N)에서 합(M+N)으로</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      subgraph 이전["MCP 이전: 3×4 = 12개 연동"]
+        A1[Claude 앱] & A2[Claude Code] & A3[IDE] --- T1[Drive] & T2[DB] & T3[Figma] & T4[사내 API]
+      end
+      subgraph 이후["MCP 이후: 3+4 = 7개 연동"]
+        B1[Claude 앱] & B2[Claude Code] & B3[IDE] --- M[MCP] --- S1[Drive] & S2[DB] & S3[Figma] & S4[사내 API]
+      end
+    -->
+    <svg viewBox="0 0 900 312" role="img" aria-label="MCP 이전에는 앱과 도구를 12개 선으로 직접 연결, MCP 이후에는 허브를 거쳐 7개 선으로 연결" style="width:100%;display:block;font-family:inherit">
+      <text x="235" y="26" text-anchor="middle" font-size="13" font-weight="800" fill="#ff6b6b">MCP 이전 — 직접 연동 (3×4 = 12개)</text>
+      <text x="685" y="26" text-anchor="middle" font-size="13" font-weight="800" fill="#4ecdc4">MCP 이후 — 공통 규격 (3+4 = 7개)</text>
+      <line x1="455" y1="20" x2="455" y2="300" stroke="#1a2a3a" stroke-dasharray="4 5"/>
+      <line x1="170" y1="77" x2="300" y2="67" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="77" x2="300" y2="135" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="77" x2="300" y2="203" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="77" x2="300" y2="271" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="155" x2="300" y2="67" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="155" x2="300" y2="135" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="155" x2="300" y2="203" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="155" x2="300" y2="271" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="233" x2="300" y2="67" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="233" x2="300" y2="135" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="233" x2="300" y2="203" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <line x1="170" y1="233" x2="300" y2="271" stroke="#ff6b6b" stroke-opacity=".45" stroke-width="1.3"/>
+      <rect x="40" y="56" width="130" height="42" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="105" y="82" text-anchor="middle" font-size="12" fill="#cfe4ff">Claude 앱</text>
+      <rect x="40" y="134" width="130" height="42" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="105" y="160" text-anchor="middle" font-size="12" fill="#cfe4ff">Claude Code</text>
+      <rect x="40" y="212" width="130" height="42" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="105" y="238" text-anchor="middle" font-size="12" fill="#cfe4ff">IDE</text>
+      <rect x="300" y="48" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="365" y="72" text-anchor="middle" font-size="12" fill="#ffe9a8">Google Drive</text>
+      <rect x="300" y="116" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="365" y="140" text-anchor="middle" font-size="12" fill="#ffe9a8">DB</text>
+      <rect x="300" y="184" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="365" y="208" text-anchor="middle" font-size="12" fill="#ffe9a8">Figma</text>
+      <rect x="300" y="252" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="365" y="276" text-anchor="middle" font-size="12" fill="#ffe9a8">사내 API</text>
+      <line x1="620" y1="77" x2="655" y2="77" stroke="#4ecdc4" stroke-width="1.6"/>
+      <line x1="620" y1="155" x2="655" y2="155" stroke="#4ecdc4" stroke-width="1.6"/>
+      <line x1="620" y1="233" x2="655" y2="233" stroke="#4ecdc4" stroke-width="1.6"/>
+      <line x1="701" y1="67" x2="740" y2="67" stroke="#4ecdc4" stroke-width="1.6"/>
+      <line x1="701" y1="135" x2="740" y2="135" stroke="#4ecdc4" stroke-width="1.6"/>
+      <line x1="701" y1="203" x2="740" y2="203" stroke="#4ecdc4" stroke-width="1.6"/>
+      <line x1="701" y1="271" x2="740" y2="271" stroke="#4ecdc4" stroke-width="1.6"/>
+      <rect x="490" y="56" width="130" height="42" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="555" y="82" text-anchor="middle" font-size="12" fill="#cfe4ff">Claude 앱</text>
+      <rect x="490" y="134" width="130" height="42" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="555" y="160" text-anchor="middle" font-size="12" fill="#cfe4ff">Claude Code</text>
+      <rect x="490" y="212" width="130" height="42" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="555" y="238" text-anchor="middle" font-size="12" fill="#cfe4ff">IDE</text>
+      <rect x="655" y="48" width="46" height="242" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.8"/>
+      <text x="678" y="155" text-anchor="middle" font-size="13" font-weight="800" fill="#4ecdc4">M</text>
+      <text x="678" y="175" text-anchor="middle" font-size="13" font-weight="800" fill="#4ecdc4">C</text>
+      <text x="678" y="195" text-anchor="middle" font-size="13" font-weight="800" fill="#4ecdc4">P</text>
+      <rect x="740" y="48" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="805" y="72" text-anchor="middle" font-size="12" fill="#ffe9a8">Google Drive</text>
+      <rect x="740" y="116" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="805" y="140" text-anchor="middle" font-size="12" fill="#ffe9a8">DB</text>
+      <rect x="740" y="184" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="805" y="208" text-anchor="middle" font-size="12" fill="#ffe9a8">Figma</text>
+      <rect x="740" y="252" width="130" height="38" rx="9" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/><text x="805" y="276" text-anchor="middle" font-size="12" fill="#ffe9a8">사내 API</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">출처: <a href="https://modelcontextprotocol.io/docs/learn/architecture">modelcontextprotocol.io — Architecture</a> (Anthropic 2024.11 공개 → 2025.12 Linux Foundation 이관)</p>
+  </div>
+  <div class="diagram">
+    <div class="dtitle">▶ MCP 구조 (Host → Client → Server)</div>
+    <div class="mcp">
+      <div class="col">
+        <div class="node n-harness"><b>Host</b><br><span class="small">(Claude 앱·Claude Code·IDE)</span></div>
+        <div class="node n-harness" style="font-size:.82em">내부에 Server마다<br><b>Client 1개</b>씩 생성</div>
+      </div>
+      <div class="conn">— 연결 →<br><span class="small">JSON-RPC</span></div>
+      <div class="col">
+        <div class="node n-tool"><b>MCP Server</b> ① <span class="small">Google Drive</span></div>
+        <div class="node n-tool"><b>MCP Server</b> ② <span class="small">DB / 사내시스템</span></div>
+        <div class="node n-tool"><b>MCP Server</b> ③ <span class="small">Figma · 모니터링</span></div>
+      </div>
+    </div>
+    <p class="small" style="text-align:center;margin-top:1em">서버가 노출하는 3가지: <b>Tools</b>(실행) · <b>Resources</b>(데이터) · <b>Prompts</b>(템플릿)</p>
+  </div>
+
+  <h3>Skill — 점진적 공개(필요할 때만 펼침)</h3>
+  <div class="diagram">
+    <div class="dtitle">▶ Skill 로딩 3단계 (목차→챕터→부록)</div>
+    <div class="loop" style="max-width:620px">
+      <div class="step"><div class="num">1</div><div class="box n-rule"><b>메타데이터만</b> 상시 로드 <span class="small">(이름+설명 — "이런 스킬이 있다"만 인지, 토큰 최소)</span></div></div>
+      <div class="arrow">↓ 필요하다고 판단하면</div>
+      <div class="step"><div class="num">2</div><div class="box n-harness"><b>SKILL.md 본문</b> 로드 <span class="small">(구체 절차·지시)</span></div></div>
+      <div class="arrow">↓ 더 필요하면</div>
+      <div class="step"><div class="num">3</div><div class="box n-tool"><b>번들 파일·스크립트</b> 로드 <span class="small">(예제·코드·참고자료)</span></div></div>
+    </div>
+    <p class="small" style="text-align:center;margin-top:1em">→ 컨텍스트(=비용)를 아끼면서 전문 노하우를 주입. <b>MCP=도구 접근, Skill=그 도구로 무엇을 어떻게 할지</b></p>
+  </div>
+
+  <h3>Subagent — 컨텍스트 격리 위임</h3>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">왜 쓰나</h3><p>조사·리뷰처럼 <b>토큰을 많이 먹는 작업</b>을 별도 컨텍스트에 맡겨, 메인 대화가 깨끗하게 유지됩니다.</p></div>
+    <div class="card rec"><h3 style="margin-top:0">어떻게</h3><p>오케스트레이터(부모)가 작업 위임 → 서브에이전트가 <b>자체 컨텍스트·도구 권한</b>으로 수행 → <b>요약 결과만</b> 부모에 반환.</p></div>
+  </div>
+
+  <!-- ===================== 5. 멀티모달 ===================== -->
+  <h2 id="multi">5. LLM은 텍스트 외 데이터를 어떻게 다루나</h2>
+  <p class="lead" style="color:#bbb;font-size:1.1em">핵심 직관: LLM에게 세상은 <b>"벡터(숫자 좌표)의 나열"</b>입니다. 이미지·음성도 <b>같은 벡터 공간으로 번역</b>하면 텍스트와 똑같이 처리됩니다.</p>
+
+  <h3>① 텍스트 기본 — 토큰과 임베딩</h3>
+  <div class="card">
+    <p>· <b>토큰화</b>: 텍스트를 단어/조각(토큰)으로 분할 · <b>임베딩</b>: 각 토큰을 의미를 담은 <b>숫자 벡터</b>로 변환 · <b>예측</b>: 트랜스포머가 다음 토큰을 한 개씩 확률적으로 생성</p>
+  </div>
+
+  <h3>② 비텍스트 입력 — "인코더가 벡터로 번역"</h3>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">🖼 이미지</h3><p>패치(작은 조각)로 분할 → <b>비전 인코더(ViT/CLIP)</b>가 벡터로 → <b>프로젝터</b>가 LLM 토큰과 같은 차원으로 정렬 → "이미지 토큰"을 텍스트 옆에 이어붙임</p></div>
+    <div class="card"><h3 style="margin-top:0">🔊 음성</h3><p>파형 → <b>스펙트로그램</b>(시간×주파수 이미지) → <b>오디오 인코더(Whisper식)</b>가 벡터로 → 토큰화</p></div>
+    <div class="card"><h3 style="margin-top:0">🎬 비디오</h3><p>프레임 샘플링(예: 초당 1장) → 각 프레임을 이미지처럼 인코딩 + <b>타임스탬프</b>로 시간 순서 유지</p></div>
+    <div class="card"><h3 style="margin-top:0">📄 문서/PDF</h3><p>전통식: OCR로 텍스트 추출 / <b>네이티브식</b>: 페이지를 <b>이미지로 통째 입력</b>해 표·도표·레이아웃까지 직접 이해(최신 추세)</p></div>
+  </div>
+
+  <h3>③ 전체 파이프라인 — 모든 입력이 "한 줄의 토큰"으로</h3>
+  <div class="diagram">
+    <div class="dtitle">▶ 입력 → 인코더 → 공유 토큰 공간 → 트랜스포머 → 출력</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      T[텍스트] ==> TE[토크나이저→임베딩] ==> S["공유 토큰 공간<br/>(한 줄의 토큰)"]
+      I[이미지] ==> IE[패치→ViT/CLIP] ==> S
+      A[음성] ==> AE[스펙트로그램→오디오 인코더] ==> S
+      V[비디오·문서] ==> VE[프레임·페이지 샘플링] ==> S
+      S ==> X[트랜스포머 셀프-어텐션] ==> O1[텍스트] & O2[이미지 생성] & O3["음성(TTS)"] & O4[구조화 JSON]
+    -->
+    <svg viewBox="0 0 940 400" role="img" aria-label="네 가지 입력이 각자의 인코더를 거쳐 공유 토큰 공간으로 합쳐지고, 트랜스포머를 지나 네 가지 출력으로 갈라진다" style="width:100%;display:block;font-family:inherit">
+      <defs>
+        <marker id="arM1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#667"/></marker>
+        <marker id="arM2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ecdc4"/></marker>
+      </defs>
+      <text x="90" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#889">입력</text>
+      <text x="290" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#889">인코더 (벡터로 번역)</text>
+      <text x="525" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#889">공유 토큰 공간</text>
+      <text x="725" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#889">코어</text>
+      <text x="883" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#889">출력</text>
+      <rect x="20" y="36" width="140" height="46" rx="9" fill="#1a1020" stroke="#c084fc" stroke-width="1.4"/><text x="90" y="64" text-anchor="middle" font-size="12.5" fill="#e6cffc">텍스트</text>
+      <rect x="20" y="126" width="140" height="46" rx="9" fill="#1a1020" stroke="#c084fc" stroke-width="1.4"/><text x="90" y="154" text-anchor="middle" font-size="12.5" fill="#e6cffc">이미지</text>
+      <rect x="20" y="216" width="140" height="46" rx="9" fill="#1a1020" stroke="#c084fc" stroke-width="1.4"/><text x="90" y="244" text-anchor="middle" font-size="12.5" fill="#e6cffc">음성</text>
+      <rect x="20" y="306" width="140" height="46" rx="9" fill="#1a1020" stroke="#c084fc" stroke-width="1.4"/><text x="90" y="334" text-anchor="middle" font-size="12.5" fill="#e6cffc">비디오 · 문서</text>
+      <line x1="160" y1="59" x2="196" y2="59" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <line x1="160" y1="149" x2="196" y2="149" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <line x1="160" y1="239" x2="196" y2="239" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <line x1="160" y1="329" x2="196" y2="329" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <rect x="200" y="36" width="180" height="46" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="290" y="64" text-anchor="middle" font-size="11" fill="#cfe4ff">토크나이저 → 임베딩</text>
+      <rect x="200" y="126" width="180" height="46" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="290" y="154" text-anchor="middle" font-size="11" fill="#cfe4ff">패치 → ViT/CLIP</text>
+      <rect x="200" y="216" width="180" height="46" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="290" y="244" text-anchor="middle" font-size="11" fill="#cfe4ff">스펙트로그램 → 오디오 인코더</text>
+      <rect x="200" y="306" width="180" height="46" rx="9" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/><text x="290" y="334" text-anchor="middle" font-size="11" fill="#cfe4ff">프레임·페이지 샘플링</text>
+      <path d="M380 59 Q 425 59 441 152" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arM2)"/>
+      <path d="M380 149 Q 420 149 441 188" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arM2)"/>
+      <path d="M380 239 Q 420 239 441 226" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arM2)"/>
+      <path d="M380 329 Q 425 329 441 262" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arM2)"/>
+      <rect x="445" y="128" width="160" height="160" rx="12" fill="#10302b" stroke="#4ecdc4" stroke-width="1.8"/>
+      <text x="525" y="180" text-anchor="middle" font-size="14" font-weight="800" fill="#4ecdc4">공유 토큰 공간</text>
+      <text x="525" y="205" text-anchor="middle" font-size="11" fill="#bff5ee">프로젝터가 모든 입력을</text>
+      <text x="525" y="222" text-anchor="middle" font-size="11" fill="#bff5ee">"한 줄의 토큰"으로 정렬</text>
+      <text x="525" y="252" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">(번역기 역할)</text>
+      <line x1="605" y1="208" x2="641" y2="208" stroke="#4ecdc4" stroke-width="2" marker-end="url(#arM2)"/>
+      <rect x="645" y="128" width="160" height="160" rx="12" fill="#2a210c" stroke="#ffd93d" stroke-width="1.8"/>
+      <text x="725" y="180" text-anchor="middle" font-size="14" font-weight="800" fill="#ffd93d">트랜스포머</text>
+      <text x="725" y="205" text-anchor="middle" font-size="11" fill="#ffe9a8">셀프-어텐션</text>
+      <text x="725" y="222" text-anchor="middle" font-size="10.5" fill="#ffe9a8">텍스트·이미지 토큰을</text>
+      <text x="725" y="238" text-anchor="middle" font-size="10.5" fill="#ffe9a8">넘나들며 교차 추론</text>
+      <path d="M805 152 Q 828 59 834 59" fill="none" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <path d="M805 190 Q 828 149 834 149" fill="none" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <path d="M805 226 Q 828 239 834 239" fill="none" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <path d="M805 264 Q 828 329 834 329" fill="none" stroke="#667" stroke-width="1.5" marker-end="url(#arM1)"/>
+      <rect x="838" y="36" width="86" height="46" rx="9" fill="#1a1a2a" stroke="#9aa" stroke-width="1.3"/><text x="881" y="58" text-anchor="middle" font-size="10.5" fill="#dde">텍스트</text><text x="881" y="73" text-anchor="middle" font-size="9" fill="#99a">캡션·분석</text>
+      <rect x="838" y="126" width="86" height="46" rx="9" fill="#1a1a2a" stroke="#9aa" stroke-width="1.3"/><text x="881" y="148" text-anchor="middle" font-size="10.5" fill="#dde">이미지 생성</text><text x="881" y="163" text-anchor="middle" font-size="9" fill="#99a">확산/AR</text>
+      <rect x="838" y="216" width="86" height="46" rx="9" fill="#1a1a2a" stroke="#9aa" stroke-width="1.3"/><text x="881" y="238" text-anchor="middle" font-size="10.5" fill="#dde">음성</text><text x="881" y="253" text-anchor="middle" font-size="9" fill="#99a">TTS/보코더</text>
+      <rect x="838" y="306" width="86" height="46" rx="9" fill="#1a1a2a" stroke="#9aa" stroke-width="1.3"/><text x="881" y="328" text-anchor="middle" font-size="10.5" fill="#dde">구조화</text><text x="881" y="343" text-anchor="middle" font-size="9" fill="#99a">JSON·좌표</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:1em">왼→오 한 방향. <b>모든 입력이 가운데서 "한 줄의 토큰"으로 합쳐지는 것</b>이 핵심. · 도식 출처: <a href="https://magazine.sebastianraschka.com/p/understanding-multimodal-llms">Raschka — Understanding Multimodal LLMs (2024)</a></p>
+  </div>
+
+  <h3>④ 출력 — 모달리티별 (이해와 생성은 방향이 반대)</h3>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">텍스트</h3><p>다음 토큰 생성(가장 기본·안정). 캡션·분석·답변.</p></div>
+    <div class="card"><h3 style="margin-top:0">이미지 생성</h3><p><b>확산</b>: 노이즈에서 점진적으로 그림으로 / <b>AR 토큰</b>: 이미지를 토큰처럼 한 개씩 예측. <span class="small">이해=이미지→벡터, 생성=조건→픽셀</span></p></div>
+    <div class="card"><h3 style="margin-top:0">음성 출력</h3><p>옛 방식: 텍스트→멜→보코더 / <b>네이티브 음성(GPT-4o식)</b>: 중간 텍스트 없이 직접 오디오 생성 → 빠르고(수백 ms) 감정 표현 풍부</p></div>
+    <div class="card"><h3 style="margin-top:0">구조화·도구</h3><p>바운딩박스 좌표·세그멘테이션·JSON·함수 호출 등 특수 토큰으로 출력</p></div>
+  </div>
+  <div class="callout warn"><span class="label">⚠ 정확성</span>GPT-4o·Gemini·Claude의 <b>정확한 내부 구조는 비공개</b>입니다. 위 "네이티브/옴니" 설명은 공개 발표 + 오픈소스 유사 모델 기반의 <b>일반적 접근</b>이며, 세부(토크나이저·디코더)는 단정하지 않는 것이 안전합니다.</div>
+
+  <!-- ===================== 6. 패러다임 변천 ===================== -->
+  <h2 id="evolution">6. 패러다임 변천 — "프롬프트"에서 "시스템"으로</h2>
+  <p>AI를 잘 쓰는 기술의 <b>최적화 단위가 계속 커져 왔습니다</b>: 문장 1개 → 컨텍스트 윈도우 1개 → 세션을 넘는 시스템 전체. 공통 분모는 모델 가중치(재학습)가 아니라 <b>입력·컨텍스트·도구·외부 구조를 설계</b>한다는 것입니다.</p>
+
+  <div class="diagram">
+    <div class="dtitle">▶ 엔지니어링 단위의 확장 (2022 → 2026) — 바깥이 안을 포함</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart TB
+      subgraph S["③ 시스템 수준 설계 (2025–2026 · 용어 경쟁 중) — 세션을 넘는 운영 구조"]
+        subgraph C["② Context Engineering (2024–2025) — 모델이 보는 토큰 전체 큐레이팅"]
+          P["① Prompt Engineering (2022–2023)<br/>지시문 한 덩어리 — few-shot · CoT"]
+        end
+      end
+    -->
+    <svg viewBox="0 0 880 430" role="img" aria-label="프롬프트 엔지니어링을 컨텍스트 엔지니어링이 감싸고, 그것을 다시 시스템 수준 설계가 감싸는 중첩 구조" style="width:100%;max-width:820px;display:block;margin:0 auto;font-family:inherit">
+      <rect x="20" y="20" width="840" height="390" rx="14" fill="#2a210c" stroke="#ffd93d" stroke-width="1.7"/>
+      <text x="44" y="52" font-size="14" font-weight="800" fill="#ffd93d">③ 시스템 수준 설계 <tspan font-size="11" font-weight="400" fill="#cb6">(2025–2026 · 용어 경쟁 중)</tspan></text>
+      <text x="44" y="73" font-size="11" fill="#ffe9a8">세션을 넘는 에이전트 운영 구조 — 하네스 · Skills · Spec-driven · 메모리</text>
+      <rect x="60" y="100" width="760" height="280" rx="12" fill="#11233a" stroke="#7eb8ff" stroke-width="1.7"/>
+      <text x="84" y="132" font-size="14" font-weight="800" fill="#7eb8ff">② Context Engineering <tspan font-size="11" font-weight="400" fill="#9ab">(2024–2025)</tspan></text>
+      <text x="84" y="153" font-size="11" fill="#cfe4ff">추론 시점에 모델이 보는 토큰 집합 전체를 큐레이팅 — RAG · 메모리 · 도구 · 서브에이전트 포함</text>
+      <rect x="110" y="186" width="660" height="160" rx="11" fill="#10302b" stroke="#4ecdc4" stroke-width="1.8"/>
+      <text x="440" y="248" text-anchor="middle" font-size="15" font-weight="800" fill="#4ecdc4">① Prompt Engineering <tspan font-size="11.5" font-weight="400" fill="#9cb">(2022–2023)</tspan></text>
+      <text x="440" y="278" text-anchor="middle" font-size="11.5" fill="#bff5ee">재학습 없이 지시문 한 덩어리로 원하는 동작 유도 — few-shot · CoT</text>
+      <text x="440" y="305" text-anchor="middle" font-size="10.5" fill="#7fa89f" font-style="italic">"프롬프트는 컨텍스트의 부분집합" — 안쪽 기술은 사라진 게 아니라 바깥 층의 부품이 됨</text>
+      <text x="440" y="368" text-anchor="middle" font-size="10.5" fill="#8ab">②는 ①을 포함 — 프롬프트 + 검색·메모리·도구 결과까지 설계 대상으로 확장</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:1em">Anthropic: "context engineering은 prompt engineering의 <b>자연스러운 진화</b>" — 프롬프트는 컨텍스트의 부분집합</p>
+  </div>
+
+  <div class="diagram">
+    <div class="dtitle">▶ 타임라인 — 두 번의 전환, 그리고 부채꼴 분화 (노드별 출처 각인)</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      PE["Prompt Engineering 2022-23<br/>few-shot · CoT (arXiv 2402.07927)"] ==>|"자연스러운 진화"| CE["Context Engineering 2024-25<br/>C=A(c1..cn) (Anthropic 2025.09 · arXiv 2507.13334)"]
+      CE ==> HE["Harness Engineering (Anthropic 2025.11)"]
+      CE ==> AS["Agent Skills (Anthropic 2025.10)"]
+      CE ==> SD["Spec-Driven Dev (GitHub Spec Kit 2025)"]
+      CE ==> AC["Agent Control · Tool Design (OpenAI GPT-5 2025.08)"]
+      CE ==> ACE["ACE · Memory · Self-Evolving — 학술 (ICLR 2026)"]
+    -->
+    <svg viewBox="0 0 920 410" role="img" aria-label="패러다임 타임라인: Prompt Engineering에서 Context Engineering으로 진화한 뒤 5갈래로 분화" style="width:100%;display:block;font-family:inherit">
+      <defs>
+        <marker id="arE1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+        <marker id="arE2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ecdc4"/></marker>
+      </defs>
+      <text x="145" y="20" text-anchor="middle" font-size="12.5" fill="#889" font-weight="700">2022–2023</text>
+      <text x="425" y="20" text-anchor="middle" font-size="12.5" fill="#889" font-weight="700">2024–2025</text>
+      <text x="745" y="20" text-anchor="middle" font-size="12.5" fill="#889" font-weight="700">2025–2026 · 용어 경쟁 중</text>
+      <line x1="290" y1="30" x2="290" y2="402" stroke="#1a2a3a" stroke-dasharray="4 5"/>
+      <line x1="560" y1="30" x2="560" y2="402" stroke="#1a2a3a" stroke-dasharray="4 5"/>
+      <rect x="40" y="150" width="210" height="118" rx="12" fill="#10302b" stroke="#4ecdc4" stroke-width="1.5"/>
+      <text x="145" y="180" text-anchor="middle" font-size="15" font-weight="800" fill="#4ecdc4">Prompt Engineering</text>
+      <text x="145" y="203" text-anchor="middle" font-size="11.5" fill="#e8e8e8">지시문 1개를 다듬어 동작 유도</text>
+      <text x="145" y="222" text-anchor="middle" font-size="11" fill="#9ab">few-shot · CoT · role</text>
+      <text x="145" y="252" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">arXiv 2402.07927 (서베이)</text>
+      <rect x="320" y="128" width="210" height="162" rx="12" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/>
+      <text x="425" y="158" text-anchor="middle" font-size="15" font-weight="800" fill="#7eb8ff">Context Engineering</text>
+      <text x="425" y="181" text-anchor="middle" font-size="11.5" fill="#e8e8e8">모델이 보는 토큰 전체를 큐레이팅</text>
+      <text x="425" y="203" text-anchor="middle" font-size="12" fill="#9fe6dd" font-family="'D2Coding','Consolas',monospace">C = A(c₁ … cₙ)</text>
+      <text x="425" y="224" text-anchor="middle" font-size="10.5" fill="#9ab">RAG · 메모리 · 도구 · 멀티에이전트 포섭</text>
+      <text x="425" y="256" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">Anthropic 2025.09</text>
+      <text x="425" y="274" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">arXiv 2507.13334 (1,400+ 논문 서베이)</text>
+      <line x1="252" y1="209" x2="314" y2="209" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arE1)"/>
+      <path d="M530 180 Q 568 71 596 71" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arE2)"/>
+      <path d="M530 196 Q 568 145 596 145" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arE2)"/>
+      <path d="M530 212 Q 568 219 596 219" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arE2)"/>
+      <path d="M530 228 Q 568 293 596 293" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arE2)"/>
+      <path d="M530 244 Q 568 367 596 367" fill="none" stroke="#4ecdc4" stroke-width="1.6" marker-end="url(#arE2)"/>
+      <rect x="602" y="42" width="290" height="58" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/>
+      <text x="747" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd93d">Harness Engineering</text>
+      <text x="747" y="76" text-anchor="middle" font-size="10.5" fill="#e8e8e8">세션을 넘는 외부 구조 — 진행 파일·git·기능 목록</text>
+      <text x="747" y="92" text-anchor="middle" font-size="10" fill="#8aa" font-style="italic">Anthropic 2025.11 · 합성어는 커뮤니티 명칭</text>
+      <rect x="602" y="116" width="290" height="58" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4"/>
+      <text x="747" y="134" text-anchor="middle" font-size="13" font-weight="800" fill="#4ecdc4">Agent Skills</text>
+      <text x="747" y="150" text-anchor="middle" font-size="10.5" fill="#e8e8e8">노하우 폴더 + 점진적 공개 로드</text>
+      <text x="747" y="166" text-anchor="middle" font-size="10" fill="#8aa" font-style="italic">Anthropic 2025.10 · agentskills.io 표준화</text>
+      <rect x="602" y="190" width="290" height="58" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.4"/>
+      <text x="747" y="208" text-anchor="middle" font-size="13" font-weight="800" fill="#7eb8ff">Spec-Driven Development</text>
+      <text x="747" y="224" text-anchor="middle" font-size="10.5" fill="#e8e8e8">명세가 공유 진실의 원천 → 계획 → 구현</text>
+      <text x="747" y="240" text-anchor="middle" font-size="10" fill="#8aa" font-style="italic">GitHub Spec Kit 2025</text>
+      <rect x="602" y="264" width="290" height="58" rx="10" fill="#1a1020" stroke="#c084fc" stroke-width="1.4"/>
+      <text x="747" y="282" text-anchor="middle" font-size="13" font-weight="800" fill="#c084fc">Agent Control · Tool Design</text>
+      <text x="747" y="298" text-anchor="middle" font-size="10.5" fill="#e8e8e8">자율성(eagerness)·도구 사용 방식 제어</text>
+      <text x="747" y="314" text-anchor="middle" font-size="10" fill="#8aa" font-style="italic">OpenAI GPT-5 프롬프팅 가이드 2025.08</text>
+      <rect x="602" y="338" width="290" height="58" rx="10" fill="#1a1a2a" stroke="#9aa" stroke-width="1.4"/>
+      <text x="747" y="356" text-anchor="middle" font-size="13" font-weight="800" fill="#ccd">ACE · Memory · Self-Evolving <tspan font-size="10" font-weight="400">(학술)</tspan></text>
+      <text x="747" y="372" text-anchor="middle" font-size="10.5" fill="#e8e8e8">진화하는 playbook · 일급(first-class) 메모리</text>
+      <text x="747" y="388" text-anchor="middle" font-size="10" fill="#8aa" font-style="italic">ICLR 2026 · arXiv 2510.04618 / 2512.13564</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">③ 구간의 <b>합의된 단일 용어는 아직 없음</b> — "대체"가 아닌 병렬 분화 (출처별 적대적 교차검증, 2026-06 기준)</p>
+  </div>
+
+  <h3>3단계(2025–2026)는 단일 용어로 수렴하지 않았다 — 부상 중인 후보들</h3>
+  <div class="grid2">
+    <div class="card rec"><h3 style="margin-top:0">Harness Engineering <span class="small">(가장 유력)</span></h3><p>세션은 분절적("이전 기억 없음") → 진행 파일·git·기능 목록 같은 <b>외부 구조</b>로 여러 컨텍스트 윈도우를 관통. Anthropic: "compaction만으론 최상위 모델도 프로덕션급 미달."</p></div>
+    <div class="card"><h3 style="margin-top:0">Agent Skills</h3><p>노하우를 <b>점진적 공개</b> 폴더로 패키징(4장 참고). 컨텍스트 절약형 지식 주입 — 명시적 context engineering 기법.</p></div>
+    <div class="card"><h3 style="margin-top:0">Spec-Driven Development</h3><p>코딩 먼저가 아니라 <b>명세(spec)가 공유 진실의 원천</b> → 계획 → 작업 → 구현. GitHub Spec Kit이 대표 구현.</p></div>
+    <div class="card"><h3 style="margin-top:0">Agent Control / Tool Design</h3><p>에이전트의 <b>자율성 정도(eagerness)</b>와 도구 사용 방식을 제어 — OpenAI GPT-5 가이드가 공식화. 프롬프팅 담론이 에이전트 제어로 이동.</p></div>
+    <div class="card"><h3 style="margin-top:0">Agentic Context Engineering (ACE) <span class="small">학술</span></h3><p>컨텍스트를 <b>진화하는 playbook</b>으로 — 전략을 누적·정제·조직 (Stanford 등, ICLR 2026).</p></div>
+    <div class="card"><h3 style="margin-top:0">Memory · Self-Evolving <span class="small">학술</span></h3><p>메모리를 에이전트 지능의 <b>일급(first-class) 요소</b>로 격상, 자기 피드백으로 도구·컨텍스트를 스스로 수정하는 에이전트 연구.</p></div>
+  </div>
+
+  <div class="callout warn"><span class="label">⚠ 정확성</span>위 3단계 후보들은 모두 <b>2025–2026 신생 개념</b>으로, "prompt → context → X"의 X에 해당하는 <b>합의된 단일 용어는 아직 없습니다</b>. 학술 서베이(arXiv 2507.13334)는 RAG·메모리·도구·멀티에이전트를 context engineering의 하위 구성요소로 포섭하므로, 실제 구도는 "대체"가 아니라 <b>우산 개념 + 병렬 특화 분야</b>입니다. "harness engineering"이라는 합성어도 Anthropic 공식 표현이 아닌 커뮤니티 명칭입니다.</div>
+  <div class="callout tip"><span class="label">D-level 핵심 메시지</span>방향은 분명합니다 — <b>"좋은 문장을 쓰는 사람"에서 "에이전트가 일하는 환경을 설계하는 사람"으로.</b> 2장의 하네스, 4장의 Skill/MCP가 바로 그 설계 도구입니다.</div>
+
+  <p class="small" style="color:#888;margin-top:2vh">관련: <a href="how_llm_works.html">LLM 작동 원리 (기초)</a> · <a href="agents_landscape.html">에이전트 지형도</a> · <a href="handout_개발_sw.html">개발(SW) 고급 활용</a> · <a href="enterprise_agents.html">기업용 에이전트 비교</a> · <a href="index.html">세미나 허브</a></p>
+
+  <div class="foot">
+    출처 — 에이전트/하네스: <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic Building Effective Agents</a> · <a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP Architecture</a> · <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a> · <a href="https://code.claude.com/docs/en/sub-agents">Subagents</a> · <a href="https://www.mongodb.com/company/blog/technical/agent-harness-why-llm-is-smallest-part-of-your-agent-system">The Agent Harness</a> ·
+    멀티모달: <a href="https://magazine.sebastianraschka.com/p/understanding-multimodal-llms">Raschka — Multimodal LLMs</a> · <a href="https://letsdatascience.com/blog/multimodal-ai-how-vision-language-models-work">VLM 작동원리</a> · <a href="https://openai.com/index/hello-gpt-4o/">Hello GPT-4o</a> · <a href="https://huggingface.co/blog/vlms-2025">VLMs in 2025</a> ·
+    패러다임 변천: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic — Context Engineering</a> · <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Anthropic — Long-running Harnesses</a> · <a href="https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide">OpenAI GPT-5 Prompting Guide</a> · <a href="https://arxiv.org/abs/2507.13334">Survey of Context Engineering (arXiv 2507.13334)</a> · <a href="https://arxiv.org/abs/2510.04618">ACE (arXiv 2510.04618)</a> · <a href="https://github.blog/developer-skills/agentic-ai-mcp-and-spec-driven-development-top-blog-posts-of-2025/">GitHub — Spec-Driven Development</a>.
+    <br>닫힌 모델 내부는 일반적 접근으로 표기. 명세·버전 빠르게 변동 — 인용 시 재확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

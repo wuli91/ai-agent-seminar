@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI · Anthropic · Google — 업무 자동화 AI 에이전트 신기술 (2025H2–2026)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding:5vh 4vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.1em;font-weight:800;line-height:1.2}
+.sub{color:#aaa;font-size:1.08em;margin:.6em 0 1vh}
+.toc{background:#0e1722;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.3em;margin:2vh 0}
+.toc a{color:#7eb8ff;text-decoration:none;margin-right:1.2em;font-size:.95em;white-space:nowrap}
+h2{font-size:1.5em;color:#7eb8ff;margin:4.5vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.15em;color:#4ecdc4;margin:2vh 0 .5vh}
+p,li,td,th{color:#ccc;font-size:.98em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.3em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.purple{color:#c084fc}.b{font-weight:700}
+table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.93em}
+th{background:#1a2a3a;padding:.5em .7em;text-align:left;font-weight:600;color:#7eb8ff;border-bottom:2px solid #2a4a6a}
+td{padding:.45em .7em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+tr:hover td{background:#0f1f2f}
+code{background:#15202c;color:#9fe6dd;padding:.08em .35em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1em;margin:.8em 0}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.8em}
+.foot a{color:#5a7da0}
+.small{font-size:.85em;color:#889}
+.v1{display:inline-block;background:#10302b;color:#4ecdc4;border:1px solid #4ecdc4;border-radius:5px;padding:.02em .45em;font-size:.75em;font-weight:700}
+.v2{display:inline-block;background:#2a210c;color:#ffd93d;border:1px solid #ffd93d;border-radius:5px;padding:.02em .45em;font-size:.75em;font-weight:700}
+@media print{
+  body{background:#fff;color:#111}.wrap{max-width:100%}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td,th{color:#222}
+  .card{background:#f7f9fc;border-color:#cdd8e6}.callout{background:#f3f7fb}
+  .accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.toc{display:none}
+  th{background:#e7eef7;color:#0055aa}code{background:#eef3f8;color:#0a6}
+}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">조사 보고 · 적대적 교차검증 (25/25 claims 3-0) + 1차 출처 직접 확인 · 2026-06-06 기준</span>
+  <h1>OpenAI · Anthropic · Google<br><span class="accent">업무 자동화 AI 에이전트 신기술</span> (2025 하반기 – 2026)</h1>
+  <p class="sub">3사가 최근 1년간 내놓은 에이전트 제품·하네스·모델을 <b>정식 명칭 + 출시 시점 + 용도 + 출처</b>로 정리.
+  <span class="v1">1차</span> = 공식 발표/문서 직접 확인, <span class="v2">2차</span> = 언론·교차 출처만.</p>
+
+  <div class="toc"><b style="color:#aaa">목차 </b>
+    <a href="#timeline">통합 타임라인</a> <a href="#openai">OpenAI</a> <a href="#anthropic">Anthropic</a> <a href="#google">Google</a> <a href="#insight">시사점</a></div>
+
+  <h2 id="timeline">통합 타임라인 — 한눈에</h2>
+  <table>
+    <tr><th>시점</th><th>OpenAI</th><th>Anthropic</th><th>Google</th></tr>
+    <tr><td class="b">2025.05–08</td><td></td><td>/security-review (08.06)</td><td>Jules 베타(05.20)→GA(08.06) · Gemini CLI (06.25) · NotebookLM Video Overviews (07.29)</td></tr>
+    <tr><td class="b">2025.09–10</td><td>AgentKit (10.06) · Atlas 브라우저 (10.21)</td><td>Agent SDK 개명 (09.29) · Agent Skills (10.16)</td><td>Gemini Enterprise (10.09)</td></tr>
+    <tr><td class="b">2025.11–12</td><td></td><td>Opus 4.5 + effort 파라미터 (11.24) · Skills 오픈 표준화 (12.18)</td><td>Gemini 3 (11.18) · Antigravity IDE (11.20) · NotebookLM Deep Research (11.13)</td></tr>
+    <tr><td class="b">2026.01–04</td><td>GPT-5.5 / 5.5 Pro (04.23)</td><td>Cowork 프리뷰(01.12)→GA(04.09) · Opus 4.6(02.05)/4.7(04.16)</td><td>Antigravity 2.0 + CLI 통합 (I/O 2026)</td></tr>
+    <tr><td class="b">2026.05–06</td><td></td><td>Opus 4.8 — 1M 기본·effort high·Workflows (05.28)</td><td></td></tr>
+  </table>
+
+  <h2 id="openai">OpenAI — "에이전트 빌딩 블록 + 브라우저"</h2>
+  <table>
+    <tr><th>제품</th><th>시점</th><th>용도</th><th>확인</th></tr>
+    <tr><td class="b">GPT-5.5 / 5.5 Pro</td><td>2026-04-23</td><td>최상위 모델 — agentic coding·computer use·knowledge work 최대 향상. ChatGPT(Plus 이상)와 Codex에 롤아웃</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Codex (CLI·IDE·Cloud)</td><td>CLI 오픈소스 2025-04~</td><td>터미널 코딩 에이전트 (Rust, Apache-2.0) + 클라우드 위임(<code>codex cloud</code>/<code>apply</code>) — Claude Code 대응</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">AGENTS.md 표준</td><td>2025~ (Linux Foundation)</td><td>도구 불문 에이전트 지침 파일 표준 — Codex·Cursor·Gemini CLI·Copilot·Jules 채택</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">AgentKit</td><td>2025-10-06 (DevDay)</td><td>에이전트 구축 툴킷: Agent Builder(비주얼 캔버스)·ChatKit(임베드 UI)·Connector Registry·Evals for Agents</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">ChatGPT Atlas</td><td>2025-10-21</td><td>ChatGPT 내장 Chromium 브라우저(출시 시 macOS) + <b>agent mode</b>(브라우징 맥락에서 예약·작업 자동화)</td><td><span class="v1">1차</span></td></tr>
+  </table>
+  <div class="callout"><span class="label">패턴</span>OpenAI는 <b>개발자용 빌딩 블록(AgentKit·Codex)</b>과 <b>소비자 접점(Atlas 브라우저)</b> 양쪽으로 확장. 기존 Operator(브라우저 에이전트)는 Atlas agent mode로 수렴.</div>
+
+  <h2 id="anthropic">Anthropic — "에이전트 하네스의 수직 통합"</h2>
+  <table>
+    <tr><th>제품</th><th>시점</th><th>용도</th><th>확인</th></tr>
+    <tr><td class="b">Claude Opus 4.5→4.8</td><td>2025-11-24 → 2026-05-28</td><td>프런티어 시퀀스. 4.5: effort 파라미터 도입, $5/$25 per Mtok. 4.8: <b>1M 컨텍스트 기본</b>·128k 출력·effort 기본 high</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Agent Skills</td><td>2025-10-16 → 표준화 12-18</td><td><code>SKILL.md</code> 폴더로 노하우 패키징(점진적 공개). Claude.ai·Code·SDK 전체 + 타사 20+ 플랫폼 채택</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Claude Agent SDK</td><td>2025-09-29 개명</td><td>구 Claude Code SDK — 에이전트 루프(gather→act→verify→repeat)를 라이브러리로. MCP 네이티브</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Cowork</td><td>2026-01-12 프리뷰 → 04-09 GA</td><td>비개발자용 데스크톱 지식노동 에이전트 — 격리 VM에서 로컬 파일·MCP 직접 접근</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Claude Code 신기능</td><td>2025-11 ~ 2026-05</td><td>Plan Mode 강화(질문→plan.md 검토→실행) · Desktop 병렬 세션 · Auto mode · fast mode · <b>Workflows</b>(멀티에이전트 오케스트레이션, research preview)</td><td><span class="v1">1차</span></td></tr>
+  </table>
+  <div class="callout"><span class="label">패턴</span>Anthropic은 <b>하네스 스택 수직 통합</b>: 모델(Opus) → 하네스(Claude Code) → 라이브러리(Agent SDK) → 지식 패키징(Skills) → 비개발자 접점(Cowork). 표준(MCP·Skills)을 공개해 타사 생태계로 확장하는 전략.</div>
+
+  <h2 id="google">Google — "IDE 플랫폼 + 리서치 에이전트"</h2>
+  <table>
+    <tr><th>제품</th><th>시점</th><th>용도</th><th>확인</th></tr>
+    <tr><td class="b">Gemini 3</td><td>2025-11-18</td><td>최상위 추론·멀티모달 모델 패밀리</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Google Antigravity</td><td>2025-11-20 → 2.0 (I/O 2026)</td><td>에이전트 우선(agent-first) 개발 플랫폼 — 에디터·터미널·브라우저를 가로질러 자율 계획·실행·검증. 2.0에서 데스크톱 앱+CLI+SDK로 확장</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Gemini CLI</td><td>2025-06-25</td><td>터미널용 오픈소스 에이전트 — <b>I/O 2026에서 Antigravity CLI로 전환 발표</b></td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Jules</td><td>베타 2025-05-20 / GA 08-06</td><td>GitHub 저장소를 클라우드 VM에 복제해 비동기 자율 코딩 (버그 수정·테스트·기능 구현)</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">NotebookLM 확장</td><td>2025-07-29 / 11-13</td><td>Video Overviews(문서→영상 요약) · Deep Research(수백 웹사이트 자동 탐색 리포트) + 파일 형식 확대</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Gemini Enterprise</td><td>2025-10-09</td><td>기업용 에이전트 구축·거버넌스 플랫폼 ($21–30/인·월) — Workspace·M365·Salesforce·SAP 연결</td><td><span class="v2">2차</span></td></tr>
+    <tr><td class="b">Project Mariner</td><td>2025-05 (I/O)</td><td>실험적 브라우저 자율 에이전트 — <b class="warn">2026년 단종 수순</b>, 기능은 Gemini API/Agent로 흡수 보도</td><td><span class="v2">2차</span></td></tr>
+  </table>
+  <div class="callout warn"><span class="label">주의</span>Google 라인업은 <b>통합 재편 중</b> — Gemini CLI→Antigravity CLI 전환, Mariner 단종 수순. 도입 검토 시 "현행 제품" 여부를 반드시 재확인할 것.</div>
+
+  <h2 id="insight">시사점 — 3사 공통 방향 (D-level)</h2>
+  <div class="grid3">
+    <div class="card"><h3>① 모델 → 하네스 경쟁</h3><p>2026년 차별화는 모델 점수보다 <b>에이전트 운영 구조</b>(하네스·플랫폼·표준)에서 발생. 3사 모두 CLI·IDE·클라우드·브라우저로 에이전트 접점을 다층화.</p></div>
+    <div class="card"><h3>② 표준 수렴</h3><p>MCP(도구 연결)·AGENTS.md(지침)·Agent Skills(노하우)가 <b>벤더 경계를 넘는 공통 규격</b>으로 — 한 번 만든 자산이 도구를 갈아타도 살아남음. 도입 시 표준 준수 자산에 투자할 것.</p></div>
+    <div class="card"><h3>③ 비개발자 확장</h3><p>Cowork(Anthropic)·Atlas agent mode(OpenAI)·NotebookLM Deep Research(Google) — 코딩을 넘어 <b>일반 지식노동 자동화</b>로 전선 확대. 사무직 대상 교육 수요 증가.</p></div>
+  </div>
+
+  <p class="small" style="color:#888;margin-top:2vh">관련: <a href="claude_code_codex_manual.html">Claude Code ↔ Codex CLI 전환 매뉴얼</a> · <a href="agents_landscape.html">에이전트 지형도</a> · <a href="how_agents_work.html">작동 원리</a> · <a href="index.html">세미나 허브</a></p>
+
+  <div class="foot">
+    출처(1차) — OpenAI: <a href="https://openai.com/index/introducing-gpt-5-5/">GPT-5.5</a> · <a href="https://openai.com/index/introducing-agentkit/">AgentKit</a> · <a href="https://openai.com/index/introducing-chatgpt-atlas/">Atlas</a> · <a href="https://developers.openai.com/codex/cli">Codex Docs</a> · <a href="https://agents.md/">agents.md</a> /
+    Anthropic: <a href="https://www.anthropic.com/news/claude-opus-4-5">Opus 4.5</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">릴리스 노트</a> · <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a> · <a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk">Agent SDK</a> /
+    Google: <a href="https://blog.google/products/gemini/gemini-3/">Gemini 3</a> · <a href="https://developers.googleblog.com/build-with-google-antigravity-our-new-agentic-development-platform/">Antigravity</a> · <a href="https://blog.google/technology/google-labs/jules-now-available/">Jules GA</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/notebooklm-deep-research-file-types/">NotebookLM</a>.
+    <br>검증: deep-research 적대적 교차검증(OpenAI·Anthropic 25/25 claims 3-0 만장일치) + Google 1차 출처 직접 확인 패스. 빠르게 변하는 분야 — 인용 전 재확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

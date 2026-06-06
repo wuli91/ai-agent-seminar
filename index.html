@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 활용 세미나 — 시리즈 안내</title>
+<link rel="stylesheet" href="assets/seminar.css">
+<style>
+/* 허브는 슬라이드가 아니라 스크롤 문서 */
+body{overflow:auto}
+.wrap{max-width:1080px;margin:0 auto;padding:6vh 6vw 12vh}
+.hero{padding:3vh 0 4vh;border-bottom:1px solid var(--line);margin-bottom:3vh}
+.hero h1{font-size:3em}
+.hero .sub{font-size:1.3em;color:#aaa;margin-top:.8em;line-height:1.5}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2em;margin:2.5vh 0}
+.sessions{display:grid;grid-template-columns:1fr 1fr;gap:1.4em;margin-top:1em}
+.section-title{font-size:1.6em;color:var(--blue);margin:4vh 0 1.5vh;font-weight:700}
+.handout-list{display:grid;grid-template-columns:1fr 1fr;gap:1em}
+.chk{list-style:none;margin:.5em 0}
+.chk li{padding:.4em 0 .4em 1.8em;position:relative;border-bottom:1px solid var(--line)}
+.chk li::before{content:"☐";position:absolute;left:0;color:var(--accent);font-size:1.1em}
+a.btn{display:inline-block;background:var(--accent);color:#04201d;font-weight:700;text-decoration:none;padding:.5em 1.1em;border-radius:8px;margin-top:.6em}
+a.plain{color:var(--blue);text-decoration:none}
+a.plain:hover{text-decoration:underline}
+.foot{margin-top:6vh;color:#667;font-size:.9em;border-top:1px solid var(--line);padding-top:2vh}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="title-tag">사내 세미나 시리즈 · 팅크웨어</span>
+    <h1>AI Agent <span class="accent">활용 세미나</span></h1>
+    <p class="sub">D-level(디렉터·임원)과 <b class="blue">비개발 직군</b>을 위한 단계별 과정 —<br>
+    개념을 넘어 <b class="accent">각자 자기 업무에 Claude를 실제로 도입</b>하는 것이 목표입니다.</p>
+  </div>
+
+  <div class="goal">
+    <div class="card hi">
+      <h3>① 이해한다</h3>
+      <p>AI 에이전트가 무엇이고, 무엇을 잘하고 못하는지, 회사 데이터를 어디까지 맡겨도 되는지.</p>
+    </div>
+    <div class="card hi">
+      <h3>② 직접 쓴다</h3>
+      <p>Claude 앱(채팅·Projects·Artifacts)과 Claude Code를 노트북으로 직접 실습합니다.</p>
+    </div>
+    <div class="card hi">
+      <h3>③ 업무에 심는다</h3>
+      <p>내 직무의 반복 업무를 워크플로우로 만들고 30/60/90일 도입 계획을 세웁니다.</p>
+    </div>
+  </div>
+
+  <div class="section-title">🗓 일정 — 유연하게 나눠서</div>
+  <p style="color:#aaa;margin-bottom:1em">4개 세션(회당 약 90분)을 깊이에 따라 나눠 진행합니다. <b>하루 3시간(세션 2개)</b> 기준이면 아래처럼 2일 구성이 기본이며, 더 깊게 다루려면 하루 1세션씩 늘려 3~4일로 확장할 수 있습니다.</p>
+  <div class="goal">
+    <div class="card blue">
+      <h3 class="blue">기본 — 2일 (하루 3시간)</h3>
+      <p><b>Day 1</b>: Session 1 + 2 (기초 → Claude 앱)<br>
+      <b>Day 2</b>: Session 3 + 4 (Claude Code → 도입계획)</p>
+    </div>
+    <div class="card blue">
+      <h3 class="blue">심화 — 3~4일</h3>
+      <p>하루 1세션 + 실습·Q&A를 넉넉히. 직무별 실전 적용 시간을 더 확보.</p>
+    </div>
+    <div class="card blue">
+      <h3 class="blue">회당 구성</h3>
+      <p>개념·데모(약 45분) → 핸즈온(약 35분) → 정리·과제(약 10분)</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">⚠ 먼저 결정: 어떤 Claude 플랜으로?</span>
+    실무 도입이라면 보안상 <b>Team 플랜 이상</b>을 권장합니다(비즈니스 플랜은 입력 데이터를 기본적으로 모델 학습에 사용하지 않음).
+    플랜·보안 차이와 추천은 아래 문서를 보고 결정한 뒤, <b>세미나 전에 회사 계정을 발급</b>해 참석자에게 배정해 주세요.
+    <a class="btn" href="plans_security.html">요금제 & 보안 비교 보기 →</a>
+  </div>
+
+  <div class="callout tip">
+    <span class="label">참석자 — 시작 전 꼭 하세요</span>
+    1회차 전에 <a class="plain" href="setup_guide.html"><b>사전 준비 가이드</b></a>를 따라
+    <b>회사가 발급한 계정</b>으로 로그인하고 노트북을 준비해 주세요. 준비가 되어 있어야 첫 시간부터 직접 실습할 수 있습니다.
+    <a class="btn" href="setup_guide.html">사전 준비 가이드 열기 →</a>
+  </div>
+
+  <div class="section-title">📚 커리큘럼 — 4개 세션 (회당 약 90분)</div>
+  <div class="sessions">
+
+    <a class="card session-card hi" href="session_01.html">
+      <span class="num-chip">Session 1</span>
+      <h3 class="accent">AI Agent 기초 — 왜 지금, 무엇을 할 수 있나</h3>
+      <p>에이전트의 개념·한계, 잘하는 일 vs 못하는 일, 보안·기밀 원칙. 첫 대화와 좋은 프롬프트 6원칙 실습.</p>
+      <p class="small">핸즈온: 계정 로그인 → 첫 업무 질문 → 프롬프트 개선</p>
+    </a>
+
+    <a class="card session-card hi" href="session_02.html">
+      <span class="num-chip">Session 2</span>
+      <h3 class="accent">Claude로 일하기 (Cowork) — 지식업무 자동화</h3>
+      <p>Projects·파일 업로드·긴 문서, Artifacts로 문서/표/도구 생성. 직무별 데모.</p>
+      <p class="small">핸즈온: 내 직무 프로젝트 1개 만들기 + 산출물 1개 생성</p>
+    </a>
+
+    <a class="card session-card hi" href="session_03.html">
+      <span class="num-chip">Session 3</span>
+      <h3 class="accent">Claude Code 입문 — 비개발자도 쓰는 터미널 AI</h3>
+      <p>앱과의 차이, 설치와 첫 실행, 폴더·파일·데이터 자동화. 권한/승인 안전 수칙.</p>
+      <p class="small">핸즈온: 샘플 폴더로 실제 자동화 1건 수행</p>
+    </a>
+
+    <a class="card session-card hi" href="session_04.html">
+      <span class="num-chip">Session 4</span>
+      <h3 class="accent">내 업무에 심기 — 워크플로우 + 실행계획</h3>
+      <p>CLAUDE.md·슬래시 커맨드·스킬·MCP 맛보기. 도입 거버넌스·비용·보안. 30/60/90일 계획.</p>
+      <p class="small">핸즈온: 직무별 도입 계획 작성 → 공유</p>
+    </a>
+
+  </div>
+
+  <div class="section-title">🧰 직무별 활용 핸드아웃</div>
+  <p style="color:#aaa;margin-bottom:1em">자기 직무 1장을 골라 인쇄/저장하세요. 바로 쓰는 시나리오·프롬프트·주의사항이 담겨 있습니다.</p>
+  <div class="handout-list">
+    <a class="card session-card" href="handout_기획_pm.html"><h3>기획 · PM · 전략</h3><p class="small">보고서·기획서·리서치·로드맵</p></a>
+    <a class="card session-card" href="handout_마케팅_영업.html"><h3>마케팅 · 영업</h3><p class="small">카피·캠페인·제안서·고객 분석</p></a>
+    <a class="card session-card" href="handout_디자인_콘텐츠.html"><h3>디자인 · 콘텐츠</h3><p class="small">아이데이션·카피·이미지·문서</p></a>
+    <a class="card session-card" href="handout_경영지원_hr_재무.html"><h3>경영지원 · HR · 재무</h3><p class="small">규정·채용·데이터 정리·요약</p></a>
+    <a class="card session-card" href="handout_개발_sw.html"><h3>개발 · SW/QA <span class="small" style="color:#4ecdc4">고급</span></h3><p class="small">이미 쓰는 팀을 위한 더 잘 쓰는 법·근거</p></a>
+    <a class="card session-card" href="handout_개발_hw.html"><h3>회로 · HW(전자)</h3><p class="small">활용 범위·EDA AI 툴·사례 (시작 가이드)</p></a>
+    <a class="card session-card" href="handout_개발_기구.html"><h3>기구 · ME(기계)</h3><p class="small">생성형 설계·CAD AI·DfM (시작 가이드)</p></a>
+  </div>
+
+  <div class="section-title">🔎 심화 자료 · 조사 (의사결정 참고)</div>
+  <p style="color:#aaa;margin-bottom:1em">도입 결정과 기술 동향 파악을 위한 리서치 문서입니다. (2025–2026 웹 자료 기반, 출처 표기)</p>
+  <div class="handout-list">
+    <a class="card session-card" href="how_llm_works.html"><h3>LLM 작동 원리 (시각)</h3><p class="small">토큰·어텐션 · CNN/RNN/Transformer 계보 · 이정표 논문 · 학습 3단계 · 환각의 원리</p></a>
+    <a class="card session-card" href="how_agents_work.html"><h3>에이전트 AI 작동 원리 (시각)</h3><p class="small">용어(MCP·Skill·Tool·Agent) · 하네스 구조 · 멀티모달 입출력 · 패러다임 변천(prompt→context→그 이후)</p></a>
+    <a class="card session-card" href="plans_security.html"><h3>요금제 & 보안 비교</h3><p class="small">Free/Pro/Team/Enterprise · SSO·SCIM · NDA 입력 조건</p></a>
+    <a class="card session-card" href="agents_landscape.html"><h3>AI 에이전트 지형도</h3><p class="small">자율 에이전트 · 컴퓨터 조작 에이전트 · Claude+Codex+Gemini</p></a>
+    <a class="card session-card" href="big3_agent_tech_2026.html"><h3>3사 에이전트 신기술 (2025H2–2026)</h3><p class="small">OpenAI·Anthropic·Google 신제품 타임라인 · 출시일·용도·1차 출처 검증</p></a>
+    <a class="card session-card" href="claude_code_codex_manual.html"><h3>Claude Code ↔ Codex CLI 전환 매뉴얼</h3><p class="small">기능 1:1 매핑 16개 영역 · 권한/샌드박스 차이 · 30분 적응 체크리스트</p></a>
+    <a class="card session-card" href="korea_ai_ai3.html"><h3>한국 AI 분석 (AI3/웍스AI)</h3><p class="small">국산 업무 AI 플랫폼 · 국내 LLM 3사 · 국산 vs 글로벌</p></a>
+    <a class="card session-card" href="enterprise_agents.html"><h3>기업용 AI 에이전트 비교</h3><p class="small">국내·해외 서비스 + Bedrock·Vertex AI · 고객·사례·비용</p></a>
+    <a class="card session-card" href="tco_compare.html"><h3>TCO 비교 (개발자 $300/월 기준)</h3><p class="small">Claude Enterprise 현행 비용 분해 · 도구별 비교 · 절감 레버</p></a>
+    <a class="card session-card" href="claude_code_cost_guide.html"><h3>Claude Code 비용 최적화 실전</h3><p class="small">캐싱·모델 라우팅·측정(OTEL) 적용법 · 30일 플랜</p></a>
+  </div>
+
+  <div class="section-title">✅ 사전 준비 체크리스트</div>
+  <p style="color:#9fb4c8;margin:.4em 0 .2em"><b>도입 담당(주최)</b></p>
+  <ul class="chk">
+    <li>플랜 결정(<b>Team 이상 권장</b>) — <a class="plain" href="plans_security.html">요금제 & 보안 비교</a></li>
+    <li>회사 계정(좌석) 발급 및 참석자 배정 (세미나 전 로그인 확인)</li>
+    <li>"허용 데이터 / 금지 데이터" 사내 기준 1장 작성 (보안팀 가이드)</li>
+    <li>실습용 샘플 파일 준비·배포</li>
+  </ul>
+  <p style="color:#9fb4c8;margin:1em 0 .2em"><b>참석자</b></p>
+  <ul class="chk">
+    <li>회사가 발급한 계정으로 로그인 (claude.ai) — <a class="plain" href="setup_guide.html">가이드</a></li>
+    <li>Claude Code 설치 (3회차 전까지) — <a class="plain" href="setup_guide.html">가이드</a></li>
+    <li>"내 업무 중 반복되는 일" 1~2가지 미리 적어오기</li>
+  </ul>
+
+  <div class="foot">
+    진행: 팅크웨어 선행개발부 · 문의는 진행자에게 · 슬라이드는 각 세션 페이지에서 화살표(←/→)로 이동합니다.
+  </div>
+
+</div>
+</body>
+</html>

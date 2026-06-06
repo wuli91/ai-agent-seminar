@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCO 비교 — Claude Enterprise $300/개발자·월 기준</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding:5vh 5vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.35em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.13em;margin:.6em 0 1vh}
+h2{font-size:1.5em;color:#7eb8ff;margin:4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.12em;color:#4ecdc4;margin:1.6vh 0 .5vh}
+p,li,td{color:#ccc;font-size:.98em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.8em 0}
+.card.rec{border-color:#4ecdc4;background:#0c1a18}.card.warn{border-color:#ff6b6b;background:#160e0e}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.88em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .6em;border-bottom:2px solid #2a4a6a;vertical-align:top}
+td{padding:.48em .6em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+td.h{color:#9fb4c8;font-weight:600;white-space:nowrap}
+.base{background:#10302b}
+.num{color:#4ecdc4;font-weight:700}.hi{color:#ffd93d;font-weight:700}.lo{color:#ff9e6b;font-weight:700}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.bar{height:22px;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:.8em;font-weight:700;color:#04201d;margin:.2em 0}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.8em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}th{background:#e7eef7;color:#003366}.base{background:#dff3ef}.num{color:#0a8a7d}.hi{color:#9a7b00}.lo{color:#b5651d}.callout{background:#f3f7fb}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}table{font-size:.78em}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">의사결정 참고 · TCO 비교 (2025–2026 · 추정 기반)</span>
+  <h1>TCO 비교 — <span class="accent">Claude Enterprise $300/개발자·월</span> 기준</h1>
+  <p class="sub">현재 우리는 개발자당 평균 <b>월 $300</b>(실사용)을 씁니다. 이 비용의 정체와, 다른 도구로 바꾸면 실제로 줄어드는지를 분석합니다.</p>
+
+  <div class="callout warn"><span class="label">결론 먼저 (3줄)</span>
+    ① <b>$300/dev는 좌석비가 아니라 토큰 소비</b>입니다. ② 동급 모델 토큰 단가는 Anthropic·OpenAI·Google·AWS·Azure에 걸쳐 <b>거의 동일</b>해, 같은 강도로 쓰면 <b class="warn">벤더를 바꿔도 비용이 따라옵니다(consumption-bound)</b>. ③ 실효 절감은 <b class="accent">정액 구독 캡 + 모델 라우팅 + 캐싱/배치 + 컨텍스트 다이어트</b>에서 나옵니다 — 보통 30~60%.</div>
+
+  <h2>1. $300/dev의 분해 — 좌석 vs 토큰</h2>
+  <div class="grid2">
+    <div class="card"><h3>비용 구조</h3>
+      <p>· 좌석/구독 성분: <b>거의 0</b> (Enterprise는 좌석 $10~20 + 토큰 소비약정)<br>· <b class="warn">토큰 소비가 ~95%+ 지배</b><br>· 보고된 엔터프라이즈 평균: <b>$150~250/dev·월</b>, $300은 그 상단 헤비 구간<br>· 극단: 단일 개발자 월 환산 $1,200~$5,000+ 사례도 보고</p></div>
+    <div class="card warn"><h3>무엇이 토큰을 끌어올리나</h3>
+      <p>· <b>Opus 비중</b>(Sonnet 대비 출력 1.67배 단가)<br>· <b>큰 컨텍스트</b>(대형 코드베이스 반복 read, 세션당 수만~수십만 토큰)<br>· <b>에이전틱 반복</b>(자율 다단계 루프가 입력 토큰 누적 폭증)<br>· <b>출력 토큰</b>(전 모델 출력이 입력의 5배 단가)</p></div>
+  </div>
+  <div class="callout"><span class="label">핵심</span>즉 비용 드라이버는 <b>모델 등급 · 출력량 · 반복 · 컨텍스트 크기</b>이지, "어느 회사 도구인가"가 아닙니다.</div>
+
+  <h2>2. 개발자 AI 도구 TCO 비교 (헤비 개발자 1인 기준)</h2>
+  <p class="small" style="color:#888">토큰 단가(per 1M 입력/출력): Opus $5/$25 · Sonnet $3/$15 · Haiku $1/$5 · GPT-5급 $5/$30 · Gemini Pro $2~4/$12~18. 헤비 dev 월 실비는 <b>추정 범위</b>(사용 강도 의존).</p>
+  <table>
+    <tr><th>도구</th><th>좌석/구독</th><th>사용량 과금</th><th>헤비 dev 월 실비(추정)</th><th>$300 대비</th></tr>
+    <tr class="base"><td class="b">Claude Code — Enterprise/API (현재)</td><td>좌석 $10~20 + 소비약정</td><td>토큰 종량(Sonnet $3/$15, Opus $5/$25)</td><td class="num">$300 (기준)</td><td>—</td></tr>
+    <tr><td class="b">Claude Code — Max 20x (정액 구독)</td><td>$200/월 정액(5h 롤링 한도)</td><td>한도 내 정액, 초과=세션 차단</td><td class="num">$100~200 (상한)</td><td class="accent">~33%↓ (한도 적합 시)</td></tr>
+    <tr><td class="b">OpenAI Codex — Pro 20x</td><td>$200/월 정액</td><td>한도 내 정액, 초과=크레딧</td><td>$100~200 (상한)</td><td class="accent">~33%↓</td></tr>
+    <tr><td class="b">OpenAI Codex — ChatGPT Ent + 종량</td><td>좌석 ~$40~60</td><td>워크스페이스 크레딧 종량</td><td>좌석+$100~300</td><td>≈ 비슷</td></tr>
+    <tr><td class="b">Cursor — Ultra</td><td>$200/월</td><td>플랜 크레딧 풀 + 초과 API 원가 패스스루</td><td>$200~300+ (초과 흔함)</td><td>≈ 비슷~약간↓</td></tr>
+    <tr><td class="b">GitHub Copilot — Enterprise</td><td>$39/석</td><td>premium req 초과(→2026 토큰 종량 전환)</td><td>$39~150</td><td class="gold">좌석 싸지만 강도 오르면 종량↑</td></tr>
+    <tr><td class="b">Gemini Code Assist — Enterprise</td><td>$45/석(연)</td><td>좌석 위주(+Vertex 종량 시 추가)</td><td>$45~150</td><td class="gold">라이트엔 저렴, 에이전틱엔 종량 붙음</td></tr>
+    <tr><td class="b">Amazon Q Developer — Pro</td><td>$19/석</td><td>AWS 연동 한도</td><td>$19~</td><td class="gold">가장 싸나 에이전틱 깊이 제한</td></tr>
+    <tr><td class="b">Cognition Devin (자율 에이전트)</td><td>최소 $20</td><td>$2.25/ACU (1h≈$9)</td><td class="lo">$200~900+</td><td class="warn">자율 실행이라 오히려 폭증 가능</td></tr>
+  </table>
+  <div class="callout warn"><span class="label">표 읽는 법</span>"좌석이 싼" 도구(Copilot $39·Gemini $45·Q $19)는 <b>라이트 사용자</b>엔 유리하지만, <b>$300 dev와 같은 강도(대형 컨텍스트·자율 반복)로 쓰면 종량이 다시 붙어 격차가 줄어듭니다.</b> 구조적으로 $300을 확실히 낮추는 건 <b class="accent">정액 구독 캡(Max/Codex Pro $200)</b>뿐이며, 그것도 사용량이 한도에 맞아야 합니다(헤비 시 throttle).</div>
+
+  <h2>3. "벤더를 바꾸면 줄어드나?" — 토큰 단가 패리티</h2>
+  <table>
+    <tr><th>경로</th><th>Opus급 (in/out per 1M)</th><th>Sonnet/중급</th><th>비고</th></tr>
+    <tr><td class="b">Anthropic 직접</td><td>$5 / $25</td><td>$3 / $15</td><td>기준</td></tr>
+    <tr><td class="b">AWS Bedrock</td><td>$5 / $25</td><td>$3 / $15</td><td>동일(리전 엔드포인트 +~10%)</td></tr>
+    <tr><td class="b">Google Vertex</td><td>$5 / $25 (Claude)</td><td>$3 / $15</td><td>동일(Gemini는 별도·유사대)</td></tr>
+    <tr><td class="b">OpenAI (GPT-5급)</td><td>$5 / $30</td><td>—</td><td>출력 더 비쌈</td></tr>
+    <tr><td class="b">Google Gemini Pro</td><td>$2~4 / $12~18</td><td>Flash $0.30/$2.50</td><td>대형 컨텍스트·저가 모델 강점</td></tr>
+  </table>
+  <div class="callout"><span class="label">의미</span>같은 일을 같은 강도로 하면 청구액이 <b>수렴</b>합니다. Claude를 Bedrock·Vertex로 옮겨도 토큰 단가는 같습니다(클라우드 정합성·거버넌스 이점은 있으나 <b>비용 절감 목적엔 효과 미미</b>). Gemini는 저가 모델(Flash)·대형 컨텍스트로 <b>일부</b> 워크로드 단가를 낮출 수 있으나, 코딩 품질·에이전트 신뢰성 트레이드오프를 함께 봐야 합니다.</div>
+
+  <h2>4. 실제로 $300을 낮추는 레버</h2>
+  <table>
+    <tr><th>레버</th><th>효과(추정)</th><th>설명</th></tr>
+    <tr><td class="b">① 정액 구독 캡</td><td class="accent">$300 → $200 (~33%↓)</td><td>헤비 dev를 Max 20x/Codex Pro $200로. 단 한도(5h 롤링) 적합 시. 비용 예측성↑</td></tr>
+    <tr><td class="b">② 모델 라우팅</td><td class="accent">해당 작업 −60~95%</td><td>단순작업은 Haiku($1/$5, Opus 대비 25배↓)·Sonnet로, Opus는 난제만</td></tr>
+    <tr><td class="b">③ 프롬프트 캐싱</td><td class="accent">입력 −90%</td><td>코드베이스 컨텍스트 캐시 → 에이전틱 반복에서 즉효</td></tr>
+    <tr><td class="b">④ 배치 처리</td><td class="accent">−50%</td><td>비동기 작업(대량 리팩터·테스트 생성). 캐싱과 중첩 시 표준가의 5%까지</td></tr>
+    <tr><td class="b">⑤ 컨텍스트/반복 다이어트</td><td class="accent">−10~40%</td><td>불필요 파일 주입·반복 read 억제, /clear, 세션 분할, plan mode로 헛반복 감소</td></tr>
+  </table>
+  <div class="card rec"><h3>예시 절감 시나리오 (추정)</h3>
+    <p>· <b>Path A (소비형 유지 + 최적화)</b>: 모델 라우팅 + 캐싱 + 컨텍스트 다이어트 → <b class="accent">$300 → 약 $120~200/dev</b> (작업 구성에 따라 30~60%↓)</p>
+    <p>· <b>Path B (정액 구독 전환)</b>: Max 20x/Codex Pro로 캡 → <b class="accent">$200/dev 고정</b> (한도 초과분은 throttle 감수). 예측성 최고</p>
+    <p>· <b>Path C (혼합)</b>: 최상위 헤비 dev만 소비형 유지(최적화), 나머지는 정액 구독 캡 → 팀 평균 최저</p>
+  </div>
+
+  <h2>5. 비개발 직군은 완전히 다른 경제</h2>
+  <p>$300은 <b>헤비 코딩</b> 기준입니다. 비개발 직군(기획·마케팅·경영지원)은 토큰 사용이 훨씬 적어 <b>좌석제가 유리</b>하거나 <b>종량제가 압도적으로 쌉니다</b>.</p>
+  <table>
+    <tr><th>대상</th><th>적합 옵션</th><th>월 비용(추정)</th></tr>
+    <tr><td class="b">헤비 개발자</td><td>Claude Code(현행/최적화) 또는 정액 구독 캡</td><td class="num">$120~300</td></tr>
+    <tr><td class="b">라이트 개발자/QA</td><td>Copilot/Gemini Code Assist 좌석 또는 Max 5x</td><td>$19~100</td></tr>
+    <tr><td class="b">비개발 지식근로자</td><td>Claude/ChatGPT/Copilot 좌석 또는 <b>국산 종량제(AI3)</b></td><td class="accent">$2~30</td></tr>
+  </table>
+  <div class="callout tip"><span class="label">혼합 조직 연간 TCO 예시 (가정치)</span>
+    개발 20명(평균 $250 최적화 후) + 비개발 100명(좌석 $25):
+    <br>· 개발: 20 × $250 × 12 = <b>$60,000</b> · 비개발: 100 × $25 × 12 = <b>$30,000</b> → <b class="accent">연 ~$90,000</b>.
+    <br>비개발 100명을 <b>종량제(평균 $8)</b>로 돌리면 비개발이 $9,600로 → 연 <b class="accent">~$70,000</b>. <span class="small">(라이트 사용 가정; 헤비 사용 시 종량이 더 비쌀 수 있음)</span></div>
+
+  <h2>6. 권고</h2>
+  <div class="card rec">
+    <p><b>① 개발자 비용 절감은 "벤더 교체"가 아니라 "사용 최적화".</b> Claude를 1차로 유지하되(코딩 신뢰성·기존 자산), 헤비 dev에 <b>정액 구독 캡 + 모델 라우팅 + 캐싱/배치</b>를 적용해 $300 → $150~200 목표.</p>
+    <p><b>② 사용량 가시화 먼저.</b> dev별·모델별·작업별 토큰 소비 대시보드 없이는 절감 불가. (Anthropic Console/Bedrock·Vertex 비용 리포트, 또는 사내 계측)</p>
+    <p><b>③ 비개발 직군은 별도 버킷.</b> 좌석제 또는 국산 종량제(AI3 등)로 저비용 운영 — 개발자 단가와 절대 섞지 말 것.</p>
+    <p><b>④ Codex/Gemini는 "비용"이 아니라 "역량/이중화"로 도입.</b> 단가 절감 기대는 작음(패리티). Gemini는 대형 컨텍스트·저가 모델이 맞는 특정 워크로드에 한정 검토.</p>
+  </div>
+  <p class="small" style="color:#888">관련: <a href="claude_code_cost_guide.html"><b>Claude Code 비용 최적화 실전 가이드</b></a> · <a href="enterprise_agents.html">기업용 AI 에이전트 비교</a> · <a href="plans_security.html">요금제·보안</a> · <a href="agents_landscape.html">에이전트 지형도</a></p>
+
+  <div class="callout warn"><span class="label">⚠ 정확성</span>모든 "헤비 dev 월 실비"·절감률·시나리오는 <b>추정(범위)</b>이며 사용 강도에 따라 크게 달라집니다. 토큰 단가·플랜·모델 버전은 분기마다 바뀌므로(예: 좌석/소비 구조 개편) <b>의사결정 직전 공식 페이지·견적으로 재확인</b>하고, 1~2개월 실측 PoC로 보정하세요.</div>
+
+  <div class="foot">
+    출처: <a href="https://www.cloudzero.com/blog/claude-api-pricing/">Claude API Pricing</a> · <a href="https://support.claude.com/en/articles/11049741-what-is-the-max-plan">Claude Max</a> · <a href="https://www.faros.ai/blog/claude-code-token-limits">Claude Code 토큰/실비</a> · <a href="https://developers.openai.com/codex/pricing">Codex 가격</a> · <a href="https://cursor.com/pricing">Cursor</a> · <a href="https://github.com/features/copilot/plans">Copilot</a> · <a href="https://ai.google.dev/gemini-api/docs/pricing">Gemini API</a> · <a href="https://devin.ai/pricing/">Devin</a> · <a href="https://www.morphllm.com/ai-coding-costs">AI Coding Costs 2026</a>.
+    <br>헤비 dev 실비·절감은 추정. 가격·모델 버전 빠르게 변동 — 도입 직전 재확인·PoC 권장. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

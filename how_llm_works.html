@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM은 어떻게 작동하나 — 주요 개념과 동작 원리 (시각 설명)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1060px;margin:0 auto;padding:5vh 5vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.6em 0 1vh}
+.toc{background:#0e1722;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.3em;margin:2vh 0}
+.toc a{color:#7eb8ff;text-decoration:none;margin-right:1.2em;font-size:.95em;white-space:nowrap}
+h2{font-size:1.55em;color:#7eb8ff;margin:4.5vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.18em;color:#4ecdc4;margin:2vh 0 .5vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.3em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.purple{color:#c084fc}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.8em}
+.foot a{color:#5a7da0}
+.small{font-size:.85em;color:#889}
+table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.95em}
+th{background:#1a2a3a;padding:.5em .7em;text-align:left;font-weight:600;color:#7eb8ff;border-bottom:2px solid #2a4a6a}
+td{padding:.45em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:.8em;margin:1em 0}
+.term{background:#111825;border:1px solid #1a2a3a;border-radius:10px;padding:.8em 1em}
+.term .n{color:#4ecdc4;font-weight:700;font-size:1.05em}
+.term .d{font-size:.95em;margin:.2em 0}
+.term .a{font-size:.85em;color:#8aa;font-style:italic}
+.diagram{background:#0c1320;border:1px solid #1f2e40;border-radius:14px;padding:1.6em 1.2em;margin:1.2em 0}
+.dtitle{text-align:center;color:#7eb8ff;font-weight:700;margin-bottom:1.2em;font-size:1.02em}
+@media print{
+  body{background:#fff;color:#111}.wrap{max-width:100%}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}
+  .card,.term,.diagram{background:#f7f9fc;border-color:#cdd8e6}
+  .term .n{color:#0a8a7d}.dtitle{color:#0055aa}.callout{background:#f3f7fb}
+  .accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.toc{display:none}
+  th{background:#e7eef7;color:#0055aa}
+}
+@media(max-width:820px){.terms,.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">기술 설명(시각) · 비개발자도 이해하도록 · 2025–2026</span>
+  <h1>LLM은 <span class="accent">어떻게 작동하나</span></h1>
+  <p class="sub">토큰·임베딩·어텐션 같은 <b>주요 개념</b>과, "다음 토큰 예측"이라는 단순한 원리가 어떻게 글쓰기·코딩·추론까지 해내는지 — <b>학습</b>과 <b>추론(실행)</b>의 동작 원리를 그림으로 설명합니다. 에이전트 구조는 <a href="how_agents_work.html">에이전트 작동 원리</a> 문서에서 이어집니다.</p>
+
+  <div class="toc"><b style="color:#aaa">목차 </b>
+    <a href="#terms">1. 핵심 용어</a> <a href="#next">2. 다음 토큰 예측</a> <a href="#inside">3. 트랜스포머 내부</a> <a href="#attention">4. 어텐션 직관</a> <a href="#lineage">5. 모델 계보 (CNN·RNN·Transformer)</a> <a href="#papers">6. 이정표 논문</a> <a href="#training">7. 어떻게 배우나</a> <a href="#inference">8. 실행 시 일어나는 일</a> <a href="#reasoning">9. 추론(Reasoning) 모델</a> <a href="#limits">10. 환각과 한계</a> <a href="#resources">11. 외부 자료</a></div>
+
+  <!-- ===================== 1. 용어 ===================== -->
+  <h2 id="terms">1. 핵심 용어 한눈에</h2>
+  <div class="terms">
+    <div class="term"><div class="n">Token (토큰)</div><div class="d">모델이 다루는 <b>텍스트의 최소 조각</b>. 단어보다 작을 수 있음 (한글 1글자≈1~2토큰, 영어 1단어≈1.3토큰).</div><div class="a">비유: 글을 레고 블록으로 분해한 것</div></div>
+    <div class="term"><div class="n">Embedding (임베딩)</div><div class="d">각 토큰을 <b>의미를 담은 숫자 벡터</b>(수천 차원 좌표)로 변환. 비슷한 의미 = 가까운 좌표.</div><div class="a">비유: 모든 단어를 "의미 지도" 위의 점으로</div></div>
+    <div class="term"><div class="n">Parameter (파라미터)</div><div class="d">학습으로 조정된 <b>모델 내부의 숫자들</b>(가중치). 수십억~수조 개. "모델의 지식"이 여기 압축됨.</div><div class="a">비유: 뇌의 시냅스 연결 강도</div></div>
+    <div class="term"><div class="n">Attention (어텐션)</div><div class="d">다음 토큰을 만들 때 <b>앞 문맥의 어디를 얼마나 참고할지</b> 가중치를 주는 메커니즘. 트랜스포머의 핵심.</div><div class="a">비유: 문장을 읽으며 중요한 단어에 형광펜</div></div>
+    <div class="term"><div class="n">Context Window (컨텍스트 윈도우)</div><div class="d">한 번에 볼 수 있는 <b>토큰의 최대 길이</b>(예: 200K~1M). 넘어가면 앞부분을 잊음.</div><div class="a">비유: 책상 위에 펼칠 수 있는 종이의 한계</div></div>
+    <div class="term"><div class="n">Inference (추론/실행)</div><div class="d">학습이 끝난 모델에 입력을 넣고 <b>출력을 생성</b>하는 과정. 파라미터는 변하지 않음.</div><div class="a">비유: 다 배운 사람이 시험 답안을 쓰는 시간</div></div>
+    <div class="term"><div class="n">Temperature (온도)</div><div class="d">출력의 <b>무작위성 조절</b>. 낮으면 가장 확률 높은 토큰만(일관), 높으면 다양/창의적(불안정).</div><div class="a">비유: 모범답안 모드 ↔ 브레인스토밍 모드</div></div>
+    <div class="term"><div class="n">KV Cache (캐시)</div><div class="d">앞 토큰들의 어텐션 계산 결과를 <b>저장해 재사용</b>. 같은 앞부분(프롬프트)을 다시 계산하지 않아 빠르고 저렴.</div><div class="a">비유: 읽던 책의 책갈피 + 요약 메모</div></div>
+  </div>
+
+  <!-- ===================== 2. 다음 토큰 예측 ===================== -->
+  <h2 id="next">2. 단 하나의 원리 — "다음 토큰 예측"</h2>
+  <p>LLM이 하는 일은 본질적으로 하나입니다: <b>지금까지의 토큰을 보고, 다음에 올 토큰의 확률을 계산</b>하는 것. 이걸 한 토큰씩 반복하면 문장·코드·논증이 됩니다.</p>
+
+  <div class="diagram">
+    <div class="dtitle">▶ 자기회귀(Autoregressive) 생성 루프 — 한 번에 한 토큰씩</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      I["입력: 어제 고양이가 우유를"] ==> M["LLM<br/>(다음 토큰 확률 계산)"]
+      M ==> P["확률 분포<br/>마셨다 72% · 쏟았다 11% · 핥았다 6% · …"]
+      P ==>|샘플링| O["선택: 마셨다"]
+      O ==>|"입력 끝에 붙이고 반복 ⟲"| I
+    -->
+    <svg viewBox="0 0 900 300" role="img" aria-label="입력 토큰을 받아 다음 토큰의 확률 분포를 계산하고, 하나를 골라 입력에 붙인 뒤 반복하는 루프" style="width:100%;display:block;font-family:inherit">
+      <defs>
+        <marker id="arN1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ecdc4"/></marker>
+        <marker id="arN2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd93d"/></marker>
+      </defs>
+      <rect x="20" y="90" width="220" height="70" rx="11" fill="#1a1020" stroke="#c084fc" stroke-width="1.5"/>
+      <text x="130" y="118" text-anchor="middle" font-size="12" fill="#e6cffc">입력 (지금까지의 토큰)</text>
+      <text x="130" y="142" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">"어제 고양이가 우유를"</text>
+      <line x1="240" y1="125" x2="294" y2="125" stroke="#4ecdc4" stroke-width="2" marker-end="url(#arN1)"/>
+      <rect x="298" y="85" width="170" height="80" rx="11" fill="#10302b" stroke="#4ecdc4" stroke-width="1.7"/>
+      <text x="383" y="118" text-anchor="middle" font-size="14" font-weight="800" fill="#4ecdc4">LLM</text>
+      <text x="383" y="142" text-anchor="middle" font-size="10.5" fill="#bff5ee">다음 토큰 확률 계산</text>
+      <line x1="468" y1="125" x2="522" y2="125" stroke="#4ecdc4" stroke-width="2" marker-end="url(#arN1)"/>
+      <rect x="526" y="40" width="220" height="170" rx="11" fill="#2a210c" stroke="#ffd93d" stroke-width="1.5"/>
+      <text x="636" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd93d">다음 토큰 확률 분포</text>
+      <rect x="546" y="80" width="144" height="16" rx="4" fill="#ffd93d"/><text x="552" y="93" font-size="10.5" fill="#1a1408" font-weight="700">마셨다 72%</text>
+      <rect x="546" y="104" width="44" height="16" rx="4" fill="#ffd93d" opacity=".65"/><text x="596" y="117" font-size="10.5" fill="#ffe9a8">쏟았다 11%</text>
+      <rect x="546" y="128" width="28" height="16" rx="4" fill="#ffd93d" opacity=".5"/><text x="580" y="141" font-size="10.5" fill="#ffe9a8">핥았다 6%</text>
+      <rect x="546" y="152" width="16" height="16" rx="4" fill="#ffd93d" opacity=".4"/><text x="568" y="165" font-size="10.5" fill="#ffe9a8">샀다 3%</text>
+      <text x="546" y="192" font-size="10" fill="#ba8" font-style="italic">… 어휘 전체(수만 개)에 확률 배분</text>
+      <line x1="746" y1="125" x2="790" y2="125" stroke="#ffd93d" stroke-width="2" marker-end="url(#arN2)"/>
+      <text x="768" y="112" text-anchor="middle" font-size="10" fill="#ffd93d">샘플링</text>
+      <rect x="794" y="95" width="90" height="60" rx="11" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/>
+      <text x="839" y="121" text-anchor="middle" font-size="11" fill="#9ab">선택</text>
+      <text x="839" y="141" text-anchor="middle" font-size="13" font-weight="800" fill="#7eb8ff">"마셨다"</text>
+      <path d="M839 155 Q 839 265 250 265 Q 130 265 130 164" fill="none" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#arN1)"/>
+      <text x="480" y="282" text-anchor="middle" font-size="11.5" fill="#c084fc">선택한 토큰을 입력 끝에 붙이고 처음부터 반복 ⟲ — 문장이 끝날 때까지</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">"답을 아는" 것이 아니라 <b>매 순간 가장 그럴듯한 다음 조각을 고르는 것</b> — 이 단순함이 LLM의 능력과 한계(환각) 양쪽의 뿌리. · 구조 출처: Vaswani et al., Attention Is All You Need (2017) · Karpathy, Intro to LLMs (2023)</p>
+  </div>
+
+  <div class="callout tip"><span class="label">왜 이걸로 코딩·논증까지 되나</span>인터넷 규모의 텍스트에서 "다음 토큰을 잘 맞히려면" 문법·사실·논리·코드 패턴까지 <b>압축해서 배워야</b> 합니다. 예측을 잘하기 위한 부산물로 "이해처럼 보이는 능력"이 생기는 것 — 이것이 스케일링의 핵심 발견입니다.</div>
+
+  <!-- ===================== 3. 트랜스포머 내부 ===================== -->
+  <h2 id="inside">3. 트랜스포머 내부 — 한 토큰이 나오기까지</h2>
+  <div class="diagram">
+    <div class="dtitle">▶ 입력 텍스트 → 다음 토큰 확률까지의 파이프라인</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      T["텍스트"] ==> TK["① 토큰화<br/>(숫자 ID 나열)"]
+      TK ==> E["② 임베딩<br/>(의미 벡터로)"]
+      E ==> B["③ 트랜스포머 블록 ×N층<br/>(어텐션 + 변환을 수십~수백 번)"]
+      B ==> L["④ 확률 분포<br/>(어휘 전체)"]
+      L ==> S["⑤ 샘플링 → 토큰 출력"]
+    -->
+    <svg viewBox="0 0 940 330" role="img" aria-label="텍스트가 토큰화, 임베딩을 거쳐 여러 층의 트랜스포머 블록을 통과해 다음 토큰 확률이 되는 과정" style="width:100%;display:block;font-family:inherit">
+      <defs>
+        <marker id="arT1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+      </defs>
+      <rect x="20" y="120" width="120" height="60" rx="10" fill="#1a1020" stroke="#c084fc" stroke-width="1.5"/>
+      <text x="80" y="147" text-anchor="middle" font-size="12.5" fill="#e6cffc">"고양이가"</text>
+      <text x="80" y="166" text-anchor="middle" font-size="10" fill="#b9c">텍스트</text>
+      <line x1="140" y1="150" x2="176" y2="150" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arT1)"/>
+      <rect x="180" y="110" width="140" height="80" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/>
+      <text x="250" y="136" text-anchor="middle" font-size="12" font-weight="700" fill="#7eb8ff">① 토큰화</text>
+      <text x="250" y="157" text-anchor="middle" font-size="10.5" fill="#cfe4ff">[2415, 880, 11]</text>
+      <text x="250" y="176" text-anchor="middle" font-size="9.5" fill="#9ab">숫자 ID의 나열</text>
+      <line x1="320" y1="150" x2="356" y2="150" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arT1)"/>
+      <rect x="360" y="110" width="140" height="80" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/>
+      <text x="430" y="136" text-anchor="middle" font-size="12" font-weight="700" fill="#7eb8ff">② 임베딩</text>
+      <text x="430" y="157" text-anchor="middle" font-size="10.5" fill="#cfe4ff">[0.21, −1.4, …]</text>
+      <text x="430" y="176" text-anchor="middle" font-size="9.5" fill="#9ab">의미 벡터 + 위치 정보</text>
+      <line x1="500" y1="150" x2="536" y2="150" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arT1)"/>
+      <rect x="552" y="48" width="180" height="56" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4" opacity=".45"/>
+      <rect x="546" y="62" width="180" height="56" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4" opacity=".7"/>
+      <rect x="540" y="76" width="180" height="160" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.7"/>
+      <text x="630" y="104" text-anchor="middle" font-size="12.5" font-weight="800" fill="#4ecdc4">③ 트랜스포머 블록 ×N층</text>
+      <rect x="558" y="120" width="144" height="38" rx="8" fill="#0c1f1b" stroke="#4ecdc4" stroke-width="1"/>
+      <text x="630" y="144" text-anchor="middle" font-size="11" fill="#bff5ee">어텐션 — 문맥 참조</text>
+      <rect x="558" y="168" width="144" height="38" rx="8" fill="#0c1f1b" stroke="#4ecdc4" stroke-width="1"/>
+      <text x="630" y="192" text-anchor="middle" font-size="11" fill="#bff5ee">FFN — 패턴 변환</text>
+      <text x="630" y="226" text-anchor="middle" font-size="9.5" fill="#8aa">수십~수백 층 반복 (파라미터가 사는 곳)</text>
+      <line x1="720" y1="150" x2="756" y2="150" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arT1)"/>
+      <rect x="760" y="96" width="160" height="108" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.5"/>
+      <text x="840" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd93d">④ 확률 분포</text>
+      <rect x="778" y="136" width="100" height="11" rx="3" fill="#ffd93d"/>
+      <rect x="778" y="153" width="40" height="11" rx="3" fill="#ffd93d" opacity=".6"/>
+      <rect x="778" y="170" width="22" height="11" rx="3" fill="#ffd93d" opacity=".45"/>
+      <text x="840" y="196" text-anchor="middle" font-size="9.5" fill="#ba8">⑤ 샘플링 → 다음 토큰</text>
+      <text x="470" y="290" text-anchor="middle" font-size="11" fill="#889">파라미터(수십억~수조 개)는 ②③에 분산 저장 — "지식"은 특정 위치가 아니라 <tspan fill="#aab" font-weight="700">가중치 전체에 압축</tspan>되어 있음</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">도식 출처: Vaswani et al. (2017) 트랜스포머 아키텍처의 디코더 경로를 교육용으로 단순화 · Raschka, Build a LLM from Scratch (2024)</p>
+  </div>
+
+  <!-- ===================== 4. 어텐션 ===================== -->
+  <h2 id="attention">4. 어텐션 직관 — "어디를 볼지"가 능력의 핵심</h2>
+  <div class="grid2">
+    <div class="card"><h3>무엇을 하나</h3><p>다음 토큰을 만들 때, 앞 문맥의 <b>모든 토큰에 "참고 가중치"</b>를 매깁니다. <br>예: "그 <b class="purple">고양이</b>는 배가 고파서 <b class="blue">__</b>" → "고양이"에 높은 가중치 → "울었다/먹이를" 쪽 확률↑</p></div>
+    <div class="card"><h3>왜 강력한가</h3><p>멀리 떨어진 단어끼리도 직접 연결 — 대명사가 누구를 가리키는지, 코드의 변수가 어디서 선언됐는지를 <b>거리와 무관하게</b> 추적. 이전 세대(RNN)가 못 하던 것.</p></div>
+  </div>
+  <div class="callout"><span class="label">비용의 근원</span>어텐션은 기본적으로 <b>모든 토큰 쌍</b>을 비교(길이의 제곱)합니다. 컨텍스트가 길수록 계산·메모리가 급증 — 긴 문서 처리가 느리고 비싼 이유이자, KV cache·슬라이딩 윈도우 같은 최적화가 존재하는 이유.</div>
+
+  <!-- ===================== 5. 모델 계보 ===================== -->
+  <h2 id="lineage">5. 모델 계보 — CNN · RNN에서 트랜스포머까지</h2>
+  <p>"신경망"이라고 다 같지 않습니다. <b>데이터를 어떤 모양으로 보느냐</b>가 아키텍처를 가릅니다. 세 가지를 그림 하나로 비교하면 트랜스포머가 왜 LLM의 기반이 됐는지 보입니다.</p>
+
+  <div class="diagram">
+    <div class="dtitle">▶ 세 가지 신경망의 "보는 방식" 비교</div>
+    <!-- mermaid 소스 (수정용 · 개념 요약):
+    flowchart TB
+      subgraph CNN["CNN — 합성곱 (공간)"]
+        F["3×3 필터가 이미지를 훑음"] ==> FM["지역 패턴 → 특징 맵"]
+      end
+      subgraph RNN["RNN — 순환 (시간)"]
+        X1["나는"] ==> H1((h₁)) ==> H2((h₂)) ==> H3((h₃))
+      end
+      subgraph TF["Transformer — 어텐션 (전역)"]
+        T1["모든 토큰이"] ~~~ T2["서로를"] ~~~ T3["동시에 참조"]
+      end
+    -->
+    <svg viewBox="0 0 940 330" role="img" aria-label="CNN은 필터가 이미지를 훑고, RNN은 토큰을 순서대로 처리하며, 트랜스포머는 모든 토큰이 서로를 동시에 참조한다" style="width:100%;display:block;font-family:inherit">
+      <defs>
+        <marker id="arK1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c084fc"/></marker>
+        <marker id="arK2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+      </defs>
+      <line x1="320" y1="16" x2="320" y2="314" stroke="#1a2a3a" stroke-dasharray="4 5"/>
+      <line x1="635" y1="16" x2="635" y2="314" stroke="#1a2a3a" stroke-dasharray="4 5"/>
+      <text x="165" y="30" text-anchor="middle" font-size="13.5" font-weight="800" fill="#c084fc">CNN — 합성곱 (공간)</text>
+      <text x="477" y="30" text-anchor="middle" font-size="13.5" font-weight="800" fill="#7eb8ff">RNN — 순환 (시간)</text>
+      <text x="787" y="30" text-anchor="middle" font-size="13.5" font-weight="800" fill="#4ecdc4">Transformer — 어텐션 (전역)</text>
+      <!-- CNN: 이미지 그리드 + 필터 + 특징 맵 -->
+      <rect x="40" y="52" width="132" height="132" rx="4" fill="#1a1020" stroke="#c084fc" stroke-width="1.2"/>
+      <g stroke="#3a2a4a" stroke-width="1">
+        <line x1="62" y1="52" x2="62" y2="184"/><line x1="84" y1="52" x2="84" y2="184"/><line x1="106" y1="52" x2="106" y2="184"/><line x1="128" y1="52" x2="128" y2="184"/><line x1="150" y1="52" x2="150" y2="184"/>
+        <line x1="40" y1="74" x2="172" y2="74"/><line x1="40" y1="96" x2="172" y2="96"/><line x1="40" y1="118" x2="172" y2="118"/><line x1="40" y1="140" x2="172" y2="140"/><line x1="40" y1="162" x2="172" y2="162"/>
+      </g>
+      <rect x="62" y="74" width="66" height="66" fill="#ffd93d" fill-opacity=".18" stroke="#ffd93d" stroke-width="2"/>
+      <text x="95" y="113" text-anchor="middle" font-size="10" font-weight="700" fill="#ffd93d">필터</text>
+      <text x="106" y="200" text-anchor="middle" font-size="9.5" fill="#b9c">입력 이미지 (픽셀)</text>
+      <line x1="180" y1="118" x2="216" y2="118" stroke="#c084fc" stroke-width="2" marker-end="url(#arK1)"/>
+      <rect x="222" y="82" width="72" height="72" rx="4" fill="#1a1020" stroke="#c084fc" stroke-width="1.2"/>
+      <g stroke="#3a2a4a" stroke-width="1">
+        <line x1="246" y1="82" x2="246" y2="154"/><line x1="270" y1="82" x2="270" y2="154"/>
+        <line x1="222" y1="106" x2="294" y2="106"/><line x1="222" y1="130" x2="294" y2="130"/>
+      </g>
+      <text x="258" y="170" text-anchor="middle" font-size="9.5" fill="#b9c">특징 맵</text>
+      <text x="165" y="232" text-anchor="middle" font-size="10.5" fill="#ccc">작은 필터가 이미지를 <tspan font-weight="700" fill="#e6cffc">훑으며</tspan> 지역 패턴 추출</text>
+      <text x="165" y="250" text-anchor="middle" font-size="10.5" fill="#aab">모서리 → 질감 → 눈 → 얼굴 (층마다 추상화)</text>
+      <text x="165" y="278" text-anchor="middle" font-size="10" fill="#8aa">강점: 공간 패턴 · 약점: 전역 관계</text>
+      <text x="165" y="296" text-anchor="middle" font-size="10" fill="#8aa">대표: 이미지 인식 (비전의 기둥)</text>
+      <!-- RNN: 순차 체인 -->
+      <rect x="352" y="160" width="60" height="32" rx="8" fill="#1a1020" stroke="#c084fc" stroke-width="1.3"/><text x="382" y="181" text-anchor="middle" font-size="11" fill="#e6cffc">나는</text>
+      <rect x="447" y="160" width="60" height="32" rx="8" fill="#1a1020" stroke="#c084fc" stroke-width="1.3"/><text x="477" y="181" text-anchor="middle" font-size="11" fill="#e6cffc">우유를</text>
+      <rect x="542" y="160" width="60" height="32" rx="8" fill="#1a1020" stroke="#c084fc" stroke-width="1.3"/><text x="572" y="181" text-anchor="middle" font-size="11" fill="#e6cffc">마셨다</text>
+      <circle cx="382" cy="92" r="24" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/><text x="382" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#7eb8ff">h₁</text>
+      <circle cx="477" cy="92" r="24" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/><text x="477" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#7eb8ff">h₂</text>
+      <circle cx="572" cy="92" r="24" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/><text x="572" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#7eb8ff">h₃</text>
+      <line x1="382" y1="156" x2="382" y2="120" stroke="#7eb8ff" stroke-width="1.8" marker-end="url(#arK2)"/>
+      <line x1="477" y1="156" x2="477" y2="120" stroke="#7eb8ff" stroke-width="1.8" marker-end="url(#arK2)"/>
+      <line x1="572" y1="156" x2="572" y2="120" stroke="#7eb8ff" stroke-width="1.8" marker-end="url(#arK2)"/>
+      <line x1="406" y1="92" x2="449" y2="92" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arK2)"/>
+      <line x1="501" y1="92" x2="544" y2="92" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arK2)"/>
+      <text x="477" y="52" text-anchor="middle" font-size="10" fill="#9ab">"기억(은닉 상태)"을 다음 칸으로 전달</text>
+      <text x="477" y="232" text-anchor="middle" font-size="10.5" fill="#ccc">한 토큰씩 <tspan font-weight="700" fill="#cfe4ff">순서대로</tspan> 처리 — 시간을 직렬로</text>
+      <text x="477" y="250" text-anchor="middle" font-size="10.5" fill="#aab">LSTM/GRU = 망각을 줄인 개량형</text>
+      <text x="477" y="278" text-anchor="middle" font-size="10" fill="#8aa">약점: 멀어질수록 잊음 · 병렬화 불가(느림)</text>
+      <text x="477" y="296" text-anchor="middle" font-size="10" fill="#8aa">대표: 과거 번역·음성 (트랜스포머로 대체)</text>
+      <!-- Transformer: all-to-all -->
+      <rect x="660" y="150" width="58" height="32" rx="8" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4"/><text x="689" y="171" text-anchor="middle" font-size="11" fill="#bff5ee">그</text>
+      <rect x="728" y="150" width="58" height="32" rx="8" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4"/><text x="757" y="171" text-anchor="middle" font-size="11" fill="#bff5ee">고양이</text>
+      <rect x="796" y="150" width="58" height="32" rx="8" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4"/><text x="825" y="171" text-anchor="middle" font-size="11" fill="#bff5ee">는</text>
+      <rect x="864" y="150" width="58" height="32" rx="8" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4"/><text x="893" y="171" text-anchor="middle" font-size="11" fill="#bff5ee">울었다</text>
+      <g stroke="#4ecdc4" fill="none" stroke-width="1.5">
+        <path d="M689 146 Q 723 98 757 146" opacity=".85"/>
+        <path d="M689 146 Q 757 66 825 146" opacity=".55"/>
+        <path d="M689 146 Q 791 44 893 146" opacity=".4"/>
+        <path d="M757 146 Q 791 98 825 146" opacity=".7"/>
+        <path d="M757 146 Q 825 66 893 146" opacity=".9" stroke-width="2.2"/>
+        <path d="M825 146 Q 859 98 893 146" opacity=".55"/>
+      </g>
+      <text x="791" y="58" text-anchor="middle" font-size="10" fill="#9ec">선 굵기 = 어텐션 가중치</text>
+      <text x="791" y="208" text-anchor="middle" font-size="9.5" fill="#8aa">"울었다"가 "고양이"를 강하게 참조</text>
+      <text x="791" y="232" text-anchor="middle" font-size="10.5" fill="#ccc">모든 토큰이 서로를 <tspan font-weight="700" fill="#bff5ee">동시에</tspan> 참조 — 거리 무관</text>
+      <text x="791" y="250" text-anchor="middle" font-size="10.5" fill="#aab">순환 제거 → 완전 병렬 학습 → 스케일 가능</text>
+      <text x="791" y="278" text-anchor="middle" font-size="10" fill="#8aa">약점: 길이² 비용 · 강점: 장거리 연결</text>
+      <text x="791" y="296" text-anchor="middle" font-size="10" fill="#8aa">대표: 모든 LLM · ViT(비전에도 역수입)</text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">핵심: CNN은 <b>공간을 지역적으로</b>, RNN은 <b>시간을 직렬로</b>, 트랜스포머는 <b>전체를 병렬로</b> 봅니다 — 병렬화가 곧 "더 큰 모델·더 많은 데이터"를 가능하게 한 스케일링의 입구. · 출처: <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf">LeCun et al., CNN/LeNet (1998)</a> · <a href="https://www.semanticscholar.org/paper/Long-Short-Term-Memory-Hochreiter-Schmidhuber/44d2abe2175df8153f465f6c39b68b76a0d40ab9">Hochreiter &amp; Schmidhuber, LSTM (1997)</a> · <a href="https://arxiv.org/abs/1706.03762">Vaswani et al. (2017)</a></p>
+  </div>
+
+  <table>
+    <tr><th>모델</th><th>보는 방식</th><th>강점</th><th>약점</th><th>대표 쓰임</th></tr>
+    <tr><td class="b purple">CNN (1989–98~)</td><td>작은 필터가 이미지를 슬라이딩</td><td>공간 패턴 · 파라미터 효율</td><td>멀리 떨어진 요소 관계 약함</td><td>이미지 인식·검사 (비전)</td></tr>
+    <tr><td class="b blue">RNN / LSTM (1997~)</td><td>토큰을 순서대로, 기억 전달</td><td>시계열에 자연스러움</td><td>장거리 망각 · 순차 처리(병렬 불가)</td><td>과거 번역·음성 — 현재는 대체</td></tr>
+    <tr><td class="b accent">Transformer (2017~)</td><td>전 토큰 동시 상호 참조(어텐션)</td><td>장거리 연결 · 완전 병렬 → 스케일</td><td>길이 제곱 비용</td><td>모든 LLM · ViT(비전까지)</td></tr>
+  </table>
+
+  <!-- ===================== 6. 이정표 논문 ===================== -->
+  <h2 id="papers">6. 이정표 논문 발췌 노트 — LLM에 이르는 길</h2>
+  <p>오늘의 LLM은 한 번의 발명이 아니라 <b>계단식 발견</b>의 결과입니다. 각 논문의 핵심 문장(발췌)과 "무엇이 바뀌었나"만 추리면:</p>
+
+  <div class="card" style="border-color:#c084fc">
+    <h3 style="margin-top:0">📄 <a href="https://arxiv.org/abs/1301.3781">word2vec</a> — "단어의 의미를 좌표로" <span class="small">(Mikolov et al., Google, 2013)</span></h3>
+    <p class="small" style="font-style:italic;color:#aab">"vector("King") − vector("Man") + vector("Woman") ≈ vector("Queen")" — Efficient Estimation of Word Representations in Vector Space</p>
+    <p>단어를 벡터로 바꿨더니 <b>의미가 산술이 됐다</b>는 발견. 왕−남자+여자=여왕이 벡터 덧셈으로 성립. §1의 <b>임베딩</b> 개념의 대중적 출발점이며, "의미를 숫자 공간에 넣을 수 있다"는 확신이 이후 모든 것의 토대가 됐습니다.</p>
+  </div>
+
+  <div class="card" style="border-color:#4ecdc4">
+    <h3 style="margin-top:0">📄 <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> — 트랜스포머의 탄생 <span class="small">(Vaswani et al., Google, 2017)</span></h3>
+    <p class="small" style="font-style:italic;color:#aab">"We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely."</p>
+    <p>제목 그대로 — <b>순환(RNN)도 합성곱(CNN)도 버리고 어텐션만으로</b>. 순차 처리가 사라지자 GPU 병렬 학습이 가능해졌고(원 논문: 8 GPU × 3.5일), "더 큰 모델을 더 많은 데이터로"라는 스케일링 경로가 열렸습니다. 위 §3·§5의 구조가 이 논문의 디코더 경로입니다.</p>
+  </div>
+
+  <table>
+    <tr><th>연도</th><th>논문/모델</th><th>핵심 한 줄</th><th>무엇이 바뀌었나</th></tr>
+    <tr><td class="b">2013</td><td><a href="https://arxiv.org/abs/1301.3781">word2vec</a> <span class="small">(Google)</span></td><td>단어 → 의미 벡터, king−man+woman≈queen</td><td>임베딩 시대 개막</td></tr>
+    <tr><td class="b">2014–15</td><td><a href="https://arxiv.org/abs/1409.3215">Seq2seq</a> + <a href="https://arxiv.org/abs/1409.0473">어텐션</a> <span class="small">(Sutskever; Bahdanau)</span></td><td>번역 시 "원문 어디를 볼지"(soft alignment)를 학습</td><td>어텐션 메커니즘 탄생 (RNN의 보조 장치로)</td></tr>
+    <tr><td class="b">2017</td><td><a href="https://arxiv.org/abs/1706.03762">Transformer</a> <span class="small">(Google)</span></td><td>"어텐션만으로 충분하다" — 순환 제거</td><td>완전 병렬 학습 → 스케일링 입구</td></tr>
+    <tr><td class="b">2018</td><td><a href="https://arxiv.org/abs/1810.04805">BERT</a> <span class="small">(Google)</span> / <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">GPT-1</a> <span class="small">(OpenAI)</span></td><td>대규모 사전학습 후 작업별 미세조정</td><td>"사전학습 + 전이"가 표준 패러다임으로</td></tr>
+    <tr><td class="b">2020</td><td><a href="https://arxiv.org/abs/2005.14165">GPT-3</a> + <a href="https://arxiv.org/abs/2001.08361">Scaling Laws</a> <span class="small">(OpenAI; Kaplan et al.)</span></td><td>"Language models are few-shot learners" — 175B, 예시 몇 개면 새 작업 수행</td><td>미세조정 없이 <b>프롬프트만으로</b> — prompt engineering의 기원</td></tr>
+    <tr><td class="b">2022</td><td><a href="https://arxiv.org/abs/2201.11903">Chain-of-Thought</a> <span class="small">(Wei et al., Google)</span></td><td>"단계별로 생각을 쓰게 하면" 추론 성능 급증</td><td>§9 추론(Reasoning) 모델의 씨앗</td></tr>
+    <tr><td class="b">2022</td><td><a href="https://arxiv.org/abs/2203.02155">InstructGPT/RLHF</a> <span class="small">(OpenAI)</span> · <a href="https://arxiv.org/abs/2212.08073">Constitutional AI</a> <span class="small">(Anthropic)</span></td><td>사람(또는 AI) 선호로 행동을 조형</td><td>"어시스턴트"의 탄생 — §7 학습 3단계</td></tr>
+  </table>
+  <p class="small">발췌문은 원문 그대로(영어) 또는 핵심 주장 요약 — 표의 논문명이 원문(arXiv) 링크입니다.</p>
+
+  <!-- ===================== 7. 학습 ===================== -->
+  <h2 id="training">7. 어떻게 배우나 — 학습 3단계</h2>
+  <div class="diagram">
+    <div class="dtitle">▶ 베이스 모델에서 어시스턴트까지</div>
+    <!-- mermaid 소스 (수정용):
+    flowchart LR
+      P["① 사전학습<br/>인터넷 규모 텍스트, 다음 토큰 예측<br/>수개월 · 대규모 GPU"] ==> B["베이스 모델<br/>(글 이어쓰기 기계)"]
+      B ==> S["② 지도 미세조정 SFT<br/>질문-모범답안 예시"]
+      S ==> R["③ 선호 학습 RLHF/RLAIF<br/>사람·AI 피드백으로 좋은 답 강화"]
+      R ==> A["어시스턴트 모델<br/>(지시를 따르고 거절도 함)"]
+    -->
+    <svg viewBox="0 0 920 250" role="img" aria-label="사전학습으로 베이스 모델을 만들고, 지도 미세조정과 선호 학습을 거쳐 어시스턴트 모델이 되는 3단계" style="width:100%;display:block;font-family:inherit">
+      <defs>
+        <marker id="arR1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+      </defs>
+      <rect x="20" y="60" width="230" height="110" rx="11" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/>
+      <text x="135" y="88" text-anchor="middle" font-size="13.5" font-weight="800" fill="#7eb8ff">① 사전학습 (Pre-training)</text>
+      <text x="135" y="112" text-anchor="middle" font-size="10.5" fill="#cfe4ff">인터넷 규모 텍스트로</text>
+      <text x="135" y="130" text-anchor="middle" font-size="10.5" fill="#cfe4ff">"다음 토큰 맞히기"만 반복</text>
+      <text x="135" y="155" text-anchor="middle" font-size="9.5" fill="#8aa" font-style="italic">수개월 · 대규모 GPU · 비용의 대부분</text>
+      <line x1="250" y1="115" x2="296" y2="115" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arR1)"/>
+      <rect x="300" y="72" width="150" height="86" rx="11" fill="#1a1a2a" stroke="#9aa" stroke-width="1.4"/>
+      <text x="375" y="103" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ccd">베이스 모델</text>
+      <text x="375" y="126" text-anchor="middle" font-size="10" fill="#99a">"글 이어쓰기 기계"</text>
+      <text x="375" y="143" text-anchor="middle" font-size="9.5" fill="#889">질문하면 질문을 이어 씀</text>
+      <line x1="450" y1="115" x2="496" y2="115" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arR1)"/>
+      <rect x="500" y="30" width="180" height="80" rx="11" fill="#10302b" stroke="#4ecdc4" stroke-width="1.6"/>
+      <text x="590" y="56" text-anchor="middle" font-size="12.5" font-weight="800" fill="#4ecdc4">② 지도 미세조정 (SFT)</text>
+      <text x="590" y="78" text-anchor="middle" font-size="10.5" fill="#bff5ee">질문 → 모범답안 예시로</text>
+      <text x="590" y="95" text-anchor="middle" font-size="10.5" fill="#bff5ee">"어시스턴트처럼" 답하게</text>
+      <rect x="500" y="128" width="180" height="80" rx="11" fill="#2a210c" stroke="#ffd93d" stroke-width="1.6"/>
+      <text x="590" y="154" text-anchor="middle" font-size="12.5" font-weight="800" fill="#ffd93d">③ 선호 학습 (RLHF/RLAIF)</text>
+      <text x="590" y="176" text-anchor="middle" font-size="10.5" fill="#ffe9a8">답변 두 개 중 더 나은 쪽을</text>
+      <text x="590" y="193" text-anchor="middle" font-size="10.5" fill="#ffe9a8">사람/AI가 골라 강화</text>
+      <line x1="680" y1="70" x2="726" y2="105" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arR1)"/>
+      <line x1="680" y1="168" x2="726" y2="133" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arR1)"/>
+      <rect x="730" y="80" width="170" height="76" rx="11" fill="#10302b" stroke="#4ecdc4" stroke-width="1.9"/>
+      <text x="815" y="108" text-anchor="middle" font-size="13" font-weight="800" fill="#4ecdc4">어시스턴트 모델</text>
+      <text x="815" y="130" text-anchor="middle" font-size="10" fill="#bff5ee">지시 수행 · 대화 · 안전 거절</text>
+      <text x="815" y="146" text-anchor="middle" font-size="9.5" fill="#8aa">= 우리가 쓰는 Claude/GPT</text>
+      <text x="460" y="238" text-anchor="middle" font-size="10.5" fill="#889">핵심: ①에서 능력이, ②③에서 "태도"가 생김 — 지식 추가가 아니라 <tspan fill="#aab" font-weight="700">행동 방식의 조형</tspan></text>
+    </svg>
+    <p class="small" style="text-align:center;margin-top:.6em">출처: InstructGPT (Ouyang et al., 2022) · Anthropic, Constitutional AI (2022) — RLAIF는 사람 대신 AI 피드백을 쓰는 변형</p>
+  </div>
+  <div class="callout tip"><span class="label">실무 시사점</span>모델은 <b>여러분이 쓰는 동안 배우지 않습니다</b>. 대화에서 "기억"처럼 보이는 것은 컨텍스트 윈도우(또는 별도 메모리 기능)이고, 파라미터는 그대로입니다. 사내 지식을 넣으려면 재학습이 아니라 <b>컨텍스트로 공급</b>(문서 첨부·RAG·CLAUDE.md)하는 것이 기본.</div>
+
+  <!-- ===================== 8. 실행 ===================== -->
+  <h2 id="inference">8. 실행(추론) 시 일어나는 일 — 비용과 속도의 구조</h2>
+  <table>
+    <tr><th>단계</th><th>무슨 일</th><th>체감 효과</th></tr>
+    <tr><td class="b">Prefill (입력 처리)</td><td>프롬프트 전체를 한 번에 읽어 어텐션 계산 → KV cache 생성</td><td>긴 문서를 넣으면 첫 글자가 나오기까지의 대기 시간</td></tr>
+    <tr><td class="b">Decode (생성)</td><td>한 토큰씩 루프 — 매 토큰마다 cache를 참조</td><td>글자가 또박또박 나오는 속도 (tok/s)</td></tr>
+    <tr><td class="b">Prompt Caching</td><td>같은 앞부분(시스템 프롬프트 등)의 cache 재사용</td><td>반복 호출이 빨라지고 <b>입력 비용 대폭 절감</b></td></tr>
+    <tr><td class="b">샘플링</td><td>temperature·top-p로 확률 분포에서 선택</td><td>같은 질문에 매번 답이 조금씩 다른 이유</td></tr>
+  </table>
+  <div class="callout"><span class="label">비용 직관</span>API 가격이 <b>입력/출력 토큰</b>으로 매겨지는 이유가 바로 이 구조입니다. 입력은 prefill 계산량, 출력은 decode 루프 횟수. 컨텍스트를 아끼는 습관(<a href="how_agents_work.html">에이전트 문서</a>의 /compact·Skills)이 곧 비용 절감인 이유.</div>
+
+  <!-- ===================== 9. 추론 모델 ===================== -->
+  <h2 id="reasoning">9. 추론(Reasoning) 모델 — "생각할 시간"을 사는 것</h2>
+  <div class="grid2">
+    <div class="card"><h3>무엇이 다른가</h3><p>답을 내기 전에 <b>"생각 토큰"(thinking)</b>을 먼저 생성하도록 강화학습으로 훈련. 중간 계산·검증·자기수정을 거친 뒤 최종 답을 출력합니다. (OpenAI o-시리즈→GPT-5 계열, Claude extended thinking, Gemini thinking)</p></div>
+    <div class="card"><h3>실무 손잡이</h3><p>생각의 양을 조절하는 다이얼이 생김 — Claude의 <b>effort 파라미터</b>(low~high), OpenAI의 reasoning_effort. <b>더 오래 생각 = 더 정확하지만 느리고 비쌈</b>. 단순 작업엔 낮춰 쓰는 것이 비용 최적화.</p></div>
+  </div>
+  <p class="small">원리는 동일한 "다음 토큰 예측" — 다만 <b>스스로에게 중간 단계를 말하게 하는 습관</b>을 학습시킨 것. 같은 모델도 "단계별로 생각해줘"라는 프롬프트(CoT)로 일부 재현되는 이유입니다.</p>
+
+  <!-- ===================== 10. 한계 ===================== -->
+  <h2 id="limits">10. 왜 환각하나 — 원리에서 따라 나오는 한계</h2>
+  <div class="grid2">
+    <div class="card"><h3 class="warn">환각 (Hallucination)</h3><p>모델은 "사실"이 아니라 <b>"그럴듯함"을 최적화</b>합니다. 모르는 질문에도 확률적으로 가장 자연스러운 텍스트를 생성 → 자신 있게 틀림. <b>검증 가능한 출처·도구(검색·계산기)와 결합</b>이 해법.</p></div>
+    <div class="card"><h3 class="warn">지식 컷오프</h3><p>파라미터의 지식은 <b>학습 시점에 동결</b>. 이후 사건은 모름 → 최신 정보는 검색/RAG로 컨텍스트에 공급해야.</p></div>
+    <div class="card"><h3 class="warn">계산·정밀 작업</h3><p>토큰 예측은 자릿수 계산에 부적합 (숫자도 "글자"로 취급). 코드 실행·계산기 <b>도구를 쓰게 하는 것</b>이 정답 — 에이전트가 필요한 이유.</p></div>
+    <div class="card"><h3 class="warn">컨텍스트 부패 (context rot)</h3><p>윈도우가 길어질수록 중간 정보의 활용도가 떨어짐. "많이 넣을수록 좋다"가 아니라 <b>관련 있는 것만 골라 넣기</b>(context engineering)가 품질을 좌우.</p></div>
+  </div>
+  <div class="callout warn"><span class="label">⚠ 정확성</span>이 문서는 공개된 연구·교육 자료 기반의 <b>일반적 트랜스포머 LLM</b> 설명입니다. Claude/GPT/Gemini의 정확한 내부 구조·학습 레시피는 비공개이며, MoE(전문가 혼합)·하이브리드 어텐션 등 변형이 실제로는 섞여 있습니다. 세부를 단정하지 말 것.</div>
+
+  <!-- ===================== 11. 외부 자료 ===================== -->
+  <h2 id="resources">11. 더 깊이 — 추천 외부 자료</h2>
+  <div class="grid2">
+    <div class="card"><h3>🕹 인터랙티브 시각화 (브라우저에서 바로)</h3>
+      <p>· <a href="https://bbycroft.net/llm">LLM Visualization (bbycroft)</a> — 실제 GPT 내부를 3D로 한 층씩 따라가기<br>
+      · <a href="https://poloclub.github.io/transformer-explainer/">Transformer Explainer (Georgia Tech)</a> — GPT-2가 브라우저에서 돌아가는 인터랙티브 해설<br>
+      · <a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer (Jay Alammar)</a> — 가장 널리 읽힌 그림 해설 (한국어 번역본 다수)</p></div>
+    <div class="card"><h3>🎬 영상 강의</h3>
+      <p>· <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi">3Blue1Brown — Neural Networks 시리즈 (YouTube)</a> — 신경망·어텐션의 수학적 직관 (한글 자막) · <a href="https://www.3blue1brown.com/lessons/gpt">"But what is a GPT?" 본문</a><br>
+      · <a href="https://www.youtube.com/watch?v=zjkBMFhNj_g">Karpathy — Intro to Large Language Models</a> (1시간 개관)<br>
+      · <a href="https://www.youtube.com/watch?v=kCc8FmEb1nY">Karpathy — Let's build GPT from scratch</a> (코드로 직접 구현, 2시간)</p></div>
+    <div class="card"><h3>🛠 실습·코드</h3>
+      <p>· <a href="https://github.com/karpathy/nanoGPT">nanoGPT (GitHub)</a> — 수백 줄로 GPT 학습 전 과정 재현<br>
+      · <a href="https://github.com/rasbt/LLMs-from-scratch">Build a LLM from Scratch (Raschka, 코드 저장소)</a> — 책 + 단계별 노트북</p></div>
+    <div class="card"><h3>📚 공식 문서·심화</h3>
+      <p>· <a href="https://platform.claude.com/docs/en/about-claude/models/overview">Anthropic — 모델 문서</a> · <a href="https://www.anthropic.com/engineering">Anthropic Engineering 블로그</a><br>
+      · <a href="https://developers.openai.com/">OpenAI 개발자 문서</a> · <a href="https://ai.google.dev/">Google AI for Developers</a><br>
+      · <a href="https://arxiv.org/list/cs.CL/recent">arXiv cs.CL</a> — 최신 논문 피드 (§6 표의 원문들도 모두 arXiv)</p></div>
+  </div>
+
+  <p class="small" style="color:#888;margin-top:2vh">다음 단계: <a href="how_agents_work.html">에이전트 AI 작동 원리</a> (이 LLM을 루프·도구로 감싸 "일하는 AI"로 만드는 법) · <a href="index.html">세미나 허브</a></p>
+
+  <div class="foot">
+    출처 — <a href="https://arxiv.org/abs/1301.3781">Mikolov et al., word2vec (2013)</a> · <a href="https://arxiv.org/abs/1706.03762">Vaswani et al., Attention Is All You Need (2017)</a> · <a href="https://arxiv.org/abs/2005.14165">Brown et al., GPT-3 (2020)</a> · <a href="https://arxiv.org/abs/2203.02155">Ouyang et al., InstructGPT/RLHF (2022)</a> · <a href="https://arxiv.org/abs/2212.08073">Bai et al., Constitutional AI (2022)</a> · <a href="https://arxiv.org/abs/2201.11903">Wei et al., Chain-of-Thought (2022)</a> · <a href="https://www.youtube.com/watch?v=zjkBMFhNj_g">Karpathy, Intro to Large Language Models (2023)</a> · <a href="https://magazine.sebastianraschka.com/p/understanding-multimodal-llms">Raschka — LLM 해설 시리즈</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic — Context Engineering (2025)</a>.
+    <br>닫힌 모델 내부는 일반적 접근으로 표기. 명세·버전 빠르게 변동 — 인용 시 재확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

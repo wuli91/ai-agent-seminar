@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사전 준비 가이드 — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+h1{font-size:2.6em;font-weight:800;line-height:1.15;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.25em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2em;margin:1em 0}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1.2em}
+.card.win{border-color:#7eb8ff}.card.mac{border-color:#4ecdc4}
+.card h3{margin-top:0}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.2em;margin:.6em 0;overflow:auto}
+pre code{background:none;color:#d6e3ee;padding:0;display:block;white-space:pre-wrap;line-height:1.7}
+.cmt{color:#6a8294}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}
+.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.steps{counter-reset:s;list-style:none;margin:.6em 0}
+.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid #1a2a3a}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:#4ecdc4;color:#04201d;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em}
+.chk{list-style:none;margin:.5em 0}
+.chk li{padding:.4em 0 .4em 1.8em;position:relative;border-bottom:1px solid #1a2a3a}
+.chk li::before{content:"☐";position:absolute;left:0;color:#4ecdc4}
+table{width:100%;border-collapse:collapse;margin:1em 0}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .8em}
+td{padding:.5em .8em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li,td{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}
+  .card{background:#f5f8fc;border-color:#cdd8e6}code{background:#eef3f8;color:#0a5}
+  pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}
+  th{background:#e7eef7;color:#003366}.callout{background:#f3f7fb}
+}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">세미나 시작 전 필수 · 약 20분 소요</span>
+  <h1>사전 준비 <span class="accent">가이드</span></h1>
+  <p class="lead">첫 시간부터 직접 실습할 수 있도록, 세미나 전에 아래 3가지를 준비해 주세요.
+  어려우면 진행자에게 미리 도움을 요청하세요 — 막히는 게 정상입니다.</p>
+
+  <div class="grid2">
+    <div class="card"><h3>① 계정</h3><p>Claude 계정 생성 & 로그인 (1회차 전)</p></div>
+    <div class="card"><h3>② 노트북</h3><p>실습용 노트북 + 인터넷 (관리자 권한이면 더 좋음)</p></div>
+    <div class="card"><h3>③ Claude Code</h3><p>터미널 도구 설치 (3회차 전까지)</p></div>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">⚠ 가장 먼저: 데이터 보안 원칙</span>
+    회사 정책상 <b>외부 AI에 넣어도 되는 정보 / 넣으면 안 되는 정보</b>를 먼저 확인하세요.
+    고객 개인정보, 미공개 재무, 계약·법무 비밀, 보안 키 등은 <b class="warn">넣지 않는 것</b>이 기본입니다.
+    자세한 기준은 1회차에서 다룹니다. (회사 보안팀 가이드를 우선합니다.)
+  </div>
+
+  <h2>1. Claude 계정 만들기 (Claude 앱)</h2>
+  <p>Claude 앱은 브라우저(<a href="https://claude.ai">claude.ai</a>) 또는 데스크톱 앱으로 씁니다. 별도 설치 없이 브라우저만으로 충분합니다.</p>
+  <ul class="steps">
+    <li>브라우저에서 <code>claude.ai</code> 접속</li>
+    <li>회사 이메일(또는 진행자가 안내한 계정)으로 로그인 / 가입</li>
+    <li>로그인 후 채팅 화면이 보이면 준비 완료</li>
+    <li>(선택) 데스크톱 앱 설치: claude.ai 하단 "Download" → macOS/Windows 선택</li>
+  </ul>
+  <div class="callout tip">
+    <span class="label">플랜 안내 — 회사 계정을 쓰세요</span>
+    실무 도입은 보안상 <b>Team 플랜 이상</b>을 권장하며, <b>회사가 미리 발급한 계정(워크스페이스)</b>으로 로그인하시면 됩니다.
+    초대 메일이 안 왔거나 헷갈리면 도입 담당/진행자에게 문의하세요. 개인 무료 플랜은 맛보기엔 가능하지만
+    <b class="warn">민감한 업무 데이터에는 사용하지 마세요</b>. (플랜·보안 차이: <a href="plans_security.html">요금제 & 보안 비교</a>)
+  </div>
+
+  <h2>2. 노트북 준비</h2>
+  <table>
+    <tr><th>항목</th><th>권장</th></tr>
+    <tr><td>OS</td><td>macOS 12+ 또는 Windows 10/11</td></tr>
+    <tr><td>브라우저</td><td>Chrome 또는 Edge 최신 버전</td></tr>
+    <tr><td>권한</td><td>소프트웨어 설치 가능(관리자) — 막히면 IT에 사전 요청</td></tr>
+    <tr><td>네트워크</td><td>사내/외부 인터넷 접속 (방화벽으로 막히면 진행자에게 문의)</td></tr>
+  </table>
+
+  <h2>3. Claude Code 설치 (3회차 전까지)</h2>
+  <p>Claude Code는 <b>터미널</b>에서 실행하는 도구입니다. 터미널이 처음이라도 괜찮습니다 — 아래 명령을 그대로 복사해 붙여넣으면 됩니다. <span class="b">3회차에서 함께 설치를 점검</span>하니, 미리 해보고 안 되면 그대로 오셔도 됩니다.</p>
+
+  <div class="grid2">
+    <div class="card mac">
+      <h3>🍎 macOS</h3>
+      <p class="b">터미널 열기: <code>⌘ + Space</code> → "터미널" 입력 → Enter</p>
+      <pre><code><span class="cmt"># 1) 설치 (한 줄 복사·붙여넣기)</span>
+curl -fsSL https://claude.com/install.sh | bash
+
+<span class="cmt"># 2) 새 터미널 창을 열고 확인</span>
+claude --version
+
+<span class="cmt"># 3) 로그인 (브라우저가 열립니다)</span>
+claude</code></pre>
+    </div>
+    <div class="card win">
+      <h3>🪟 Windows</h3>
+      <p class="b">PowerShell 열기: 시작 → "PowerShell" 검색 → 실행</p>
+      <pre><code><span class="cmt"># 1) 설치 (한 줄 복사·붙여넣기)</span>
+irm https://claude.com/install.ps1 | iex
+
+<span class="cmt"># 2) 새 창을 열고 확인</span>
+claude --version
+
+<span class="cmt"># 3) 로그인 (브라우저가 열립니다)</span>
+claude</code></pre>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="label">설치가 안 될 때</span>
+    ① 명령을 한 줄 통째로 복사했는지 확인 → ② 터미널/PowerShell을 새로 열어 다시 시도 →
+    ③ 회사 노트북은 보안 정책으로 막힐 수 있으니 IT/진행자에게 문의하세요. 3회차에 함께 해결합니다.
+  </div>
+
+  <h2>최종 체크리스트</h2>
+  <ul class="chk">
+    <li>회사 데이터 보안 기준을 확인했다 (무엇을 넣어도 되는지)</li>
+    <li>claude.ai 에 로그인된다</li>
+    <li>노트북에 소프트웨어를 설치할 수 있다(또는 IT에 요청해 두었다)</li>
+    <li>터미널/PowerShell에서 <code>claude --version</code> 이 동작한다 (3회차 전까지)</li>
+    <li>"내 업무 중 반복되는 일" 1~2가지를 적어왔다</li>
+  </ul>
+
+  <div class="foot">
+    AI Agent 활용 세미나 · 사전 준비 가이드 · 팅크웨어 선행개발부 ·
+    문제가 있으면 세션 진행자에게 문의하세요.
+  </div>
+
+</div>
+</body>
+</html>

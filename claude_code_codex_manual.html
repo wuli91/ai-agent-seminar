@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code ↔ Codex CLI 전환 매뉴얼 — 기능 1:1 매핑</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding:5vh 4vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.2em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.1em;margin:.6em 0 1vh}
+.toc{background:#0e1722;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.3em;margin:2vh 0}
+.toc a{color:#7eb8ff;text-decoration:none;margin-right:1.1em;font-size:.92em;white-space:nowrap;line-height:1.9}
+h2{font-size:1.5em;color:#7eb8ff;margin:4.5vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.15em;color:#4ecdc4;margin:2vh 0 .5vh}
+p,li,td,th{color:#ccc;font-size:.98em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.3em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.purple{color:#c084fc}.b{font-weight:700}
+table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.92em}
+th{background:#1a2a3a;padding:.5em .7em;text-align:left;font-weight:600;color:#7eb8ff;border-bottom:2px solid #2a4a6a}
+td{padding:.45em .7em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+tr:hover td{background:#0f1f2f}
+th.cc{color:#4ecdc4}th.cx{color:#ffd93d}
+code{background:#15202c;color:#9fe6dd;padding:.08em .35em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.cc{border-color:#4ecdc4}.card.cx{border-color:#ffd93d}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.8em}
+.foot a{color:#5a7da0}
+.small{font-size:.85em;color:#889}
+.badge{display:inline-block;border-radius:5px;padding:.05em .5em;font-size:.78em;font-weight:700;margin-left:.3em}
+.badge.only-cc{background:#10302b;color:#4ecdc4;border:1px solid #4ecdc4}
+.badge.only-cx{background:#2a210c;color:#ffd93d;border:1px solid #ffd93d}
+@media print{
+  body{background:#fff;color:#111}.wrap{max-width:100%}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td,th{color:#222}
+  .card{background:#f7f9fc;border-color:#cdd8e6}.callout{background:#f3f7fb}
+  .accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.toc{display:none}
+  th{background:#e7eef7;color:#0055aa}code{background:#eef3f8;color:#0a6}
+}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">전환 매뉴얼 · 기능 1:1 매핑 · 2026-06 기준</span>
+  <h1><span class="accent">Claude Code</span> ↔ <span class="gold">Codex CLI</span> 전환 매뉴얼</h1>
+  <p class="sub">한쪽을 잘 아는 사람이 다른 쪽에 30분 안에 적응하도록, 같은 일을 하는 기능을 <b>1:1로 대응</b>시킨 표입니다.<br>
+  검증 기준: Codex CLI <b>0.137.0 로컬 실측</b>(<code>--help</code>·<code>features list</code>) + Claude Code <b>공식 문서</b>(code.claude.com/docs) + 웹 교차검증(25/25 claims 3-0 확인).</p>
+
+  <div class="toc"><b style="color:#aaa">목차 </b>
+    <a href="#philosophy">0. 철학 차이</a> <a href="#rosetta">1. 개념 사전</a> <a href="#install">2. 설치·인증</a> <a href="#session">3. 세션</a> <a href="#model">4. 모델</a> <a href="#perm">5. 권한·샌드박스</a> <a href="#instr">6. 지침 파일</a> <a href="#config">7. 설정 파일</a> <a href="#custom">8. 커맨드·스킬</a> <a href="#hooks">9. 훅</a> <a href="#mcp">10. MCP</a> <a href="#agents">11. 멀티에이전트</a> <a href="#headless">12. 헤드리스·CI</a> <a href="#extra">13. 리뷰·IDE·클라우드</a> <a href="#price">14. 가격</a> <a href="#pitfalls">15. 헷갈림 주의</a> <a href="#quickstart">16. 30분 적응 체크리스트</a></div>
+
+  <h2 id="philosophy">0. 가장 큰 철학 차이 — 이것만 알면 절반</h2>
+  <div class="grid2">
+    <div class="card cc"><h3>Claude Code: "권한 규칙" 중심</h3>
+      <p>OS 샌드박스 없이 시작 — 대신 <b>도구 호출 단위 승인</b> + <code>permissions.allow/deny</code> 규칙 + <b>5단계 권한 모드</b>(Shift+Tab 순환: default→acceptEdits→plan…)로 통제. 파일은 실제 파일시스템을 직접 수정하고 <b>체크포인트</b>(Esc×2 rewind)로 되돌립니다.</p></div>
+    <div class="card cx"><h3>Codex: "OS 샌드박스 + 승인 정책" 조합</h3>
+      <p>명령 실행을 <b>OS 레벨 샌드박스</b>(<code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code>)에 가두고, 별도 축으로 <b>승인 정책</b>(<code>untrusted</code> / <code>on-request</code> / <code>never</code>)을 둡니다. 두 축의 조합이 Claude Code의 권한 모드 하나에 대응.</p></div>
+  </div>
+  <div class="callout tip"><span class="label">전환 멘탈 모델</span>Claude Code의 "이 도구 호출을 허용할까?"라는 질문이, Codex에서는 "이 명령이 <b>어느 샌드박스에서</b> 돌고, <b>언제 나에게 물어볼까</b>?"로 두 축으로 분해됩니다. 반대로 Codex 사용자는 Claude Code에서 샌드박스 대신 <b>규칙(allow/deny)과 모드</b>로 같은 통제를 한다고 생각하면 됩니다.</div>
+
+  <h2 id="rosetta">1. 개념 사전 (Rosetta Stone)</h2>
+  <table>
+    <tr><th>개념</th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">프로젝트 지침 파일</td><td><code>CLAUDE.md</code></td><td><code>AGENTS.md</code> (Linux Foundation 오픈 표준)</td></tr>
+    <tr><td class="b">개인 전역 지침</td><td><code>~/.claude/CLAUDE.md</code></td><td><code>~/.codex/AGENTS.md</code></td></tr>
+    <tr><td class="b">설정 파일</td><td><code>settings.json</code> (JSON, 5계층 병합)</td><td><code>~/.codex/config.toml</code> (TOML, <code>--profile</code> 레이어)</td></tr>
+    <tr><td class="b">헤드리스 실행</td><td><code>claude -p "..."</code></td><td><code>codex exec "..."</code></td></tr>
+    <tr><td class="b">최근 세션 이어가기</td><td><code>claude -c</code> / <code>claude -r</code>(선택)</td><td><code>codex resume --last</code> / <code>codex resume</code>(선택)</td></tr>
+    <tr><td class="b">세션 분기</td><td><code>/branch</code>, <code>--fork-session</code></td><td><code>codex fork</code></td></tr>
+    <tr><td class="b">모델 지정</td><td><code>/model</code>, <code>--model opus</code></td><td><code>/model</code>, <code>-m gpt-5.5</code>, <code>-c model=...</code></td></tr>
+    <tr><td class="b">위험 모드 (전부 자동)</td><td><code>--dangerously-skip-permissions</code></td><td><code>--dangerously-bypass-approvals-and-sandbox</code></td></tr>
+    <tr><td class="b">커스텀 명령</td><td><code>.claude/skills/이름/SKILL.md</code> → <code>/이름</code> (구 <code>.claude/commands/</code>)</td><td><code>~/.codex/prompts/이름.md</code> → <code>/이름</code> + Skills 호환(<code>~/.codex/skills/</code>)</td></tr>
+    <tr><td class="b">경로별 규칙</td><td><code>.claude/rules/*.md</code></td><td><code>~/.codex/rules/*.rules</code></td></tr>
+    <tr><td class="b">MCP 등록</td><td><code>claude mcp add</code> / <code>.mcp.json</code></td><td><code>codex mcp add</code> / <code>config.toml [mcp_servers]</code></td></tr>
+    <tr><td class="b">플러그인</td><td><code>/plugins</code> + 마켓플레이스</td><td><code>codex plugin add</code> + marketplace</td></tr>
+    <tr><td class="b">코드 리뷰</td><td><code>/code-review</code> (스킬)</td><td><code>codex review</code> / TUI <code>/review</code></td></tr>
+    <tr><td class="b">클라우드 연동</td><td>claude.ai/code · Desktop 병렬 세션</td><td>Codex Cloud (<code>codex cloud</code>, 로컬 적용은 <code>codex apply</code>)</td></tr>
+    <tr><td class="b">상태 진단</td><td><code>/status</code>, <code>/doctor</code></td><td><code>codex doctor</code>, TUI <code>/status</code></td></tr>
+    <tr><td class="b">컨텍스트 압축</td><td><code>/compact</code> (+auto-compact)</td><td><code>/compact</code></td></tr>
+    <tr><td class="b">자동 메모리</td><td>Auto Memory (<code>~/.claude/projects/…/memory/</code>, 기본 켜짐)</td><td><code>memories</code> (0.137 기준 experimental 플래그)</td></tr>
+  </table>
+
+  <h2 id="install">2. 설치 · 인증</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">설치</td><td><code>curl -fsSL https://claude.ai/install.sh | bash</code><br>또는 <code>brew install --cask claude-code</code> / WinGet</td><td><code>npm i -g @openai/codex</code> 또는 <code>brew install --cask codex</code><br>(Rust 단일 바이너리, 오픈소스)</td></tr>
+    <tr><td class="b">구독 로그인</td><td><code>claude</code> → 브라우저 (Pro/Max/Team/Enterprise)</td><td><code>codex login</code> → 브라우저 (ChatGPT Plus/Pro/Business/Enterprise)</td></tr>
+    <tr><td class="b">API 키</td><td><code>ANTHROPIC_API_KEY</code> 환경변수</td><td><code>codex login --api-key</code> (OpenAI Platform 키)</td></tr>
+    <tr><td class="b">업데이트</td><td>자동 (네이티브 설치 시)</td><td><code>codex update</code></td></tr>
+    <tr><td class="b">진단</td><td><code>/doctor</code></td><td><code>codex doctor</code> (설치·설정·인증·런타임 점검)</td></tr>
+  </table>
+
+  <h2 id="session">3. 세션 시작 · 재개 · 분기</h2>
+  <table>
+    <tr><th>하고 싶은 일</th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td>새 대화형 세션</td><td><code>claude</code></td><td><code>codex</code></td></tr>
+    <tr><td>프롬프트와 함께 시작</td><td><code>claude "버그 고쳐줘"</code></td><td><code>codex "버그 고쳐줘"</code></td></tr>
+    <tr><td>이미지 첨부 시작</td><td>대화 중 드래그/경로 붙여넣기</td><td><code>codex -i screenshot.png</code></td></tr>
+    <tr><td>가장 최근 세션 계속</td><td><code>claude -c</code></td><td><code>codex resume --last</code></td></tr>
+    <tr><td>세션 골라서 재개</td><td><code>claude -r</code> → 선택 UI</td><td><code>codex resume</code> → 선택 UI</td></tr>
+    <tr><td>세션 복제(분기)</td><td><code>/branch</code> 또는 <code>--fork-session</code></td><td><code>codex fork</code> (<code>--last</code> 지원)</td></tr>
+    <tr><td>작업 디렉토리 지정</td><td>해당 폴더에서 실행 + <code>--add-dir</code> 확장</td><td><code>codex -C 폴더</code> + <code>--add-dir</code> 확장</td></tr>
+    <tr><td>파일 되돌리기</td><td><code>Esc</code>×2 rewind (체크포인트) <span class="badge only-cc">CC 고유</span></td><td>git 수동 복구 (<code>codex apply</code>은 클라우드 diff 적용용)</td></tr>
+    <tr><td>세션 보관</td><td>자동 저장 (<code>~/.claude/projects/…</code>)</td><td><code>~/.codex/sessions</code> + <code>codex archive/unarchive</code></td></tr>
+  </table>
+
+  <h2 id="model">4. 모델 선택</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">세션 중 변경</td><td><code>/model</code> → opus/sonnet/haiku 별칭<br>1M 컨텍스트: <code>opus[1m]</code></td><td><code>/model</code> → gpt-5.5 계열 + reasoning effort</td></tr>
+    <tr><td class="b">시작 시 지정</td><td><code>claude --model opus</code></td><td><code>codex -m gpt-5.5</code></td></tr>
+    <tr><td class="b">영구 기본값</td><td><code>settings.json</code> <code>"model": "opus"</code></td><td><code>config.toml</code> <code>model = "gpt-5.5"</code></td></tr>
+    <tr><td class="b">추론 강도</td><td><code>/effort</code> low~max (Opus 4.8 기본 high)</td><td><code>model_reasoning_effort</code> (config.toml)</td></tr>
+    <tr><td class="b">폴백 모델</td><td><code>fallbackModel</code> 설정 / <code>--fallback-model</code> (최대 3개 순차)</td><td>미확인 (수동 <code>-m</code> 전환)</td></tr>
+    <tr><td class="b">로컬/서드파티 모델</td><td>게이트웨이 경유 (<code>ANTHROPIC_BASE_URL</code>)</td><td><code>--oss</code> + <code>--local-provider ollama|lmstudio</code> <span class="badge only-cx">Codex 내장</span></td></tr>
+  </table>
+
+  <h2 id="perm">5. 권한 · 샌드박스 — 가장 헷갈리는 부분</h2>
+  <p>두 도구의 통제 축이 다릅니다. <b>Claude Code = 모드 1축</b>, <b>Codex = 샌드박스 × 승인 2축</b>.</p>
+  <table>
+    <tr><th>의도</th><th class="cc">Claude Code (모드)</th><th class="cx">Codex (sandbox × approval)</th></tr>
+    <tr><td>읽기만, 계획 검토</td><td>Plan Mode (<code>--permission-mode plan</code>, Shift+Tab×2)</td><td><code>-s read-only</code> (+ <code>-a on-request</code>)</td></tr>
+    <tr><td>일상 작업 (편집 자동, 위험만 질문)</td><td>Accept Edits (<code>--permission-mode acceptEdits</code>)</td><td><code>-s workspace-write -a on-request</code> (기본 권장)</td></tr>
+    <tr><td>신뢰 명령만 자동</td><td>Default 모드 + <code>permissions.allow</code> 규칙</td><td><code>-a untrusted</code> (ls/cat 등 trusted set만 자동)</td></tr>
+    <tr><td>안 묻고 끝까지</td><td><code>--permission-mode bypassPermissions</code></td><td><code>-a never</code> (샌드박스는 유지)</td></tr>
+    <tr><td>완전 무제한 (격리 환경 전용)</td><td><code>--dangerously-skip-permissions</code></td><td><code>--dangerously-bypass-approvals-and-sandbox</code></td></tr>
+    <tr><td>규칙 관리 UI</td><td><code>/permissions</code></td><td><code>/approvals</code> (TUI)</td></tr>
+    <tr><td>도구·명령 단위 규칙</td><td><code>permissions.allow/deny</code>: <code>"Bash(npm test *)"</code> <span class="badge only-cc">CC 고유</span></td><td>trusted command set + <code>sandbox_permissions</code></td></tr>
+    <tr><td>샌드박스 단독 실행</td><td>— (권한 규칙으로 대체)</td><td><code>codex sandbox 명령어</code> <span class="badge only-cx">Codex 고유</span></td></tr>
+  </table>
+  <div class="callout warn"><span class="label">주의</span>Codex의 <code>workspace-write</code>는 <b>OS가 워크스페이스 밖 쓰기를 차단</b>하지만, Claude Code의 Accept Edits는 <b>승인을 생략할 뿐 경계는 권한 규칙</b>이 정합니다. Claude Code에서 같은 격리를 원하면 컨테이너/VM에서 돌리거나 deny 규칙을 명시하세요.</div>
+
+  <h2 id="instr">6. 지침(메모리) 파일</h2>
+  <table>
+    <tr><th>범위</th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td>조직 강제</td><td>Managed <code>CLAUDE.md</code> + <code>managed-settings.json</code></td><td>관리자 배포 <code>config.toml</code>(MDM) — 지침 파일 계층은 별도 미확인</td></tr>
+    <tr><td>개인 전역</td><td><code>~/.claude/CLAUDE.md</code></td><td><code>~/.codex/AGENTS.md</code></td></tr>
+    <tr><td>프로젝트(팀)</td><td><code>./CLAUDE.md</code> (git 커밋)</td><td>git 루트→현재 폴더의 <code>AGENTS.md</code> 체인 (가까운 쪽 우선)</td></tr>
+    <tr><td>개인-프로젝트</td><td><code>./CLAUDE.local.md</code> (gitignore)</td><td>— (프로젝트별 <code>config.toml [projects]</code> 신뢰 설정만)</td></tr>
+    <tr><td>경로 조건부</td><td><code>.claude/rules/*.md</code> (매칭 파일 읽을 때 로드)</td><td><code>~/.codex/rules/</code> (명령 신뢰 규칙)</td></tr>
+    <tr><td>자동 생성</td><td><code>/init</code></td><td><code>/init</code> (AGENTS.md 생성)</td></tr>
+    <tr><td>포함(import)</td><td><code>@path/to/file</code> 문법</td><td>미확인</td></tr>
+  </table>
+  <div class="callout tip"><span class="label">두 도구를 같은 repo에서 쓸 때</span>Claude Code는 <code>AGENTS.md</code>를 네이티브로 읽지 않습니다. 한 벌만 유지하려면: <code>CLAUDE.md</code>에 <code>@AGENTS.md</code> 한 줄을 넣거나 <code>ln -s AGENTS.md CLAUDE.md</code> 심링크. (검증됨: agents.md 표준은 Codex·Cursor·Gemini CLI·Copilot 등이 공유, Claude는 CLAUDE.md 우선)</div>
+
+  <h2 id="config">7. 설정 파일 구조</h2>
+  <div class="grid2">
+    <div class="card cc"><h3>Claude Code — settings.json (5계층 병합)</h3>
+      <p>우선순위: Managed &gt; CLI 인자 &gt; <code>.claude/settings.local.json</code> &gt; <code>.claude/settings.json</code> &gt; <code>~/.claude/settings.json</code></p>
+      <p class="small">주요 키: <code>model</code> · <code>defaultMode</code> · <code>permissions.allow/deny</code> · <code>env</code> · <code>hooks</code> · <code>fallbackModel</code> · <code>additionalDirectories</code></p></div>
+    <div class="card cx"><h3>Codex — config.toml (단일 + 프로파일)</h3>
+      <p>기본 <code>~/.codex/config.toml</code> 하나 + <code>-p 프로파일</code>로 <code>~/.codex/&lt;이름&gt;.config.toml</code> 레이어. 일회성 오버라이드는 <code>-c key.path=value</code> (TOML 파싱).</p>
+      <p class="small">주요 키: <code>model</code> · <code>model_reasoning_effort</code> · <code>approval_policy</code> · <code>sandbox_mode</code> · <code>[mcp_servers]</code> · <code>[features]</code> · <code>[projects."경로"]</code></p></div>
+  </div>
+  <p class="small">전환 포인트: Claude Code의 "프로젝트 설정을 git에 커밋해 팀 공유" 패턴이 Codex에는 약함(설정이 <code>~/.codex</code> 중심) — Codex에서 팀 표준은 <code>AGENTS.md</code>+플러그인으로 공유하는 편.</p>
+
+  <h2 id="custom">8. 커스텀 커맨드 · 스킬</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">간단 프롬프트 단축</td><td><code>.claude/skills/이름/SKILL.md</code> → <code>/이름</code><br>(구 <code>.claude/commands/이름.md</code>도 동작)</td><td><code>~/.codex/prompts/이름.md</code> → <code>/이름</code></td></tr>
+    <tr><td class="b">Agent Skills 표준</td><td>원조 (2025-10 공개, <code>SKILL.md</code>)</td><td>오픈 표준 채택 — <code>~/.codex/skills/</code> 디렉토리 지원</td></tr>
+    <tr><td class="b">인자 전달</td><td><code>$ARGUMENTS</code>, <code>$1..$n</code></td><td>프롬프트 파일 내 인자 치환 (버전별 상이, 문서 확인)</td></tr>
+    <tr><td class="b">플러그인 묶음</td><td><code>/plugins</code> + marketplace, 스코프 4단계 설치</td><td><code>codex plugin add/list</code> + <code>plugin marketplace</code> (0.137 stable)</td></tr>
+  </table>
+
+  <h2 id="hooks">9. 훅 (Hooks)</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">상태</td><td>정식 (이벤트 10종: PreToolUse·PostToolUse·Stop·SessionStart·UserPromptSubmit 등)</td><td><code>hooks</code> 기능 stable (0.137) — 신뢰(trust) 모델 포함</td></tr>
+    <tr><td class="b">설정 위치</td><td><code>settings.json</code> <code>"hooks"</code> (matcher + command)</td><td>설정/플러그인 경유, 미신뢰 훅은 차단 (<code>--dangerously-bypass-hook-trust</code>로만 우회)</td></tr>
+    <tr><td class="b">대표 사용</td><td>PreToolUse로 위험 명령 차단, PostToolUse로 lint 강제</td><td>유사 (이벤트 명세는 공식 문서 확인 권장)</td></tr>
+  </table>
+
+  <h2 id="mcp">10. MCP (Model Context Protocol) — 양쪽 다 지원</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">추가</td><td><code>claude mcp add --transport http 이름 URL</code></td><td><code>codex mcp add 이름 -- 명령어</code></td></tr>
+    <tr><td class="b">목록/관리</td><td><code>claude mcp list</code> · 세션 내 <code>/mcp</code></td><td><code>codex mcp list/get/remove</code></td></tr>
+    <tr><td class="b">OAuth 로그인</td><td><code>/mcp</code> 내 인증 플로우</td><td><code>codex mcp login/logout</code></td></tr>
+    <tr><td class="b">프로젝트 공유</td><td><code>./.mcp.json</code> (git 커밋 가능)</td><td><code>config.toml [mcp_servers]</code> (개인 설정 중심)</td></tr>
+    <tr><td class="b">반대로 서버 되기</td><td>— (Agent SDK로 구현)</td><td><code>codex mcp-server</code> — Codex 자체를 MCP 서버로 노출 <span class="badge only-cx">Codex 고유</span></td></tr>
+  </table>
+
+  <h2 id="agents">11. 서브에이전트 · 멀티에이전트</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">정의</td><td><code>.claude/agents/*.md</code> (frontmatter+프롬프트), <code>/agents</code> UI</td><td><code>multi_agent</code> stable (0.137) — 협업 에이전트, 세부는 버전별 상이</td></tr>
+    <tr><td class="b">호출</td><td>자동 위임(설명 매칭) 또는 명시 요청, 독립 컨텍스트</td><td>TUI 내 협업 흐름 (자동 위임 세분화는 미확인)</td></tr>
+    <tr><td class="b">백그라운드 작업</td><td>백그라운드 에이전트/Bash, 워크플로우 오케스트레이션</td><td>Codex Cloud 위임 (<code>codex cloud</code>)</td></tr>
+  </table>
+
+  <h2 id="headless">12. 헤드리스 · CI 파이프라인</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">기본형</td><td><code>claude -p "프롬프트"</code></td><td><code>codex exec "프롬프트"</code> (stdin 파이프 지원)</td></tr>
+    <tr><td class="b">JSON 출력</td><td><code>--output-format json|stream-json</code>, <code>--json-schema</code></td><td><code>--json</code> (이벤트 스트림) · <code>--output-last-message 파일</code></td></tr>
+    <tr><td class="b">권한 풀기</td><td><code>--allowedTools "Bash,Edit"</code> / <code>--permission-mode</code></td><td><code>-s workspace-write -a never</code> 조합 권장</td></tr>
+    <tr><td class="b">턴 제한</td><td><code>--max-turns N</code></td><td>미확인 (타임아웃은 외부에서)</td></tr>
+    <tr><td class="b">경량 모드</td><td><code>--bare</code> (훅·스킬·MCP·메모리 스킵)</td><td>기본이 경량에 가까움</td></tr>
+    <tr><td class="b">세션 이어 실행</td><td><code>claude -p --resume ID</code></td><td><code>codex exec resume --last</code></td></tr>
+    <tr><td class="b">SDK</td><td>Claude Agent SDK (Python/TS, 구 Claude Code SDK)</td><td>Codex SDK (TS) + <code>codex mcp-server</code>/<code>app-server</code></td></tr>
+  </table>
+
+  <h2 id="extra">13. 리뷰 · IDE · 웹/클라우드</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">코드 리뷰</td><td><code>/code-review</code> (effort 단계, ultra=클라우드 멀티에이전트) · <code>/security-review</code></td><td><code>codex review</code> (비대화형) · TUI <code>/review</code> — 브랜치/diff 대상</td></tr>
+    <tr><td class="b">IDE</td><td>VS Code 확장(패널·인라인 diff) · JetBrains</td><td>VS Code/Cursor 확장 (Codex 패널)</td></tr>
+    <tr><td class="b">웹</td><td>claude.ai/code (브라우저에서 세션 실행·원격 제어)</td><td>chatgpt.com/codex (클라우드 작업 위임)</td></tr>
+    <tr><td class="b">데스크톱</td><td>Claude Desktop — Code/Chat/<b>Cowork</b> 탭, 병렬 세션</td><td>Codex 앱/IDE 확장 중심 (별도 데스크톱 에이전트 미확인)</td></tr>
+    <tr><td class="b">클라우드→로컬</td><td>웹 세션 핸드오프</td><td><code>codex cloud</code>로 작업 탐색 → <code>codex apply</code>로 diff 적용</td></tr>
+    <tr><td class="b">GitHub 연동</td><td>Claude Code GitHub Actions (@claude 멘션, /security-review CI)</td><td>Codex GitHub 코드 리뷰 연동</td></tr>
+  </table>
+
+  <h2 id="price">14. 가격 · 플랜 (2026-06)</h2>
+  <table>
+    <tr><th></th><th class="cc">Claude Code</th><th class="cx">Codex CLI</th></tr>
+    <tr><td class="b">구독 포함</td><td>Pro / Max / Team / Enterprise (사용량 한도 차등)</td><td>ChatGPT Plus / Pro / Business / Enterprise</td></tr>
+    <tr><td class="b">종량제</td><td>API 키 (Opus 4.5 기준 $5/$25 per Mtok)</td><td>OpenAI Platform API 키</td></tr>
+    <tr><td class="b">무료</td><td>—</td><td>CLI 자체는 오픈소스(Apache-2.0), 모델 사용은 유료</td></tr>
+  </table>
+  <p class="small">기업 도입 시 가격보다 <b>데이터 거버넌스(학습 미사용·ZDR·DPA)</b> 동등성 비교가 우선 — <a href="plans_security.html">요금제 &amp; 보안 비교</a> 참고.</p>
+
+  <h2 id="pitfalls">15. 전환 시 헷갈림 주의 목록</h2>
+  <h3>같은 이름, 다른 것</h3>
+  <ul>
+    <li><code>-p</code> — Claude Code에선 <b>print(헤드리스)</b>, Codex에선 <b>profile(설정 레이어)</b>. Codex 헤드리스는 <code>exec</code>.</li>
+    <li><code>-c</code> — Claude Code에선 <b>continue(세션 계속)</b>, Codex에선 <b>config 오버라이드</b>(<code>-c model="..."</code>).</li>
+    <li><b>리뷰</b> — Claude는 스킬(<code>/code-review</code>), Codex는 서브커맨드(<code>codex review</code>)이자 TUI 커맨드.</li>
+  </ul>
+  <h3>다른 이름, 같은 것</h3>
+  <ul>
+    <li>CLAUDE.md ↔ AGENTS.md · settings.json ↔ config.toml · <code>/permissions</code> ↔ <code>/approvals</code> · <code>claude -p</code> ↔ <code>codex exec</code> · <code>/branch</code> ↔ <code>codex fork</code> · Auto Memory ↔ memories</li>
+  </ul>
+  <h3>한쪽에만 있는 것</h3>
+  <div class="grid2">
+    <div class="card cc"><h3>Claude Code 고유</h3><p>체크포인트/rewind (Esc×2) · Plan Mode(계획서 검토 후 실행) · 도구 단위 permissions 규칙 문법 · settings 5계층(팀 공유 커밋) · Workflows(멀티에이전트 오케스트레이션) · Cowork(비개발 데스크톱 에이전트) · git worktree 내장(<code>--worktree</code>)</p></div>
+    <div class="card cx"><h3>Codex 고유</h3><p>OS 샌드박스 3종(+<code>codex sandbox</code> 단독 실행) · <code>--oss</code> 로컬 모델(ollama/lmstudio) 내장 · <code>codex mcp-server</code>(자신을 MCP 서버로) · <code>codex apply</code>(클라우드 diff 로컬 적용) · <code>--profile</code> 설정 레이어 · <code>codex features</code>(기능 플래그 직접 토글)</p></div>
+  </div>
+
+  <h2 id="quickstart">16. 30분 적응 체크리스트</h2>
+  <div class="grid2">
+    <div class="card cx"><h3>Claude Code 숙련자 → Codex</h3>
+      <ol>
+        <li><code>codex login</code> (ChatGPT 계정)</li>
+        <li><code>CLAUDE.md</code> 내용을 <code>AGENTS.md</code>로 (또는 심링크)</li>
+        <li>권한 감각 재보정: Shift+Tab 대신 <code>/approvals</code> + 시작 시 <code>-s workspace-write -a on-request</code></li>
+        <li><code>claude -p</code> 스크립트를 <code>codex exec --json</code>으로 이식</li>
+        <li>MCP 옮기기: <code>claude mcp list</code> 보고 <code>codex mcp add</code></li>
+        <li>주의: rewind 없음 — git 커밋을 더 자주</li>
+      </ol></div>
+    <div class="card cc"><h3>Codex 숙련자 → Claude Code</h3>
+      <ol>
+        <li><code>claude</code> 첫 실행 → 브라우저 로그인</li>
+        <li><code>AGENTS.md</code>를 <code>CLAUDE.md</code>로 (심링크 또는 <code>@AGENTS.md</code>)</li>
+        <li>샌드박스 감각 재보정: <code>-s/-a</code> 대신 Shift+Tab 모드 + <code>/permissions</code> allow 규칙</li>
+        <li><code>codex exec</code> 스크립트를 <code>claude -p --output-format json</code>으로 이식</li>
+        <li>Plan Mode(Shift+Tab×2)와 Esc×2 rewind 먼저 익히기 — Codex에 없는 안전망</li>
+        <li><code>/context</code>·<code>/compact</code>로 컨텍스트 관리 습관</li>
+      </ol></div>
+  </div>
+
+  <p class="small" style="color:#888;margin-top:2vh">관련: <a href="how_agents_work.html">에이전트 작동 원리</a> · <a href="claude_code_cost_guide.html">Claude Code 비용 최적화</a> · <a href="agents_landscape.html">에이전트 지형도</a> · <a href="index.html">세미나 허브</a></p>
+
+  <div class="foot">
+    검증 방법 — ① Codex CLI 0.137.0 로컬 실측 (<code>codex --help / exec --help / mcp --help / features list</code>, <code>~/.codex/</code> 구조) ② Claude Code 공식 문서 <a href="https://code.claude.com/docs">code.claude.com/docs</a> (2026-06-05) ③ 웹 교차검증 25/25 claims 3-0 만장일치 (출처: <a href="https://developers.openai.com/codex/cli">OpenAI Codex Docs</a> · <a href="https://agents.md/">agents.md</a> · <a href="https://www.anthropic.com/news/claude-opus-4-5">Anthropic 발표</a> · <a href="https://github.com/anthropics/claude-code/releases">Claude Code CHANGELOG</a>).
+    <br>"미확인" 표기는 공식 문서/실측에서 직접 확인하지 못한 항목. 두 도구 모두 릴리스 주기가 빠름 — 인용 전 재확인 권장. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

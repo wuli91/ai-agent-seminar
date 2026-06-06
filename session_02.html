@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 2 — Claude로 일하기 (Cowork)</title>
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body>
+<div class="kicker">AI Agent 활용 세미나 · Session 2</div>
+
+<!-- 1 -->
+<section class="slide cover active">
+  <span class="title-tag">Session 2 / 4 · 약 90분</span>
+  <h1>Claude로 <span class="accent">일하기</span> (Cowork)<br>지식업무 자동화</h1>
+  <p class="sub">채팅을 넘어, <b>Projects</b>로 내 업무 비서를 만들고<br><b>Artifacts</b>로 문서·표·도구를 즉석에서 만듭니다.</p>
+  <p class="foot">핸즈온: 내 직무 프로젝트 1개 운영</p>
+</section>
+
+<!-- 2 복습 -->
+<section class="slide">
+  <h2>지난 세션 복습 + 오늘 목표</h2>
+  <div class="grid grid-2">
+    <div class="card"><h3>지난 세션</h3><p>AI는 똑똑한 인턴 · 보안 원칙 · 프롬프트 6원칙. 시도해 보셨나요?</p></div>
+    <div class="card hi"><h3>오늘</h3><p>한 번 쓰고 마는 대화 → <b>반복 가능한 업무 도구</b>로. 끝나면 내 직무 프로젝트 1개가 생깁니다.</p></div>
+  </div>
+  <p class="quote">"매번 배경 설명 다시 하기" → 프로젝트에 <span class="accent">한 번만 넣어두면</span> 끝.</p>
+</section>
+
+<!-- 3 Cowork 개념 -->
+<section class="slide">
+  <h2>'Cowork' = AI를 동료처럼 쓰기</h2>
+  <div class="grid grid-3">
+    <div class="card hi"><h3>맥락을 기억</h3><p>프로젝트에 자료를 넣어두면 매번 설명할 필요 없음.</p></div>
+    <div class="card hi"><h3>자료를 읽음</h3><p>보고서·PDF·표를 올리면 그 내용을 바탕으로 작업.</p></div>
+    <div class="card hi"><h3>결과물을 만듦</h3><p>Artifacts로 문서·표·슬라이드 초안·간단한 도구까지.</p></div>
+  </div>
+</section>
+
+<!-- 4 Projects -->
+<section class="slide">
+  <h2>Projects — 내 업무 전용 작업공간</h2>
+  <p class="lead">하나의 주제(업무)에 대한 대화·자료·지침을 한곳에 모읍니다.</p>
+  <!-- mermaid 소스 (수정용):
+  flowchart LR
+    subgraph P["Project — 한곳에 모아두면"]
+      G["지침<br/>회사·제품 배경"] ~~~ D["참고 문서<br/>가이드·템플릿"] ~~~ C["대화 누적<br/>맥락 유지"]
+    end
+    P ==> R["매번 같은 품질<br/>설명 반복 제거<br/>팀 공유 표준"]
+  -->
+  <svg viewBox="0 0 880 235" role="img" aria-label="프로젝트에 지침, 참고 문서, 대화가 모이고 새 대화마다 자동 적용되어 일관된 결과가 나온다" style="width:96%;max-width:880px;display:block;margin:.4em auto 0;font-family:inherit">
+    <defs>
+      <marker id="arP1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ecdc4"/></marker>
+    </defs>
+    <text x="290" y="26" text-anchor="middle" font-size="13" font-weight="800" fill="#7eb8ff">Project — 한곳에 모아두면</text>
+    <rect x="30" y="38" width="520" height="162" rx="14" fill="#0f1f2f" stroke="#7eb8ff" stroke-width="1.6"/>
+    <rect x="55" y="62" width="150" height="92" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.4"/>
+    <text x="130" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#4ecdc4">지침</text>
+    <text x="130" y="112" text-anchor="middle" font-size="10.5" fill="#bff5ee">회사·제품 배경</text>
+    <text x="130" y="130" text-anchor="middle" font-size="10.5" fill="#bff5ee">"이렇게 답해줘"</text>
+    <rect x="215" y="62" width="150" height="92" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.4"/>
+    <text x="290" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd93d">참고 문서</text>
+    <text x="290" y="112" text-anchor="middle" font-size="10.5" fill="#ffe9a8">가이드 · 템플릿</text>
+    <text x="290" y="130" text-anchor="middle" font-size="10.5" fill="#ffe9a8">예시</text>
+    <rect x="375" y="62" width="150" height="92" rx="10" fill="#1a1020" stroke="#c084fc" stroke-width="1.4"/>
+    <text x="450" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#c084fc">대화 누적</text>
+    <text x="450" y="112" text-anchor="middle" font-size="10.5" fill="#e6cffc">주제별 기록</text>
+    <text x="450" y="130" text-anchor="middle" font-size="10.5" fill="#e6cffc">맥락 유지</text>
+    <text x="290" y="186" text-anchor="middle" font-size="11" fill="#9ab">새 대화마다 자동으로 함께 적용</text>
+    <line x1="550" y1="119" x2="606" y2="119" stroke="#4ecdc4" stroke-width="2.5" marker-end="url(#arP1)"/>
+    <rect x="610" y="58" width="240" height="122" rx="12" fill="#10302b" stroke="#4ecdc4" stroke-width="1.8"/>
+    <text x="730" y="92" text-anchor="middle" font-size="13.5" font-weight="800" fill="#4ecdc4">매번 같은 품질의 결과</text>
+    <text x="730" y="121" text-anchor="middle" font-size="11.5" fill="#bff5ee">설명 반복 제거</text>
+    <text x="730" y="146" text-anchor="middle" font-size="11.5" fill="#bff5ee">팀과 공유 가능한 표준</text>
+    <text x="440" y="227" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">참고: Claude 도움말 — Projects (support.claude.com)</text>
+  </svg>
+  <div class="callout warn"><span class="label">보안</span>프로젝트에 올리는 자료도 Session 1 기준 적용 — <b>기밀은 익명화</b>하거나 올리지 않습니다.</div>
+</section>
+
+<!-- 5 Artifacts -->
+<section class="slide">
+  <h2>Artifacts — 대화 옆에 '결과물'이 만들어진다</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>이런 걸 만든다</h3>
+      <p>· 보고서·기획서·공지문 문서<br>· 비교표·체크리스트<br>· 간단한 계산기·설문 등 작은 도구<br>· 슬라이드 초안 텍스트</p></div>
+    <div class="card hi"><h3>좋은 점</h3>
+      <p>· 바로 보면서 <b>"여기 고쳐"</b> 가능<br>· 버전이 옆에 쌓임<br>· 복사/다운로드해서 바로 사용</p></div>
+  </div>
+  <div class="callout tip"><span class="label">사용법</span>"~를 <b>문서로 만들어줘</b>" / "~를 <b>표로 정리해줘</b>"라고 하면 오른쪽에 결과물이 생깁니다.</div>
+</section>
+
+<!-- 6 직무 데모 표 -->
+<section class="slide">
+  <h2>직무별 — 오늘 당장 되는 일</h2>
+  <table>
+    <tr><th>직무</th><th>이렇게 시킨다</th></tr>
+    <tr><td class="b">기획/PM</td><td>"이 자료로 1페이지 기획 초안 + 리스크 3가지"</td></tr>
+    <tr><td class="b">마케팅/영업</td><td>"이 제품 설명으로 광고 카피 5종 + 고객 반론 대응"</td></tr>
+    <tr><td class="b">디자인/콘텐츠</td><td>"이 글을 SNS 3편으로, 톤은 친근하게"</td></tr>
+    <tr><td class="b">경영지원/HR</td><td>"이 규정 문서를 직원 FAQ 10개로"</td></tr>
+    <tr><td class="b">재무/데이터</td><td>"이 표를 읽고 추세·이상치·요약 코멘트"</td></tr>
+  </table>
+  <p class="small">자세한 시나리오·프롬프트는 <b>직무별 핸드아웃</b>에 있습니다.</p>
+</section>
+
+<!-- 7 데모: 문서 요약 -->
+<section class="slide">
+  <h2>데모 ① 긴 문서 → 임원 요약</h2>
+  <pre><code>(보고서 PDF 업로드 후)
+
+이 문서를 임원 보고용으로 정리해줘.
+- 핵심 결론 3가지 (각 한 줄)
+- 의사결정이 필요한 항목 표 (이슈/선택지/추천)
+- 리스크와 다음 단계
+- 전체 한 페이지 이내</code></pre>
+  <p class="quote">20장 보고서를 <span class="accent">한 페이지 의사결정 문서</span>로. 단, 숫자는 원문과 대조 확인.</p>
+</section>
+
+<!-- 8 데모: 초안 작성 -->
+<section class="slide">
+  <h2>데모 ② 빈 화면 공포 없애기 — 초안</h2>
+  <pre><code>너는 우리 회사 기획자야. (프로젝트에 회사 배경 저장됨)
+
+신규 기능 '스마트 알림'의 내부 제안서 초안을 써줘.
+- 배경 / 문제 / 제안 / 기대효과 / 예상 리스크
+- 표와 불릿 활용, 정중한 보고체
+- 빠진 정보는 [확인 필요] 로 표시</code></pre>
+  <div class="callout tip"><span class="label">핵심</span>AI는 <b>0→70%</b>를 빠르게. 나머지 <b>30%(판단·사실확인)</b>는 사람이 채웁니다.</div>
+</section>
+
+<!-- 9 핸즈온 -->
+<section class="slide">
+  <h2>🙌 핸즈온 — 내 직무 프로젝트 만들기 <span class="badge app">Claude 앱</span></h2>
+  <ol class="steps">
+    <li>새 <b>Project</b> 생성, 이름은 내 업무로 (예: "마케팅 카피 작업실")</li>
+    <li>프로젝트 지침에 <b>배경·톤·형식</b>을 적어 저장 (예: 대상 고객, 보고체)</li>
+    <li>참고 자료 1개 업로드 (익명화된 예시/공개 자료)</li>
+    <li>실제 업무 1건을 요청해 <b>Artifact 결과물 1개</b> 만들기</li>
+    <li>"더 짧게/표로/톤 변경"으로 2~3번 다듬기</li>
+  </ol>
+  <div class="callout warn"><span class="label">기밀 주의</span>업로드 전에 "이 자료 넣어도 되나?" 한 번 더 확인.</div>
+</section>
+
+<!-- 10 잘 쓰는 습관 -->
+<section class="slide">
+  <h2>잘 쓰는 사람들의 습관</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>지침을 재사용</h3><p>잘 나온 프롬프트는 프로젝트 지침/메모에 저장해 재사용.</p></div>
+    <div class="card hi"><h3>예시를 준다</h3><p>"이런 느낌으로"라며 좋은 샘플 1개를 붙여넣으면 품질 급상승.</p></div>
+    <div class="card hi"><h3>나눠서 시킨다</h3><p>큰 일은 단계로 쪼개 요청 → 중간 점검.</p></div>
+    <div class="card hi"><h3>항상 검토</h3><p>사실·숫자·고유명사는 원본 대조. 책임은 사람에게.</p></div>
+  </div>
+</section>
+
+<!-- 11 한계 -->
+<section class="slide">
+  <h2>앱만으로는 아쉬운 순간</h2>
+  <div class="grid grid-2">
+    <div class="card warn"><h3 class="warn">파일이 많을 때</h3><p>폴더 안 파일 50개를 일괄 처리? 하나씩 업로드는 비효율.</p></div>
+    <div class="card warn"><h3 class="warn">반복 작업</h3><p>매주 같은 정리·변환을 손으로 반복.</p></div>
+  </div>
+  <p style="margin-top:.8em">→ 그래서 다음 세션 <span class="gold b">Claude Code</span>: 내 컴퓨터의 <b>폴더·파일을 직접</b> 다루고 <b>자동화</b>합니다.</p>
+</section>
+
+<!-- 12 과제 -->
+<section class="slide">
+  <h2>📌 실천 과제 (다음 세션 전 또는 직후)</h2>
+  <ol class="steps">
+    <li>오늘 만든 프로젝트로 <b>실제 업무 산출물 1개</b> 만들어 써보기</li>
+    <li>"손으로 반복하는데 <b>파일이 여러 개</b>라 번거로운 일" 1가지 찾아두기 (다음 세션 실습 소재)</li>
+    <li>아직 안 했다면 <b>Claude Code 설치</b> (사전 준비 가이드)</li>
+  </ol>
+</section>
+
+<!-- 13 -->
+<section class="slide cover">
+  <span class="title-tag">Session 2 끝</span>
+  <h1>오늘의 한 줄<br><span class="accent">"설명은 한 번, 결과물은 매번"</span></h1>
+  <p class="sub">다음 세션: <b class="gold">Claude Code 입문</b> — 터미널이 처음이어도<br>내 컴퓨터의 파일을 AI에게 맡깁니다.</p>
+  <p class="foot">←/→ 로 다시 보기 · 직무별 핸드아웃도 확인하세요</p>
+</section>
+
+<script src="assets/slides.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 에이전트 지형도 — 자율 에이전트·컴퓨터 조작·멀티벤더 (2025–2026)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding:5vh 5vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.4em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.15em;margin:.6em 0 1vh}
+.toc{background:#0e1722;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.3em;margin:2vh 0}
+.toc a{color:#7eb8ff;text-decoration:none;margin-right:1.2em;font-size:.95em}
+h2{font-size:1.55em;color:#7eb8ff;margin:4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.15em;color:#4ecdc4;margin:1.6vh 0 .5vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.purple{color:#c084fc}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.8em 0}
+.card.rec{border-color:#4ecdc4;background:#0c1a18}.card.warn{border-color:#ff6b6b;background:#160e0e}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.9em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.55em .6em;border-bottom:2px solid #2a4a6a;vertical-align:top}
+td{padding:.5em .6em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+td.h{color:#9fb4c8;font-weight:600;white-space:nowrap}
+.open{color:#4ecdc4;font-weight:600}.closed{color:#ff9e6b;font-weight:600}
+.num{color:#4ecdc4;font-weight:700}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.82em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}th{background:#e7eef7;color:#003366}.open{color:#0a8a7d}.closed{color:#b5651d}.num{color:#0a8a7d}.callout{background:#f3f7fb}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.toc{display:none}}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}table{font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">심화 조사 자료 · 의사결정 참고 (2025–2026 · 웹 리서치 기반)</span>
+  <h1>AI <span class="accent">에이전트 지형도</span></h1>
+  <p class="sub">Claude 외의 자율형 에이전트, 컴퓨터(화면·마우스·키보드)를 직접 조작하는 에이전트, 그리고 Claude+Codex+Gemini 멀티벤더 전략을 한 문서에 정리했습니다.</p>
+  <div class="callout warn"><span class="label">⚠ 빠르게 변하는 영역</span>모델 버전·벤치마크·가격이 분기 단위로 바뀝니다. 본문은 교차확인된 2025–2026 자료 기준이며, <b>도입 시점에 반드시 재확인</b>하세요. 출처는 각 절 하단·문서 끝에 표기.</div>
+
+  <div class="toc">
+    <b style="color:#aaa">목차 &nbsp;</b>
+    <a href="#a">A. 자율형 에이전트 vs Claude</a>
+    <a href="#b">B. 컴퓨터 조작 에이전트</a>
+    <a href="#c">C. 멀티벤더(Claude·Codex·Gemini)</a>
+  </div>
+
+  <!-- ================= A ================= -->
+  <h2 id="a">A. Claude 외 자율형 에이전트 — 무엇이 다른가</h2>
+  <p>Claude Code는 의도적으로 <b>단일 스레드 마스터 루프</b>(사람 승인 중심·투명성·신뢰성 우선)입니다. 대부분의 타 프레임워크는 <b>멀티에이전트 오케스트레이션</b>(역할/그래프/대화 기반)이거나, 더 높은 자율성(장시간 백그라운드 실행)을 지향합니다.</p>
+  <table>
+    <tr><th>이름</th><th>오픈/클로즈드</th><th>핵심 특징</th><th>Claude(Code)와 차이</th></tr>
+    <tr><td class="b">Claude Code (Anthropic)</td><td class="closed">클로즈드(SDK 공개)</td><td>터미널 단일 에이전트, 사람 승인 중심</td><td>기준점</td></tr>
+    <tr><td class="b">Devin / Devin 2.0 (Cognition)</td><td class="closed">클로즈드</td><td>클라우드 자율 SW 엔지니어, 장기 자율 실행</td><td>완전 매니지드·고자율 / Claude는 로컬·승인</td></tr>
+    <tr><td class="b">OpenHands (구 OpenDevin)</td><td class="open">오픈소스</td><td>Docker 샌드박스 자율 코딩, LLM 교체·온프레 가능</td><td>셀프호스트·모델무관·풀투명</td></tr>
+    <tr><td class="b">Manus (Butterfly Effect)</td><td class="closed">클로즈드</td><td>범용 "general agent" 백그라운드 자율 수행</td><td>코딩 한정 아닌 범용 작업</td></tr>
+    <tr><td class="b">CrewAI</td><td class="open">오픈소스</td><td>역할 기반 멀티에이전트(조직처럼 분담)</td><td>멀티에이전트 / Claude는 단일</td></tr>
+    <tr><td class="b">Microsoft Agent Framework (AutoGen+SK)</td><td class="open">오픈소스</td><td>대화형 멀티에이전트 SDK(1.0 GA 예정)</td><td>빌드 키트 / Claude는 완성 제품</td></tr>
+    <tr><td class="b">LangGraph (LangChain)</td><td class="open">오픈소스</td><td>그래프 상태머신 오케스트레이션, 프로덕션 성숙</td><td>워크플로 빌더</td></tr>
+    <tr><td class="b">Google ADK / Amazon Bedrock AgentCore</td><td>오픈/매니지드</td><td>클라우드 멀티에이전트 빌드·런타임(A2A·MCP)</td><td>인프라 / Claude는 그 위 모델 중 하나</td></tr>
+    <tr><td class="b">AutoGPT / BabyAGI / AgentGPT</td><td class="open">오픈소스</td><td>2023 1세대 자율 루프, 현재 반자율·교육용</td><td>역사적 원형(신뢰성 낮음)</td></tr>
+    <tr><td class="b">Nous Hermes 4</td><td class="open">오픈웨이트 <b>모델</b></td><td>Llama 기반 하이브리드 추론 모델(프레임워크 아님)</td><td>Claude는 클로즈드 모델</td></tr>
+  </table>
+
+  <div class="grid2">
+    <div class="card"><h3>근본 차이 4가지</h3>
+      <p>· <b>자율성</b>: Claude=승인 중심 / Devin·Manus·OpenClaw=장기 백그라운드 자율</p>
+      <p>· <b>실행 위치</b>: Claude=로컬 / Devin·Manus·Bedrock=클라우드 / OpenHands·Hermes=온프레</p>
+      <p>· <b>모델 종속</b>: Claude=Claude 전용 / 오픈진영=LLM 교체 가능</p>
+      <p>· <b>개방성</b>: 오픈소스는 추론체인까지 감사·커스터마이즈(데이터 주권에 유리)</p>
+    </div>
+    <div class="card rec"><h3>응용 기대</h3>
+      <p>· 역할 기반 <b>멀티에이전트 팀</b>(기획·개발·검수 분담)</p>
+      <p>· 목표만 주면 <b>장기 자율 태스크</b>(리서치·코딩·파일/메신저 자동화)</p>
+      <p>· <b>셀프호스트·온프레</b>로 데이터 주권·모델 자유(규제 산업)</p>
+      <p>· 업계는 <b>MCP·A2A 프로토콜</b>로 상호연결 수렴 중</p>
+    </div>
+  </div>
+
+  <div class="callout warn"><span class="label">현실적 한계 (D-level 핵심)</span>
+    복잡도가 오르면 실패율 <span class="warn">70~90%</span> 보고, SWE-bench 실측 15~30%. Gartner는 agentic-AI 프로젝트의 <b>40%+가 2027년까지 취소</b> 전망. PoC 비용을 CIO가 최대 1,000% 과소추정한 사례도. <b>사람 감독(human-in-the-loop)이 여전히 필수</b> — Claude Code의 "승인 우선" 설계가 오히려 안전 강점입니다.</div>
+
+  <div class="card"><h3>참고: "open clew" · "hermes agent" 추정</h3>
+    <p>· <b>open clew → OpenClaw</b>(확신도 높음): 2025–2026 바이럴된 <b>오픈소스 셀프호스트 개인 자율 에이전트</b>. 로컬 실행, 메신저(WhatsApp·Telegram 등)가 UI, 100+ 스킬로 셸·파일·웹 자동화. 단, RCE 취약점·악성 확장 등 <b class="warn">보안 이슈</b>도 부각.</p>
+    <p>· <b>hermes agent → Nous Research</b>: ① <b>Hermes 4</b>=오픈웨이트 모델 패밀리, ② <b>Hermes Agent</b>=셀프-임프루빙 오픈소스 에이전트 프레임워크(성공 작업을 재사용 스킬로 축적). 맥락상 ②일 가능성. (두 산출물이 이름 공유 — 혼동 주의)</p>
+  </div>
+
+  <!-- ================= B ================= -->
+  <h2 id="b">B. 컴퓨터(화면·마우스·키보드)를 직접 조작하는 에이전트</h2>
+  <p><b class="accent">결론: 예, 존재합니다.</b> 화면(스크린샷)을 보고 마우스·키보드를 조작해 사람 대신 작업하는 "Computer Use / GUI 에이전트"가 2025년 GA/프리뷰로 출시됐습니다. 다만 대부분 <b>브라우저 중심</b>이며, 전체 데스크톱 OS 조작은 아직 신뢰성이 낮습니다.</p>
+  <table>
+    <tr><th>제품</th><th>조작 범위</th><th>성숙도</th><th>비고(벤치·가격)</th></tr>
+    <tr><td class="b">Anthropic Claude Computer Use</td><td>데스크톱(가상)+브라우저</td><td>API GA</td><td>OSWorld-Verified 최상위권(Opus 4.x 66→83%대)</td></tr>
+    <tr><td class="b">Claude for Chrome</td><td>브라우저</td><td>Beta(유료 플랜)</td><td>프롬프트 인젝션 방어 강조</td></tr>
+    <tr><td class="b">OpenAI Operator → ChatGPT Agent</td><td>브라우저 중심(가상 PC)</td><td>GA(ChatGPT 통합)</td><td>WebVoyager 87% / Plus $20·Pro $200</td></tr>
+    <tr><td class="b">Google Gemini 2.5 Computer Use</td><td>브라우저·모바일 UI</td><td>API 프리뷰</td><td>저지연 강점, 데스크톱 OS 미최적화</td></tr>
+    <tr><td class="b">Microsoft Copilot Studio (Computer Use)</td><td>웹+데스크톱 앱</td><td>GA(2026)</td><td>Windows 365 격리 실행·자격증명 관리(RPA 대체)</td></tr>
+    <tr><td class="b">Manus</td><td>자율 범용(클라우드)</td><td>일반 공개</td><td>$19~$199/월</td></tr>
+    <tr><td class="b">ByteDance UI-TARS (오픈소스)</td><td>데스크톱·브라우저·모바일</td><td>오픈소스</td><td>OSWorld 42.5%(데스크톱은 아직 낮음)</td></tr>
+    <tr><td class="b">Browser Use / Skyvern (오픈소스)</td><td>브라우저</td><td>OSS·널리 채택</td><td>WebVoyager 85~89%(자체보고)</td></tr>
+  </table>
+  <div class="grid2">
+    <div class="card rec"><h3>지금 현실적으로 가능한 업무</h3>
+      <p>· <b>웹 리서치·정보수집</b>(가장 성숙)<br>· <b>폼 작성·데이터 입력</b><br>· <b>반복 GUI 워크플로우/RPA 대체</b>(API 없는 레거시 앱)<br>· <b>QA/UI 테스트</b> 자동화<br>· 간단한 거래성 작업(결제·민감 작업은 사람 확인)</p>
+      <p class="b accent">핵심: "감독된 보조" 작업에 적합. 무인 완전자율은 아직 위험.</p></div>
+    <div class="card warn"><h3>위험·한계 (보안·신뢰성)</h3>
+      <p>· <b class="warn">프롬프트 인젝션</b>: 웹/문서에 숨긴 악성 지시로 탈취(완화 후도 공격성공 10%대, 0% 아님)</p>
+      <p>· 정확도: 최상위도 OSWorld 80%대=5건 중 1건 실패. 데스크톱 단계작업일수록 급락</p>
+      <p>· 속도·비용: 단계마다 스크린샷+추론(작업당 수분)</p>
+      <p>· 권한·자격증명 위임 위험 → allow-list·자격증명 격리·민감작업 확인·가상환경 필수</p></div>
+  </div>
+  <div class="callout"><span class="label">엔터프라이즈 권고</span>회계·금융 등 고위험 무인 자동화는 시기상조. <b>감사 로그·승인 게이트·범위 제한</b> 하에 파일럿부터. 거버넌스는 Copilot Studio(Windows 365 격리)·Claude/OpenAI 엔터프라이즈가 빠르게 갖춰지는 중.</div>
+
+  <!-- ================= C ================= -->
+  <h2 id="c">C. 멀티벤더 코딩 AI — Claude + OpenAI Codex + Google Gemini</h2>
+  <p>이미 Claude를 사내에서 쓰는 상황에서 Codex·Gemini를 함께 도입할지의 판단입니다. (벤치마크는 교차확인된 2025-11 출시 시점 기준)</p>
+  <table>
+    <tr><th>항목</th><th>Claude Code</th><th>OpenAI Codex</th><th>Google Gemini</th></tr>
+    <tr><td class="h">강점</td><td>코딩 정확도·에이전트 신뢰성 최상위, 터미널 UX 성숙, 토큰 효율</td><td>장기 자율 실행·세션 compaction, CLI+클라우드+IDE+GitHub 전방위, ChatGPT 번들</td><td>초대형 컨텍스트(1M)·멀티모달, Antigravity IDE·Jules·Gemini CLI</td></tr>
+    <tr><td class="h">컨텍스트</td><td>200K(엔터 1M 옵션)</td><td>대용량</td><td><span class="num">1M</span>(최대 강점)</td></tr>
+    <tr><td class="h">SWE-bench Verified</td><td class="num">80.9% (Opus 4.5)</td><td>77.9% (GPT-5.1-Codex-Max)</td><td>76.2% (Gemini 3 Pro)</td></tr>
+    <tr><td class="h">접근/가격</td><td>Pro/Max 구독 또는 API, Bedrock/Vertex</td><td>ChatGPT 플랜 포함(2026~ 토큰 크레딧)</td><td>API $2/$12·AI Pro $19.99/Ultra $149.99</td></tr>
+  </table>
+  <div class="grid2">
+    <div class="card rec"><h3>병행 — 장점</h3>
+      <p>· 벤더 락인 회피(가격·정책·가용성 리스크 분산)</p>
+      <p>· <b>태스크별 라우팅</b>: 까다로운 수정·리뷰=Claude, 장기 자율=Codex, 대규모 일괄·멀티모달=Gemini</p>
+      <p>· 이중화(장애·rate limit 시 대체)</p>
+      <p>· 가격 협상력 + 교차 벤치로 내부 품질기준</p>
+      <p>· MCP 업계 표준화로 도구·컨텍스트 이식성↑</p></div>
+    <div class="card warn"><h3>병행 — 단점/주의 (보안·거버넌스)</h3>
+      <p>· <b class="warn">데이터 노출면 3배</b>: 소스코드가 3개 벤더로 → DPA·학습제외·보존정책 벤더별 개별 계약(HW 설계 IP 특히 민감)</p>
+      <p>· 거버넌스 파편화(SSO·감사·시크릿스캔·실행권한을 3개 콘솔에서)</p>
+      <p>· 비용 중복·가시성 저하, 컨텍스트 스위칭 부담</p>
+      <p>· 자율 에이전트가 각각 코드 실행/PR → 샌드박스·승인 게이트 필수</p></div>
+  </div>
+  <div class="card"><h3>권장 운영 방식</h3>
+    <p>① <b>Claude Code = 1차 표준</b>(데일리 코딩·리뷰·신뢰성, 사내 자산 보유) ② <b>Codex = 2차</b>(장기 자율·ChatGPT 번들·이중화) ③ <b>Gemini = 한정 파일럿</b>(1M 컨텍스트·멀티모달 필요 팀) ④ <b>공통 거버넌스 레이어 선구축</b>(엔터프라이즈/Zero-retention 계약·SSO·감사·시크릿스캔·샌드박스·통합 비용 대시보드) ⑤ <b>MCP 표준화</b>로 사내 도구 한 번 구축해 3개 클라이언트 재사용 ⑥ 내부 골든 태스크셋으로 <b>분기별 재평가</b>.</p>
+  </div>
+
+  <div class="foot">
+    주요 출처 — 자율 에이전트: <a href="https://openhands.dev/blog/one-year-of-openhands-a-journey-of-open-source-ai-development">OpenHands</a>, <a href="https://en.wikipedia.org/wiki/Manus_(AI_agent)">Manus</a>, <a href="https://www.turingpost.com/p/hermes">Hermes</a>, <a href="https://en.wikipedia.org/wiki/OpenClaw">OpenClaw</a>, <a href="https://beam.ai/agentic-insights/40-percent-agentic-ai-projects-will-fail-heres-how-to-be-in-the-60">Gartner 40%</a> ·
+    컴퓨터 조작: <a href="https://openai.com/index/introducing-chatgpt-agent/">ChatGPT Agent</a>, <a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-computer-use-model/">Gemini CU</a>, <a href="https://claude.com/blog/claude-for-chrome">Claude for Chrome</a>, <a href="https://www.microsoft.com/en-us/microsoft-copilot/blog/copilot-studio/computer-use-is-now-in-public-preview-in-microsoft-copilot-studio/">Copilot Studio</a>, <a href="https://github.com/bytedance/UI-TARS">UI-TARS</a> ·
+    멀티벤더: <a href="https://www.anthropic.com/news/claude-opus-4-5">Opus 4.5</a>, <a href="https://openai.com/index/gpt-5-1-codex-max/">GPT-5.1-Codex-Max</a>, <a href="https://blog.google/technology/developers/gemini-3-developers/">Gemini 3</a>, <a href="https://blog.modelcontextprotocol.io/posts/2025-11-25-first-mcp-anniversary/">MCP</a>.
+    <br>모델·가격·벤치는 빠르게 변동 — 도입 시점 재확인 필수. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

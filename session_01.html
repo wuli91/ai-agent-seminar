@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1 — AI Agent 기초</title>
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body>
+<div class="kicker">AI Agent 활용 세미나 · Session 1</div>
+
+<!-- 1 Cover -->
+<section class="slide cover active">
+  <span class="title-tag">Session 1 / 4 · 약 90분</span>
+  <h1>AI Agent <span class="accent">기초</span><br>왜 지금, 무엇을 할 수 있나</h1>
+  <p class="sub">비개발 직군도 한 시간이면 "쓸 수 있다"는 감을 잡습니다.<br>
+  개념 → 한계 → 보안 → 첫 대화 실습까지.</p>
+  <p class="foot">팅크웨어 선행개발부 · D-level 대상</p>
+</section>
+
+<!-- 2 오늘의 목표 -->
+<section class="slide">
+  <h2>오늘 끝나면 이렇게 됩니다</h2>
+  <div class="grid grid-3">
+    <div class="card hi"><h3>안다</h3><p>AI 에이전트가 뭐고, 무엇을 잘하고 못하는지 설명할 수 있다.</p></div>
+    <div class="card hi"><h3>가린다</h3><p>회사 데이터를 <b>어디까지</b> 맡겨도 되는지 판단 기준이 생긴다.</p></div>
+    <div class="card hi"><h3>해본다</h3><p>내 업무 질문을 직접 던지고, 프롬프트로 결과를 개선한다.</p></div>
+  </div>
+  <p class="quote">"코딩을 못해도 됩니다. 오늘은 <span class="accent">'말로 일 시키는 법'</span>을 배웁니다."</p>
+</section>
+
+<!-- 3 전체 여정 -->
+<section class="slide">
+  <h2>전체 여정 — 지금 여기는 Session 1</h2>
+  <table>
+    <tr><th>세션</th><th>주제</th><th>끝나면</th><th>일정(기본)</th></tr>
+    <tr><td class="accent b">1 (지금)</td><td>AI Agent 기초 + 첫 대화</td><td>개념·보안 이해, 프롬프트 감각</td><td rowspan="2" class="blue">Day 1<br>(3시간)</td></tr>
+    <tr><td>2</td><td>Claude 앱으로 일하기 (Cowork)</td><td>내 직무 프로젝트 1개 운영</td></tr>
+    <tr><td>3</td><td>Claude Code 입문</td><td>파일·폴더 자동화 1건 수행</td><td rowspan="2" class="blue">Day 2<br>(3시간)</td></tr>
+    <tr><td>4</td><td>내 업무에 심기 + 실행계획</td><td>30/60/90일 도입 계획</td></tr>
+  </table>
+  <p>두 가지 도구를 배웁니다 — <span class="blue b">Claude 앱</span>(채팅처럼 일하기)과 <span class="gold b">Claude Code</span>(내 컴퓨터의 파일을 다루기).</p>
+  <p class="small">하루 3시간(세션 2개) 기준 2일 구성이며, 깊이에 따라 더 나눠 진행할 수 있습니다.</p>
+</section>
+
+<!-- 4 LLM이란 -->
+<section class="slide">
+  <h2>먼저, AI(LLM)는 무엇인가</h2>
+  <p class="lead">아주 많은 글을 읽고 "다음에 올 말"을 잘 맞히도록 훈련된 <b>초거대 자동완성</b>입니다.</p>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>그래서 잘하는 것</h3>
+      <p>· 요약·번역·재작성<br>· 초안 만들기 (기획서·메일·보고서)<br>· 설명·아이디어·브레인스토밍<br>· 표·목록으로 정리</p></div>
+    <div class="card warn"><h3>그래서 조심할 것</h3>
+      <p>· 모르면서 <b class="warn">그럴듯하게 지어냄</b>(환각)<br>· 최신/사내 정보는 모름<br>· 숫자 계산·정확한 사실은 검증 필요</p></div>
+  </div>
+  <div class="callout tip"><span class="label">기억할 한 문장</span>AI는 <b>똑똑한 인턴</b>입니다 — 빠르고 성실하지만, 결과는 <b>당신이 검토</b>해야 합니다.</div>
+</section>
+
+<!-- 5 에이전트란 -->
+<section class="slide">
+  <h2>'챗봇'에서 '에이전트'로</h2>
+  <div class="grid grid-2">
+    <div class="card"><h3>일반 챗봇</h3><p>질문하면 답을 글로 줍니다. <br>읽고 복사해서 내가 씁니다.</p></div>
+    <div class="card hi"><h3>AI 에이전트</h3><p>목표를 주면 <b>스스로 단계를 나눠</b> 도구를 쓰고(파일 읽기·검색·실행) <b>일을 처리</b>합니다.</p></div>
+  </div>
+  <!-- mermaid 소스 (수정용):
+  flowchart LR
+    Q[질문] ==> M[모델 답변 생성] ==> A["답변(내가 사용)"]
+    G[목표] ==> P["계획·행동(도구)"] ==> O[관찰] ==>|반복| P
+    O ==> D["완료(산출물)"]
+  -->
+  <svg viewBox="0 0 880 200" role="img" aria-label="챗봇은 질문에서 답변까지 한 번의 왕복, 에이전트는 목표를 받아 행동과 관찰을 반복한 뒤 산출물을 완성" style="width:96%;max-width:880px;display:block;margin:.7em auto 0;font-family:inherit">
+    <defs>
+      <marker id="arS1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+      <marker id="arS2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd93d"/></marker>
+    </defs>
+    <text x="58" y="63" text-anchor="middle" font-size="13" font-weight="800" fill="#7eb8ff">챗봇</text>
+    <rect x="110" y="36" width="140" height="44" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/><text x="180" y="63" text-anchor="middle" font-size="12.5" fill="#cfe4ff">질문</text>
+    <line x1="250" y1="58" x2="316" y2="58" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arS1)"/>
+    <rect x="320" y="36" width="160" height="44" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.5"/><text x="400" y="63" text-anchor="middle" font-size="12.5" fill="#bff5ee">모델이 답변 생성</text>
+    <line x1="480" y1="58" x2="546" y2="58" stroke="#7eb8ff" stroke-width="2" marker-end="url(#arS1)"/>
+    <rect x="550" y="36" width="230" height="44" rx="10" fill="#1a1a2a" stroke="#9aa" stroke-width="1.4"/><text x="665" y="63" text-anchor="middle" font-size="12.5" fill="#dde">답변 — 복사해서 내가 사용</text>
+    <text x="58" y="155" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd93d">에이전트</text>
+    <rect x="110" y="128" width="120" height="44" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.5"/><text x="170" y="155" text-anchor="middle" font-size="12.5" fill="#cfe4ff">목표</text>
+    <line x1="230" y1="150" x2="286" y2="150" stroke="#ffd93d" stroke-width="2" marker-end="url(#arS2)"/>
+    <rect x="290" y="128" width="170" height="44" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.5"/><text x="375" y="155" text-anchor="middle" font-size="12.5" fill="#ffe9a8">계획 · 행동 (도구 사용)</text>
+    <line x1="460" y1="150" x2="496" y2="150" stroke="#ffd93d" stroke-width="2" marker-end="url(#arS2)"/>
+    <rect x="500" y="128" width="140" height="44" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.5"/><text x="570" y="155" text-anchor="middle" font-size="12.5" fill="#bff5ee">관찰 (결과 확인)</text>
+    <path d="M560 124 Q 470 92 385 124" fill="none" stroke="#ffd93d" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arS2)"/>
+    <text x="473" y="100" text-anchor="middle" font-size="11" fill="#ffd93d">될 때까지 반복 ⟲</text>
+    <line x1="640" y1="150" x2="686" y2="150" stroke="#ffd93d" stroke-width="2" marker-end="url(#arS2)"/>
+    <rect x="690" y="128" width="150" height="44" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.8"/><text x="765" y="155" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4ecdc4">완료 — 산출물</text>
+    <text x="440" y="194" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">구조 출처: Anthropic — Building Effective Agents (2024.12)</text>
+  </svg>
+  <p style="margin-top:.6em">예) "이 폴더의 회의록 20개를 읽고 결정사항만 한 표로 정리해줘" →
+  에이전트가 <span class="accent">파일을 직접 열어 읽고 → 정리 → 결과 파일 생성</span>까지.</p>
+  <p class="small">이번 세미나의 <span class="blue">Claude 앱</span>은 대화형, <span class="gold">Claude Code</span>는 내 컴퓨터에서 일하는 에이전트입니다.</p>
+</section>
+
+<!-- 6 두 도구 비교 -->
+<section class="slide">
+  <h2>두 도구, 언제 무엇을 쓰나</h2>
+  <table>
+    <tr><th></th><th class="blue">Claude 앱 (Cowork)</th><th class="gold">Claude Code</th></tr>
+    <tr><td class="b">어디서</td><td>브라우저·데스크톱 앱</td><td>터미널(내 컴퓨터)</td></tr>
+    <tr><td class="b">잘 맞는 일</td><td>글쓰기·요약·기획·분석·대화</td><td>내 폴더의 여러 파일 일괄 처리·자동화</td></tr>
+    <tr><td class="b">데이터</td><td>붙여넣기·파일 업로드</td><td>내 컴퓨터 파일을 직접 읽고 만듦</td></tr>
+    <tr><td class="b">난이도</td><td>아주 쉬움 (채팅)</td><td>처음만 낯섦 (복붙으로 OK)</td></tr>
+    <tr><td class="b">배우는 세션</td><td>Session 2</td><td>Session 3</td></tr>
+  </table>
+  <p class="quote">대부분의 지식업무는 <span class="blue">앱</span>으로 시작 → 반복·대량 작업은 <span class="gold">Code</span>로 확장.</p>
+</section>
+
+<!-- 7 보안 (핵심) -->
+<section class="slide">
+  <h2 class="warn">⚠ 가장 중요: 무엇을 넣어도 되나</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>넣어도 비교적 안전</h3>
+      <p>· 공개 자료·일반 지식 질문<br>· 내가 직접 쓴 초안·아이디어<br>· 익명화된(이름·번호 지운) 예시<br>· 공개된 제품/시장 정보</p></div>
+    <div class="card warn"><h3 class="warn">넣지 말 것 (기본)</h3>
+      <p>· 고객 개인정보·연락처<br>· 미공개 재무·계약·법무 비밀<br>· 비밀번호·API 키·인증서<br>· NDA·미공개 기술/소스(정책 확인 전)</p></div>
+  </div>
+  <div class="callout warn"><span class="label">원칙</span>
+    <b>"외부에 보내도 되는 메일에 첨부할 수 있나?"</b>를 기준으로 생각하세요. 애매하면 <b>익명화</b>하거나 <b>넣지 않습니다</b>. 회사 보안팀 가이드가 항상 우선합니다.</div>
+</section>
+
+<!-- 8 거버넌스 (D-level) -->
+<section class="slide">
+  <h2>의사결정자의 시선 — 왜 지금 도입인가</h2>
+  <div class="grid grid-3">
+    <div class="card hi"><div class="big-num">↑생산성</div><p style="margin-top:.4em">초안·요약·정리의 시간을 크게 단축. 사람은 판단·검토에 집중.</p></div>
+    <div class="card gold"><div class="mid-num">팀 격차</div><p style="margin-top:.4em">먼저 쓰는 조직과 아닌 조직의 속도 차이가 벌어지는 중.</p></div>
+    <div class="card blue"><div class="mid-num">통제 가능</div><p style="margin-top:.4em">데이터 정책·권한·도입 범위를 정하면 위험은 관리할 수 있음.</p></div>
+  </div>
+  <p style="margin-top:.6em">리더가 직접 써봐야 <b>현실적인 도입 정책</b>을 만들 수 있습니다. 그래서 오늘 함께 합니다.</p>
+</section>
+
+<!-- 9 핸즈온 인트로 -->
+<section class="slide">
+  <h2>🙌 핸즈온 — 첫 대화 <span class="badge app">Claude 앱</span></h2>
+  <p class="lead">지금부터 각자 노트북으로 직접 해봅니다. (사전 준비 가이드의 로그인 완료 상태)</p>
+  <ol class="steps">
+    <li><code>claude.ai</code> 로그인 → 새 대화 시작</li>
+    <li>아래 "좋은 프롬프트 6원칙"을 보며 내 업무 질문을 한 번 던진다</li>
+    <li>결과가 아쉬우면 원칙을 더해 다시 요청한다 (개선 비교)</li>
+  </ol>
+  <div class="callout tip"><span class="label">실습 데이터</span>실제 기밀은 쓰지 말고, <b>이름·숫자를 가린 예시</b>나 공개 자료로 연습하세요.</div>
+</section>
+
+<!-- 10 프롬프트 6원칙 -->
+<section class="slide">
+  <h2>좋은 프롬프트 6원칙</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>① 역할을 준다</h3><p>"너는 10년차 마케터야."</p></div>
+    <div class="card hi"><h3>② 맥락을 준다</h3><p>"대상은 40대 임원, 톤은 정중하게."</p></div>
+    <div class="card hi"><h3>③ 구체적 작업</h3><p>"3문단으로, 제목 3개 후보와 함께."</p></div>
+    <div class="card hi"><h3>④ 형식을 정한다</h3><p>"표로 / 불릿으로 / 200자 이내로."</p></div>
+    <div class="card hi"><h3>⑤ 예시를 보여준다</h3><p>"이런 느낌으로: (좋은 예 붙여넣기)"</p></div>
+    <div class="card hi"><h3>⑥ 반복해 다듬는다</h3><p>"더 짧게 / 더 친근하게 / 숫자 추가."</p></div>
+  </div>
+</section>
+
+<!-- 11 Before/After -->
+<section class="slide">
+  <h2>같은 일, 프롬프트 차이</h2>
+  <div class="grid grid-2">
+    <div class="card warn"><h3 class="warn">아쉬운 요청</h3>
+      <pre><code>회의록 요약해줘</code></pre>
+      <p class="small">→ 무난하지만 내가 원하는 형태가 아님</p></div>
+    <div class="card hi"><h3>좋은 요청</h3>
+      <pre><code>아래 회의록을 정리해줘.
+- 결정사항 / 담당자 / 기한을 <b>표</b>로
+- 미해결 이슈는 따로 불릿으로
+- 임원 보고용, 한 페이지 분량
+
+(회의록 붙여넣기)</code></pre></div>
+  </div>
+  <p class="quote">차이는 <span class="accent">'무엇을, 누구에게, 어떤 형식으로'</span>를 말해줬는지입니다.</p>
+</section>
+
+<!-- 12 자주하는 실수 -->
+<section class="slide">
+  <h2>초보가 자주 하는 실수</h2>
+  <div class="grid grid-2">
+    <div class="card warn"><h3 class="warn">검증 없이 그대로 사용</h3><p>숫자·사실·인용은 반드시 확인. AI는 틀려도 자신 있게 말합니다.</p></div>
+    <div class="card warn"><h3 class="warn">한 번에 포기</h3><p>첫 답이 아쉬워도 정상. "다시, 이렇게"로 다듬으세요.</p></div>
+    <div class="card warn"><h3 class="warn">너무 막연한 요청</h3><p>맥락·형식을 안 주면 평범한 답만 나옵니다.</p></div>
+    <div class="card warn"><h3 class="warn">기밀 무심코 입력</h3><p>붙여넣기 전 "이거 넣어도 되나?" 한 번 더.</p></div>
+  </div>
+</section>
+
+<!-- 13 과제 -->
+<section class="slide">
+  <h2>📌 실천 과제 (다음 세션 전 또는 직후)</h2>
+  <ol class="steps">
+    <li>내 업무 중 <b>AI로 시도해본 일 1건</b>을 실제로 해보기 (요약/초안/정리 등)</li>
+    <li>잘 된 점 / 아쉬운 점을 <b>화면 캡처 1~2장</b>으로 남기기</li>
+    <li>다음 세션에 쓸 <b>"내 직무에서 반복되는 업무"</b> 1~2가지 적어두기</li>
+  </ol>
+  <div class="callout tip"><span class="label">팁</span>완벽하지 않아도 됩니다. "AI에게 일을 시켜본 경험"을 만드는 게 목적입니다.</div>
+</section>
+
+<!-- 14 마무리 -->
+<section class="slide cover">
+  <span class="title-tag">Session 1 끝</span>
+  <h1>오늘의 한 줄<br><span class="accent">"AI는 똑똑한 인턴, 검토는 내 몫"</span></h1>
+  <p class="sub">다음 세션: <b class="blue">Claude 앱으로 일하기</b> — Projects와 Artifacts로<br>내 직무 업무를 실제로 자동화합니다.</p>
+  <p class="foot">질문은 진행자에게 · ←/→ 로 다시 보기</p>
+</section>
+
+<script src="assets/slides.js"></script>
+</body>
+</html>

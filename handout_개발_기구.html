@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>직무별 핸드아웃 — 기구/ME 설계</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:940px;margin:0 auto;padding:5vh 6vw 10vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.5em 0 2vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.4vh}
+h3{font-size:1.08em;color:#4ecdc4;margin:1.2vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.warn{border-color:#ff6b6b}.card.tip{border-color:#4ecdc4}
+.scn{border-left:3px solid #4ecdc4;padding:.5em 0 .5em 1em;margin:.6em 0;background:#0c1a18;border-radius:0 8px 8px 0}
+.scn .t{color:#4ecdc4;font-weight:700}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.9em;white-space:pre-wrap;display:block;line-height:1.6}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.94em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .7em;vertical-align:top}
+td{padding:.5em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+.mat{color:#4ecdc4;font-weight:600}.mat.new{color:#ffd93d}.mat.lab{color:#ff9e6b}
+.foot{margin-top:4vh;border-top:1px solid #1a2a3a;padding-top:1.6vh;color:#667;font-size:.82em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}.scn{background:#eef7f5}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">직무별 핸드아웃 · 기구/ME(기계) — 아직 안 쓰는 팀을 위한 '시작' 가이드</span>
+  <h1>기구/ME 설계 <span class="accent">×</span> AI</h1>
+  <p class="sub">인클로저·브라켓·사출물·방열을 다루는 팀이 2025–2026 기준 현실적으로 쓸 수 있는 범위와 툴·사례입니다. (양산 최종 CAD 판단은 사람 몫)</p>
+
+  <h2>① 활용 가능 범위 — 지금 바로 되는 것</h2>
+  <div class="scn"><span class="t">1. CAD 스크립팅·매크로 자동화</span><p>SolidWorks VBA/API·FreeCAD Python 생성(PDF 일괄 출력, 속성 추출, 도번 변경 등 반복작업). 초안 ~80%, 검증 필수. (범용 LLM, 진입장벽 최저)</p></div>
+  <div class="scn"><span class="t">2. 컨셉·구조 아이데이션</span><p>하중·재료·공법 조건 → 위상최적화/제너레이티브로 수십~수백 안 생성. 경량화·부품 통합 방향 탐색.</p></div>
+  <div class="scn"><span class="t">3. 자료·규격 리서치 & 문서화</span><p>재료 스펙(내열·난연 UL94 등)·공차/끼워맞춤·표준 Q&A, 설계검토·DFM 리포트 초안.</p></div>
+  <div class="scn"><span class="t">4. DfM/사출 검토 보조</span><p>드래프트각·살두께 편차·언더컷·리브/보스 비례 1차 자동 검토(peer-check). 최종 판단은 엔지니어.</p></div>
+  <div class="scn"><span class="t">5. 시뮬레이션 사전선별</span><p>AI 서로게이트로 열/구조 what-if를 분~초 단위 평가 → 정밀 CAE 전에 안 좁히기.</p></div>
+  <div class="scn"><span class="t">6. 방열 설계 탐색</span><p>래티스/TPMS 히트싱크·컨포멀 쿨링 채널 생성(implicit modeling). AM/3D프린팅 부품에 강점.</p></div>
+
+  <h2>② 같이 쓰면 좋은 툴</h2>
+  <table>
+    <tr><th>툴</th><th>용도</th><th>성숙도</th></tr>
+    <tr><td class="b">범용 LLM (Claude·GPT)</td><td>CAD 매크로/스크립트·규격 Q&A·문서</td><td class="mat">즉시(진입 최저)</td></tr>
+    <tr><td class="b">CoLab / Fictiv / Protolabs DFM</td><td>업로드 형상 즉시 DfM·사출 검토</td><td class="mat">웹 기반 성숙</td></tr>
+    <tr><td class="b">Autodesk Fusion (Generative)</td><td>위상최적화·제너레이티브·DFM 체크</td><td class="mat">성숙</td></tr>
+    <tr><td class="b">PTC Creo (GDX) / Siemens NX Copilot</td><td>히스토리 내 위상최적화 / 자연어 설계·DFM 어드바이저</td><td class="mat">성숙 / 신규(2025)</td></tr>
+    <tr><td class="b">nTop</td><td>implicit 모델링·래티스 방열·경량화</td><td class="mat">AM·방열 특화</td></tr>
+    <tr><td class="b">Ansys SimAI</td><td>학습된 시뮬 서로게이트(열·구조 분 단위)</td><td class="mat new">상용(자사 시뮬 데이터 필요)</td></tr>
+    <tr><td class="b">Zoo Design Studio (Text-to-CAD)</td><td>텍스트→편집가능 CAD(브라켓·마운트)</td><td class="mat lab">초기·유망(검증 필수)</td></tr>
+    <tr><td class="b">NVIDIA PhysicsNeMo / PhysicsX</td><td>물리 AI 서로게이트(대규모)</td><td class="mat lab">R&D급(GPU·ML 역량)</td></tr>
+  </table>
+
+  <h2>③ 사례 (출처 표기)</h2>
+  <div class="card">
+    <p>· <b>GM 시트 브라켓</b>(Fusion 제너레이티브): 8개 부품 → 1개, <b>40% 경량·20% 고강도</b>(150+ 안 자동 생성).</p>
+    <p>· <b>Sumitomo Riko</b>(Ansys SimAI, 2025): 러버부시 예측을 5분 미만으로, 설계당 1시간+ 절감, 10배+ 가속.</p>
+    <p>· <b>방열</b>(nTop): Siemens Energy 메싱 64h→2h(약 95%↓), Lockheed 열교환기 설계 수개월→수일.</p>
+    <p>· <b>ISUZU 기어</b>(Fusion): 래틀 노이즈 저감 + 시제품 43% 경량.</p>
+  </div>
+
+  <h2>④ 주의 · 한계 (팅크웨어 기구팀 맞춤)</h2>
+  <div class="card warn">
+    <p>· <b class="warn">양산 최종 CAD 판단은 사람이</b>: 제너레이티브·Text-to-CAD 출력은 사출 가공성(드래프트·분할선·게이트·휨)·공차·체결/실링에서 그대로 못 씀. "초안 80%, 검증 필수".</p>
+    <p>· <b>사출 인클로저는 제너레이티브의 약점</b>: 유기적 위상최적화는 AM/금속에 강함. 주력(사출 인클로저)엔 <b>DfM 보조·스크립팅·시뮬 사전선별</b>이 더 실질적.</p>
+    <p>· 시뮬 서로게이트는 사내 CAE 데이터·GPU·ML 역량 필요(SimAI는 비교적 진입 쉬움, PhysicsNeMo는 R&D급).</p>
+    <p>· 보안/IP: 외부 LLM·클라우드에 설계 형상·스펙 업로드 시 사내 정책 검토 필수. 벤더 수치(500×, 10–100×)는 마케팅·특정 조건.</p>
+  </div>
+
+  <h2>⑤ 권장 시작 순서</h2>
+  <div class="card tip"><p><b>1단계</b> 범용 LLM 기반 CAD 매크로·규격 Q&A·문서화 → <b>2단계</b> 웹 DfM 사전검토(CoLab·Fictiv) → <b>3단계</b> Fusion/Creo 제너레이티브로 브라켓·방열 부품 컨셉 탐색 → <b>4단계</b> 시뮬 서로게이트(SimAI)는 사내 CAE 데이터 축적 후.</p></div>
+
+  <div class="foot">
+    출처: <a href="https://www.autodesk.com/customer-stories/general-motors-generative-design">GM/Autodesk</a> ·
+    <a href="https://www.ansys.com/news-center/press-releases/10-8-25-ansys-ai-accelerates-sim-for-sumitomo-riko">Ansys SimAI/Sumitomo Riko</a> ·
+    <a href="https://cdfam.com/ntop-siemens/">nTop/Siemens</a> ·
+    <a href="https://blogs.sw.siemens.com/nx-design/">Siemens NX Copilot</a> ·
+    <a href="https://zoo.dev/text-to-cad">Zoo Text-to-CAD</a> ·
+    <a href="https://www.colabsoftware.com/post/how-to-use-ai-to-do-an-injection-molding-dfm-check">사출 DfM AI</a>.
+    벤더 수치는 특정 조건 기준 — 일반화 주의. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

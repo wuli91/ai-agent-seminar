@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기업용 AI 에이전트 서비스·플랫폼 비교 (국내·해외 + Bedrock·Vertex AI)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:5vh 5vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.35em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.13em;margin:.6em 0 1vh}
+.toc{background:#0e1722;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.3em;margin:2vh 0}
+.toc a{color:#7eb8ff;text-decoration:none;margin-right:1.1em;font-size:.93em;white-space:nowrap}
+h2{font-size:1.5em;color:#7eb8ff;margin:4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.8vh}
+h3{font-size:1.12em;color:#4ecdc4;margin:1.6vh 0 .5vh}
+p,li,td{color:#ccc;font-size:.98em}
+ul,ol{margin:.4em 0 .9em 1.3em}li{margin:.26em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.purple{color:#c084fc}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.8em 0}
+.card.rec{border-color:#4ecdc4;background:#0c1a18}.card.warn{border-color:#ff6b6b;background:#160e0e}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.86em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .55em;border-bottom:2px solid #2a4a6a;vertical-align:top}
+td{padding:.45em .55em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+td.h{color:#9fb4c8;font-weight:600;white-space:nowrap}
+.k{color:#4ecdc4;font-weight:600}.ko{color:#ffd93d;font-weight:600}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.8em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}th{background:#e7eef7;color:#003366}.k{color:#0a8a7d}.ko{color:#9a7b00}.callout{background:#f3f7fb}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.toc{display:none}}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}table{font-size:.76em}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">심화 조사 자료 · 의사결정 참고 (2025–2026 · 웹 리서치 기반)</span>
+  <h1>기업용 AI <span class="accent">에이전트 서비스·플랫폼</span> 비교</h1>
+  <p class="sub">AI3(웍스AI)와 유사한 <b>국내·해외 기업용 AI 에이전트 서비스</b>, 그리고 <b>AWS Bedrock·Google Vertex AI</b>(+Azure) 클라우드 플랫폼을 한 문서에 비교했습니다.</p>
+
+  <div class="callout"><span class="label">먼저 — 3개 레이어로 보면 쉽다</span>
+    ① <b>모델 레이어</b>(Claude·GPT·Gemini·EXAONE 등 LLM 자체) ② <b class="blue">클라우드 플랫폼 레이어</b>(Bedrock·Vertex·Azure — 모델을 골라 에이전트를 만들고 운영) ③ <b class="accent">애플리케이션·서비스 레이어</b>(완성된 업무 비서/에이전트 — AI3·뤼튼·Glean·Copilot 등). 같은 "AI 에이전트"라도 <b>어느 층을 사는지</b>가 다릅니다.</p></div>
+  <div class="callout warn"><span class="label">⚠ 빠르게 변하는 영역</span>제품명·가격·밸류에이션·출시단계(발표 vs GA)가 분기마다 바뀝니다. 가격은 대부분 비공개·맞춤이며 성능/절감 수치는 <b>벤더 주장</b>이 많습니다. 도입 전 재확인·PoC 필수.</div>
+
+  <div class="toc"><b style="color:#aaa">목차 </b>
+    <a href="#kr">1. 국내 서비스</a> <a href="#global">2. 해외 서비스</a> <a href="#cloud">3. Bedrock vs Vertex AI</a> <a href="#take">4. 종합 시사점</a></div>
+
+  <!-- ============ 1 국내 ============ -->
+  <h2 id="kr">1. 국내 기업용 AI 에이전트 / 플랫폼</h2>
+  <p>크게 <b class="accent">업무포털·비서형</b>(외부 멀티 LLM을 오케스트레이션)과 <b class="gold">도메인특화·모델형</b>(자체 한국어 LLM·온프레)로 나뉩니다.</p>
+  <table>
+    <tr><th>회사 / 제품</th><th>유형</th><th>LLM</th><th>타깃 · 배포</th><th>강점 · 비고</th></tr>
+    <tr><td class="b">AI3 — 웍스AI</td><td class="k">업무포털형</td><td>멀티(외부): GPT-4o·Claude·DeepL 등</td><td>전직원 업무 / SaaS·온프레</td><td>40+ 업무도구·종량제·MS365 연동. 자체 LLM 없음</td></tr>
+    <tr><td class="b">뤼튼 (Wrtn) — 뤼튼AX</td><td class="k">업무포털형</td><td>멀티(외부): GPT·Claude·Gemini 자동선택</td><td>소비자 슈퍼앱 + 기업/공공 AX</td><td>대규모 사용자·급성장. AX는 2025.9 출범 신사업(초기)</td></tr>
+    <tr><td class="b">올거나이즈 (Allganize) — Alli</td><td class="k">업무포털형</td><td>멀티 + 자체 "Alpha"(한국어)</td><td>금융·제조·공공 / SaaS·온프레·에어갭</td><td>노코드 앱마켓·MCP 에이전트빌더, SOC2/ISO27001. 고객사·일본1위는 주장</td></tr>
+    <tr><td class="b">사이오닉AI — STORM</td><td class="k">업무포털형</td><td>멀티 + RAG 엔진</td><td>엔터프라이즈 거버넌스 / 노코드</td><td>네이버클라우드 전략투자. 신생</td></tr>
+    <tr><td class="b">업스테이지 (Upstage) — Solar·Document AI</td><td class="ko">도메인/모델형</td><td><b>자체</b> Solar sLLM·VLM</td><td>금융·보험·제조·의료 / API·온프레</td><td>문서추출 강점·조달청 1호. 다음(Daum) 인수 보도(시너지 미확정)</td></tr>
+    <tr><td class="b">코난테크놀로지 — Konan LLM</td><td class="ko">도메인/모델형</td><td><b>자체</b> 한국어 LLM</td><td>공공·국방·에너지·의료 / 온프레 어플라이언스</td><td>소버린·상장사. 도입효과는 기대치</td></tr>
+    <tr><td class="b">솔트룩스 (Saltlux) — LUXIA</td><td class="ko">도메인/모델형</td><td><b>자체</b> LUXIA + 외부협업</td><td>공공·기록·법률·국방 / 어플라이언스</td><td>고보안·상장사. 순위는 시점·주장</td></tr>
+    <tr><td class="b">포티투마루 (42Maru) — LLM42</td><td class="ko">도메인/모델형</td><td><b>자체</b> 한국어 sLLM</td><td>도메인 B2B/B2G / 온프레</td><td>국내 1호 LLM 신뢰성 인증. 규모 작음</td></tr>
+    <tr><td class="b">딥서치 (DeepSearch)</td><td class="purple">단일도메인(금융)</td><td>외부 LLM + 자체 금융데이터</td><td>금융 분석·투자심사</td><td>실시간 공시·뉴스로 환각↓, AI3와 제휴(금융 에이전트, 발표)</td></tr>
+    <tr><td class="b">라이너 (Liner)</td><td class="purple">검색→인텔리전스</td><td>외부 LLM + 출처기반 검색</td><td>컨설팅·투자·R&D 전문가</td><td>출처 제공 신뢰형. B2B는 2026 초기</td></tr>
+    <tr><td class="b">마키나락스 (MakinaRocks)</td><td class="purple">단일도메인(제조)</td><td>산업 특화 LLM</td><td>예지보전·PLC·디지털팩토리</td><td>제조 현장 특화. 일반 업무비서 아님</td></tr>
+  </table>
+  <div class="card"><h3>주요 고객 · 성공 사례 · 비용 <span class="small" style="color:#888">([주장]=벤더 주장)</span></h3>
+    <p>· <b>AI3 웍스AI</b> — LS그룹(전 계열사 ~1.2만~1.5만명)·포스코인터·현대건설·통일부·서울시교육청. "ChatGPT 기업용 대비 <b>90%+ 절감</b>"<span class="warn small">[주장]</span>. <b class="accent">종량제·기본료 0</b>(입력 1K 10원·출력 1K 50원, 세팅비 30만원)</p>
+    <p>· <b>뤼튼AX</b> — 외부 named 고객 제한적. <b>자사 내부</b> 상담 73%↓·재무 40%↓<span class="warn small">[자사]</span>. B2B 비공개·맞춤</p>
+    <p>· <b>올거나이즈 Alli</b> — KB증권·현대카드·한화생명·LH / 日 노무라·SMBC·JAL·외무성, 300+ 고객. 노무라 문의 75%+ 자동화·주 11h 절감<span class="warn small">[주장]</span>. 비공개·맞춤</p>
+    <p>· <b>업스테이지</b> — 한화생명(OCR 95%+)·카카오·조달청 1호. 문서처리 60%+ 자동화<span class="warn small">[주장]</span>. <b class="accent">공개 단가</b>(Solar Pro2 $0.15/$0.6 per1M, Document Parse $0.01/p)</p>
+    <p>· <b>코난</b> — 한국남부발전(<b>41억 계약</b>)·대법원·국방 20+기관 / <b>솔트룩스</b> — 행안부·우리은행·NH농협 등 2,000+기관 / <b>포티투마루</b> — 행안부 범정부 초거대AI·방사청 → 모두 <b>공공 구축형(수십억 계약)</b></p>
+    <p>· <b>마키나락스</b> — 삼성·현대차·LG엔솔 등 제조+국방('25 수주 204억) / <b>딥서치</b> — 은행·증권·운용사(금융 에이전트 '26 Q1<span class="warn small">[발표]</span>) / <b>라이너</b> — B2C 1,200만+(구독 월 19,800원) / <b>사이오닉</b> — 금융·제조 PoC(네이버클라우드 투자)</p>
+  </div>
+  <div class="callout tip"><span class="label">국내 — 한 줄 정리</span>전사 생산성·빠른 확산이 우선이면 <b class="accent">업무포털형(AI3·뤼튼·올거나이즈)</b>, 내부망·고보안·자체모델이 필요하면 <b class="gold">도메인/모델형(업스테이지·코난·솔트룩스)</b>. 가격은 대부분 비공개·맞춤(공개된 건 AI3 종량제·업스테이지 토큰단가·라이너 구독 정도).</div>
+
+  <!-- ============ 2 해외 ============ -->
+  <h2 id="global">2. 해외 기업용 AI 에이전트 서비스</h2>
+  <table>
+    <tr><th>회사 / 제품</th><th>카테고리</th><th>모델</th><th>가격 형태</th><th>강점 · 비고</th></tr>
+    <tr><td class="b">Microsoft — M365 Copilot + Copilot Studio</td><td>범용 업무비서+빌더</td><td>멀티: GPT + <b>Claude</b>(’25.9~) + Azure</td><td>좌석 $30 + Studio 소비형</td><td>Office/Teams 내장·배포기반 압도. 가격구조 복잡</td></tr>
+    <tr><td class="b">Google — Gemini Enterprise (구 Agentspace)</td><td>범용 업무비서+허브</td><td>Gemini + 서드파티 에이전트</td><td>좌석 $21~$30</td><td>멀티벤더 데이터 커넥터. GA ’25.10</td></tr>
+    <tr><td class="b">OpenAI — ChatGPT Enterprise + AgentKit</td><td>범용 비서+빌더</td><td>자체 GPT</td><td>좌석 $20~ + API 소비형</td><td>모델 선두·생태계. AgentKit는 beta</td></tr>
+    <tr><td class="b">Anthropic — Claude for Enterprise</td><td>범용 비서+코딩</td><td>자체 Claude</td><td>좌석 + 토큰 소비 커밋</td><td>안전성·긴 컨텍스트·Claude Code. 이중과금 유의</td></tr>
+    <tr><td class="b">Glean — Work AI</td><td>사내지식·검색→에이전트</td><td><b>모델 중립</b>(15+ 자동 라우팅)</td><td>좌석 비공개·맞춤(100석~)</td><td>100+ 커넥터·권한인지 지식그래프. 가격 불투명</td></tr>
+    <tr><td class="b">Sierra (Bret Taylor)</td><td>고객응대 전용</td><td>멀티(Constellation 15+)</td><td><b>성과기반</b>(해결 시 과금)</td><td>대형 고객 다수. CX 자율 에이전트 선두</td></tr>
+    <tr><td class="b">Salesforce — Agentforce</td><td>고객응대·세일즈(CRM)</td><td>자체 Atlas + BYO</td><td>대화/액션 크레딧 + 좌석</td><td>CRM 데이터 결합. 가격모델 잦은 변경</td></tr>
+    <tr><td class="b">ServiceNow — Now Assist (+Moveworks)</td><td>사내 ITSM/HR/검색</td><td>자체 + 파트너</td><td>좌석 상위티어 가산</td><td>워크플로 자동화 깊이. Moveworks 통합 진행중</td></tr>
+    <tr><td class="b">Writer.com</td><td>부서특화(마케팅·금융·의료)</td><td><b>자체</b> Palmyra</td><td>좌석 $18~ + 맞춤</td><td>자체모델로 비용·보안 통제</td></tr>
+    <tr><td class="b">Cohere — North</td><td>보안 최우선 사내비서</td><td>자체 Cohere + MCP</td><td>맞춤</td><td>on-prem/air-gap/VPC, 규제·정부</td></tr>
+    <tr><td class="b">Decagon</td><td>고객응대(CX)</td><td>멀티 + 파인튜닝</td><td>소비형(행위 기반)</td><td>디플렉션 ~70%+(주장)</td></tr>
+    <tr><td class="b">Cognition — Devin</td><td>자율 SW엔지니어</td><td>자체 + Claude 등</td><td>소비형 ACU</td><td>VPC/SSO 엔터프라이즈. 결과 비결정적·검증 필요</td></tr>
+    <tr><td class="b">Dust · Lindy · Relevance AI</td><td>범용 빌더(중소~중견)</td><td>멀티(BYO)</td><td>좌석/크레딧/액션 소비형</td><td>빠른 도입·노코드. 대형 거버넌스엔 약함</td></tr>
+  </table>
+  <div class="card"><h3>주요 고객 · 성공 사례 · 가격 <span class="small" style="color:#888">([주장]=벤더/벤더후원 수치)</span></h3>
+    <p>· <b>MS 365 Copilot</b> — Vodafone(68,000석)·Barclays·Accenture. Vodafone 주 4h 절감<span class="warn small">[주장]</span>. <b>$30/석·월</b> + Studio 크레딧($200/25K)</p>
+    <p>· <b>Google Gemini Enterprise</b> — Verizon·Klarna·Best Buy·Macquarie. Verizon CS 매출 ~40%↑<span class="warn small">[주장]</span>. <b>$21~$30/석·월</b></p>
+    <p>· <b>OpenAI ChatGPT Enterprise</b> — BBVA(120,000석)·Morgan Stanley·Lowe's. BBVA 주 ~3h 절감<span class="warn small">[주장]</span>. 추정 <b>~$60/석·월</b></p>
+    <p>· <b>Anthropic Claude Enterprise</b> — Snowflake·Pfizer·Bridgewater. Bridgewater 분석 50–70%↓<span class="warn small">[주장]</span>. 좌석 $10~20 + <b>토큰 소비약정</b></p>
+    <p>· <b>Glean</b> — Databricks·Samsung·Reddit. 주 5h 절감<span class="warn small">[주장]</span>. <b>~$45–65/석·월</b>(100석~)</p>
+    <p>· <b>Sierra</b> — ADT·Sonos·WeightWatchers(F50 40%+). WW 세션 ~70% 처리<span class="warn small">[주장]</span>. <b>성과기반(해결 시 과금)</b></p>
+    <p>· <b>Salesforce Agentforce</b> — Wiley·OpenTable. OpenTable 웹문의 73% 처리<span class="warn small">[주장]</span>. <b>$0.10/액션</b> 또는 $125/석~</p>
+    <p>· <b>Decagon</b> — Notion·Duolingo·Bilt. Bilt 75% 해결·$1.75M 절감<span class="warn small">[주장]</span>. per-conversation / <b>Devin</b> — Goldman·Citi·Mercedes(COBOL 8개월→8일<span class="warn small">[주장]</span>). <b>$2.25/ACU</b>·Team $500</p>
+    <p>· <b>Writer</b> Accenture·Intuit($29/석~) · <b>Cohere North</b> RBC·Bell·Dell(보안·비공개) · <b>ServiceNow+Moveworks</b> deflection 88%<span class="warn small">[주장]</span>(좌석 +$30–60) · <b>Dust/Lindy/Relevance</b> Canva·KPMG(크레딧·소비형 €19~$299)</p>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>카테고리 5분류</h3>
+      <p>· <b>범용 업무비서</b>: MS·Google·OpenAI·Anthropic·Dust<br>· <b>사내지식·검색</b>: Glean·Cohere·(Moveworks)<br>· <b>고객응대(CX)</b>: Sierra·Decagon·Agentforce<br>· <b>부서특화</b>: Writer·Agentforce·ServiceNow<br>· <b>자율코딩</b>: Devin</p></div>
+    <div class="card rec"><h3>관통 트렌드</h3>
+      <p>· <b>멀티모델/모델중립</b>이 사실상 표준(락인 회피)<br>· 과금이 <b>좌석 → 소비/성과형</b>으로 이동(TCO 예측 어려움 → 모니터링 필수)<br>· <b>데이터·보안</b>이 경쟁축(on-prem·VPC·EU 호스팅)<br>· 빅테크=배포기반, 스타트업=버티컬 깊이·성과책임</p></div>
+  </div>
+
+  <!-- ============ 3 클라우드 ============ -->
+  <h2 id="cloud">3. AWS Bedrock vs Google Vertex AI (vs Azure AI Foundry)</h2>
+  <p>"완성 서비스"가 아니라 <b>직접 에이전트를 만들고 운영</b>하는 클라우드 플랫폼입니다. 셋 다 멀티모델·관리형 런타임·가드레일·소비기반 과금·"고객 데이터 모델 학습 미사용"을 제공합니다.</p>
+  <table>
+    <tr><th>항목</th><th>AWS Bedrock</th><th>Google Vertex AI <span class="small">(→Gemini Enterprise)</span></th><th>Azure AI Foundry (참고)</th></tr>
+    <tr><td class="h">자사 주력 모델</td><td>Amazon Nova</td><td>Gemini 3.x</td><td>OpenAI GPT(독점 접근)</td></tr>
+    <tr><td class="h">모델 폭</td><td>Claude·Llama·Mistral·Cohere·Nova</td><td>Model Garden 200+</td><td>카탈로그 11,000+</td></tr>
+    <tr><td class="h">Claude 제공</td><td class="k">✅ (Anthropic 핵심 파트너)</td><td class="k">✅ (Opus/Sonnet/Haiku)</td><td class="k">✅ (Claude+GPT 동시, 유일)</td></tr>
+    <tr><td class="h">에이전트 빌드</td><td>AgentCore + 오픈 프레임워크(Strands·LangGraph·CrewAI)</td><td>ADK(코드)+Agent Studio(로우코드)</td><td>Foundry Agent Service</td></tr>
+    <tr><td class="h">런타임</td><td>AgentCore Runtime(GA ’25.10, 8h·microVM 격리)</td><td>Agent Engine(서브초 콜드스타트·장기실행)</td><td>Foundry Agent Service(호스팅·관측)</td></tr>
+    <tr><td class="h">RAG / 가드레일</td><td>Knowledge Bases / Guardrails</td><td>Vertex Search·RAG / Model Armor</td><td>통합 RAG / Guardrails(인젝션 방어)</td></tr>
+    <tr><td class="h">A2A / MCP</td><td>지원(Gateway 경유)</td><td>지원</td><td>지원</td></tr>
+    <tr><td class="h">가격 모델</td><td>소비/토큰 + 런타임·가드레일 별도</td><td>토큰 + 런타임·검색·세션 별도</td><td>토큰/소비 + 서비스별</td></tr>
+    <tr><td class="h">데이터 학습</td><td>미사용·제3자 미공유</td><td>기본 미사용</td><td>미사용·데이터 레지던시</td></tr>
+    <tr><td class="h">락인</td><td>AWS 종속(프레임워크는 개방)</td><td>GCP 종속(모델은 개방)</td><td>Azure/M365 생태계 종속</td></tr>
+  </table>
+  <div class="card"><h3>주요 고객 · 성공 사례 <span class="small" style="color:#888">([주장]=벤더 사례 수치)</span></h3>
+    <p>· <b>AWS Bedrock</b> — Lonely Planet(일정 생성 비용 80%↓)·Lyft(해결시간 87%↓)·Robinhood(AI 비용 80%↓)·Pfizer·DoorDash<span class="warn small">[주장]</span>. 10만+ 조직 사용</p>
+    <p>· <b>Google Vertex AI</b> — Mercado Libre·Commerzbank(자율해결 70%)·Macquarie(10만+시간 회수)·Lloyds<span class="warn small">[주장]</span>. 330개 고객이 각 1조+ 토큰 처리</p>
+    <p>· <b>Azure AI Foundry</b> — Fujitsu(제안서 생산성 67%↑)·UBS·Coca-Cola(60일 구축)·NTT DATA<span class="warn small">[주장]</span>. Foundry 7만+ 고객, Fortune 500의 80%</p>
+  </div>
+  <div class="card"><h3>선택 기준</h3>
+    <p>· <b class="accent">AWS Bedrock</b>: 이미 AWS 네이티브(IAM·VPC) + 멀티모델 + 프레임워크 비종속 프로덕션 런타임(AgentCore)이 필요할 때. Claude를 AWS 경계·결제 안에서.</p>
+    <p>· <b class="accent">Google Vertex AI</b>: GCP·BigQuery 데이터 스택, Gemini 가성비·장컨텍스트, 로우코드+코드 일관 + 지식근로자 앱 통합.</p>
+    <p>· <b class="accent">Azure AI Foundry</b>: M365/Azure 중심 + GPT와 Claude를 한 곳에서.</p>
+    <p>· <b class="accent">Anthropic API 직접</b>: 멀티클라우드 중립 + 최신 Claude를 가장 먼저·라우팅 지연 없이.</p>
+  </div>
+  <div class="callout tip"><span class="label">Claude 사용 기업(=현재 우리)에게 핵심</span>Claude는 <b>Bedrock·Vertex·Azure·Anthropic 직접</b> 네 경로 모두에서 제공됩니다. 즉 <b>모델이 클라우드 선택을 강제하지 않습니다.</b> 결정은 기존 클라우드 정합성·거버넌스·결제 통합·런타임 기능으로 — 이는 멀티클라우드 협상력·이전성에 유리합니다.</div>
+
+  <h3 style="margin-top:2.5vh">비용 추정 요약 (클라우드 플랫폼)</h3>
+  <table>
+    <tr><th>항목</th><th>AWS Bedrock</th><th>Google Vertex AI</th><th>Azure AI Foundry</th></tr>
+    <tr><td class="h">주력 모델 토큰<br>(per 1M 입력/출력)</td><td>Claude Sonnet $3/$15, Opus $5/$25, Nova Pro $0.80/$3.20</td><td>Gemini 2.5 Pro $1.25/$10, Flash $0.30/$2.50</td><td>GPT-4o $2.50/$10, GPT-4.1 $2/$8</td></tr>
+    <tr><td class="h">에이전트 런타임</td><td>AgentCore $0.0895/vCPU·h + $0.00945/GB·h (초당, I/O 무과금)</td><td>Agent Engine $0.0864/vCPU·h + $0.0090/GB·h (월 50h 무료)</td><td>런타임 무료(토큰·툴만 과금)</td></tr>
+    <tr><td class="h">RAG/벡터</td><td>KB 무료, OpenSearch Serverless <b>~$350/월~</b> / S3 Vectors 90%↓</td><td>Vertex Search ~$1.5–6/1K쿼리(추정)</td><td>Azure AI Search 별도 SKU(수백$)</td></tr>
+    <tr><td class="h">가드레일/검색</td><td>Guardrails $0.15/1K · Gateway검색 $0.025/1K</td><td>그라운딩=모델 토큰가</td><td>Bing 그라운딩 $35/1K</td></tr>
+    <tr><td class="h">약정 할인</td><td>Batch 50%·캐싱 90%·Provisioned Throughput</td><td>CUD·Batch 50%·캐싱</td><td>PTU·ACU 선구매</td></tr>
+  </table>
+  <div class="grid2">
+    <div class="card rec"><h3>Claude 가격 패리티 (핵심)</h3>
+      <p>· Claude 토큰 단가는 <b>Anthropic 직접·Bedrock·Vertex(global)에서 사실상 동일</b>(Sonnet $3/$15, Opus $5/$25)</p>
+      <p>· 단, <b>리전 엔드포인트는 ~10% 프리미엄</b>(데이터 거주용)</p>
+      <p>· 세 곳 모두 Batch 50%·캐싱 90% 할인. <b>"어디서 돌리든 토큰 단가는 비슷"</b> — 차이는 부대비용·약정에서</p></div>
+    <div class="card"><h3>예시 비용 시나리오 <span class="small warn">(추정)</span></h3>
+      <p>중간 사용 에이전트(월 ~500만 입력+150만 출력 토큰, RAG·가벼운 도구):</p>
+      <p>· 토큰: Gemini Flash ~$5–10 / Sonnet·GPT-4o ~$30–40</p>
+      <p>· 런타임: 초당·I/O 무과금이라 소규모면 수~수십$(무료티어 내일 수도)</p>
+      <p>· <b class="warn">벡터스토어가 고정비 핵심</b>(OpenSearch ~$350/월 등) → 총 <b>월 $50–600 밴드</b>(설계 편차 큼)</p></div>
+  </div>
+
+  <!-- ============ 4 종합 ============ -->
+  <h2 id="take">4. 종합 시사점 (팅크웨어 관점)</h2>
+  <div class="card rec">
+    <p><b>① "무엇을 살 것인가"를 레이어로 결정.</b> 빠른 전사 생산성 = <b>완성 서비스</b>(AI3 같은 국산 포털 또는 MS Copilot/Glean), 우리만의 에이전트·시스템 연동 = <b>클라우드 플랫폼</b>(Bedrock/Vertex), 코딩·범용 최전선 = <b>Claude 직접</b>.</p>
+    <p><b>② 역할 분담이 현실적.</b> 개발팀=Claude(Code) 직접 + 필요시 Bedrock/Vertex, 비개발 직군=국산 업무 포털 또는 Claude 앱/Copilot.</p>
+    <p><b>③ 멀티모델·소비형 과금이 표준</b> → 단일 락인 회피 + 토큰/액션 비용 모니터링 + 거버넌스(데이터 학습 미사용·SSO·감사)를 먼저 세팅.</p>
+    <p><b>④ 고보안·내부망 요구</b>(HW 설계 IP 등)가 크면 on-prem/VPC(국산 도메인형·Cohere·Bedrock VPC)를 별도 트랙으로.</p>
+  </div>
+  <p class="small" style="color:#888">관련 문서: <a href="tco_compare.html"><b>TCO 비교(개발자 $300/월 기준)</b></a> · <a href="agents_landscape.html">AI 에이전트 지형도</a> · <a href="korea_ai_ai3.html">한국 AI 분석(AI3)</a> · <a href="plans_security.html">요금제·보안</a></p>
+
+  <div class="foot">
+    주요 출처 — 국내: <a href="https://www.allganize.ai/">Allganize</a>, <a href="https://www.upstage.ai/">Upstage</a>, <a href="https://platum.kr/archives/285216">뤼튼</a>, <a href="https://www.etnews.com/20250326000167">코난</a>, <a href="https://docs.wrks.ai/pricing">웍스AI 가격</a> ·
+    해외: <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2025/09/24/expanding-model-choice-in-microsoft-365-copilot/">MS Copilot+Claude</a>, <a href="https://www.cnbc.com/2025/10/09/google-launches-gemini-enterprise-to-boost-ai-agent-use-at-work.html">Gemini Enterprise</a>, <a href="https://www.salesforce.com/news/press-releases/2025/05/15/agentforce-flexible-pricing-news/">Agentforce</a>, <a href="https://www.glean.com/press/glean-raises-150m-series-f-at-7-2b-valuation-to-accelerate-enterprise-ai-agent-innovation-globally">Glean</a>, <a href="https://sierra.ai/blog/constellation-of-models">Sierra</a>, <a href="https://techcrunch.com/2025/08/06/coheres-new-ai-agent-platform-north-promises-to-keep-enterprise-data-secure/">Cohere North</a> ·
+    클라우드: <a href="https://aws.amazon.com/bedrock/agentcore/">Bedrock AgentCore</a>, <a href="https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-agent-platform">Vertex/Gemini Enterprise</a>, <a href="https://devblogs.microsoft.com/foundry/foundry-agent-service-ga/">Azure Foundry</a>, <a href="https://www.anthropic.com/news/claude-in-microsoft-foundry">Claude in Foundry</a>.
+    <br>가격·출시단계·밸류에이션은 빠르게 변동, 성능/절감 수치는 벤더 주장 다수 — 도입 시점 재확인·PoC 권장. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

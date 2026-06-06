@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 3 — Claude Code 입문</title>
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body>
+<div class="kicker">AI Agent 활용 세미나 · Session 3</div>
+
+<!-- 1 -->
+<section class="slide cover active">
+  <span class="title-tag">Session 3 / 4 · 약 90분</span>
+  <h1>Claude Code <span class="gold">입문</span><br>비개발자도 쓰는 터미널 AI</h1>
+  <p class="sub">"터미널? 검은 화면?" — 겁먹지 마세요.<br>오늘은 <b>복사·붙여넣기와 한국어 지시</b>만으로 파일을 자동화합니다.</p>
+  <p class="foot">핸즈온: 샘플 폴더로 실제 자동화 1건</p>
+</section>
+
+<!-- 2 왜 -->
+<section class="slide">
+  <h2>왜 Claude Code인가 — 앱과의 차이</h2>
+  <table>
+    <tr><th></th><th class="blue">Claude 앱</th><th class="gold">Claude Code</th></tr>
+    <tr><td class="b">다루는 대상</td><td>붙여넣은 글, 업로드한 몇 개 파일</td><td>내 컴퓨터의 <b>폴더·수십 개 파일</b></td></tr>
+    <tr><td class="b">할 수 있는 일</td><td>글쓰기·요약·분석</td><td>파일 읽기·만들기·이름변경·변환·정리</td></tr>
+    <tr><td class="b">반복</td><td>매번 직접</td><td>한 번 시키면 <b>전부 자동</b></td></tr>
+    <tr><td class="b">데이터</td><td>업로드 필요</td><td>내 컴퓨터 안에서 처리(파일 자체는 로컬)</td></tr>
+  </table>
+  <!-- mermaid 소스 (수정용):
+  flowchart LR
+    APP[Claude 앱] <==>|"업로드한 것만"| UP[붙여넣은 글·업로드 파일]
+    CC[Claude Code] ==>|읽기·쓰기·실행·검증| F["내 폴더 (수십 개 파일)"]
+    F ==>|"확인 후 반복 ⟲"| CC
+  -->
+  <svg viewBox="0 0 880 190" role="img" aria-label="앱은 업로드한 자료만 다루고, Claude Code는 내 폴더의 파일을 읽고 쓰고 실행하며 반복 검증한다" style="width:96%;max-width:880px;display:block;margin:.5em auto 0;font-family:inherit">
+    <defs>
+      <marker id="arC1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7eb8ff"/></marker>
+      <marker id="arC2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd93d"/></marker>
+    </defs>
+    <line x1="435" y1="14" x2="435" y2="160" stroke="#1a2a3a" stroke-dasharray="4 5"/>
+    <rect x="30" y="55" width="130" height="60" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/>
+    <text x="95" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#7eb8ff">Claude 앱</text>
+    <line x1="160" y1="85" x2="216" y2="85" stroke="#7eb8ff" stroke-width="2" marker-start="url(#arC1)" marker-end="url(#arC1)"/>
+    <text x="188" y="44" text-anchor="middle" font-size="10" fill="#9ab">업로드한 것만</text>
+    <rect x="220" y="55" width="180" height="60" rx="10" fill="#1a1a2a" stroke="#9aa" stroke-width="1.4"/>
+    <text x="310" y="80" text-anchor="middle" font-size="11.5" fill="#dde">붙여넣은 글</text>
+    <text x="310" y="100" text-anchor="middle" font-size="11.5" fill="#dde">업로드한 몇 개 파일</text>
+    <rect x="470" y="32" width="150" height="106" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.6"/>
+    <text x="545" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd93d">Claude Code</text>
+    <line x1="620" y1="50" x2="672" y2="50" stroke="#ffd93d" stroke-width="1.8" marker-end="url(#arC2)"/><text x="646" y="42" text-anchor="middle" font-size="9.5" fill="#ffd93d">읽기</text>
+    <line x1="620" y1="85" x2="672" y2="85" stroke="#ffd93d" stroke-width="1.8" marker-end="url(#arC2)"/><text x="646" y="77" text-anchor="middle" font-size="9.5" fill="#ffd93d">만들기·수정</text>
+    <line x1="620" y1="120" x2="672" y2="120" stroke="#ffd93d" stroke-width="1.8" marker-end="url(#arC2)"/><text x="646" y="112" text-anchor="middle" font-size="9.5" fill="#ffd93d">실행·검증</text>
+    <rect x="676" y="22" width="174" height="126" rx="10" fill="#15202c" stroke="#889" stroke-width="1.4" stroke-dasharray="7 5"/>
+    <text x="763" y="50" text-anchor="middle" font-size="12" font-weight="700" fill="#ccd">내 폴더</text>
+    <text x="763" y="76" text-anchor="middle" font-size="10.5" fill="#9ab">보고서_v1.docx …</text>
+    <text x="763" y="96" text-anchor="middle" font-size="10.5" fill="#9ab">데이터.xlsx · 사진 200장</text>
+    <text x="763" y="116" text-anchor="middle" font-size="10.5" fill="#9ab">(수십 개 파일, 로컬 그대로)</text>
+    <path d="M676 140 Q 610 172 552 142" fill="none" stroke="#ffd93d" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arC2)"/>
+    <text x="618" y="172" text-anchor="middle" font-size="10" fill="#ffd93d">확인 후 반복 ⟲</text>
+    <text x="440" y="184" text-anchor="middle" font-size="10" fill="#8aa" font-style="italic">출처: Claude Code 공식 문서 (code.claude.com/docs)</text>
+  </svg>
+  <p class="quote">"여러 파일을 손으로 반복"하던 일이 <span class="gold">한 문장 지시</span>로 끝납니다.</p>
+</section>
+
+<!-- 3 터미널 안심 -->
+<section class="slide">
+  <h2>터미널, 사실 이것만 알면 됩니다</h2>
+  <div class="grid grid-3">
+    <div class="card hi"><h3>① 연다</h3><p>맥: "터미널" · 윈도우: "PowerShell"</p></div>
+    <div class="card hi"><h3>② <code>claude</code> 입력</h3><p>그러면 AI와 대화 시작</p></div>
+    <div class="card hi"><h3>③ 한국어로 지시</h3><p>"이 폴더 정리해줘"처럼 말하면 끝</p></div>
+  </div>
+  <div class="callout tip"><span class="label">안심하세요</span>명령어를 외울 필요 없습니다. <b>한국어로 부탁</b>하면 Claude가 알아서 합니다. 우리는 <b>승인</b>만 하면 됩니다.</div>
+</section>
+
+<!-- 4 첫 실행 -->
+<section class="slide">
+  <h2>첫 실행 — 3단계 <span class="badge code">Claude Code</span></h2>
+  <ol class="steps">
+    <li>작업할 폴더를 하나 정한다 (예: 바탕화면의 <code>실습</code> 폴더)</li>
+    <li>터미널에서 그 폴더로 이동 후 <code>claude</code> 입력</li>
+    <li>한국어로 부탁 → Claude가 할 일을 보여주면 <b>확인(승인)</b></li>
+  </ol>
+  <pre><code><span class="cmt"># 맥: 폴더를 터미널로 끌어다 놓는 법이 가장 쉬움</span>
+cd ~/Desktop/실습
+claude
+
+<span class="cmt"># 그다음 그냥 한국어로:</span>
+이 폴더에 어떤 파일들이 있는지 정리해서 알려줘</code></pre>
+</section>
+
+<!-- 5 승인 모드 (안전) -->
+<section class="slide">
+  <h2 class="warn">⚠ 안전 장치 — 승인 없이는 안 바뀜</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>읽기는 자유</h3><p>파일을 읽고 분석하는 건 그냥 진행됩니다.</p></div>
+    <div class="card warn"><h3 class="warn">바꾸기는 승인 후</h3><p>파일을 <b>만들거나 수정·삭제</b>하기 전에 Claude가 먼저 보여주고 묻습니다. 내가 <b>"예"</b> 해야 실행.</p></div>
+  </div>
+  <div class="callout warn"><span class="label">3가지 습관</span>
+    ① <b>중요 폴더는 복사본</b>으로 실습 ② <b>승인 화면을 읽고</b> 허락 ③ 의심되면 <b>거절(No)</b> 후 다시 지시.</div>
+</section>
+
+<!-- 6 비개발자 활용 -->
+<section class="slide">
+  <h2>비개발자도 바로 쓰는 활용</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>파일·폴더 정리</h3><p>"날짜별 폴더로 분류해줘 / 중복 파일 찾아줘"</p></div>
+    <div class="card hi"><h3>대량 이름·형식 변경</h3><p>"사진 이름을 날짜_순번으로 / 이미지를 PDF로 합쳐줘"</p></div>
+    <div class="card hi"><h3>데이터 정리</h3><p>"이 CSV들에서 필요한 열만 뽑아 하나로 합쳐줘"</p></div>
+    <div class="card hi"><h3>문서 일괄 생성</h3><p>"이 명단으로 안내문 50개를 이름만 바꿔 만들어줘"</p></div>
+    <div class="card hi"><h3>자료조사 정리</h3><p>"이 텍스트 파일들을 읽고 주제별 요약표로"</p></div>
+    <div class="card hi"><h3>회의록·메모 통합</h3><p>"이 폴더 회의록에서 결정사항만 한 표로"</p></div>
+  </div>
+</section>
+
+<!-- 7 데모 -->
+<section class="slide">
+  <h2>데모 — 흩어진 파일 한 번에 정리</h2>
+  <pre><code>(실습 폴더에서 claude 실행 후, 한국어로)
+
+이 폴더의 파일들을 확장자별 폴더로 분류해줘.
+- 이미지 / 문서 / 표(엑셀·csv) / 기타
+- 옮기기 전에 어떤 식으로 옮길지 먼저 보여줘
+- 원본은 지우지 말고 복사로 정리해줘</code></pre>
+  <p class="quote">Claude가 계획을 보여줌 → 내가 <span class="accent">승인</span> → 정리 완료. 손으로 30분 → <span class="gold">30초</span>.</p>
+</section>
+
+<!-- 8 핸즈온 -->
+<section class="slide">
+  <h2>🙌 핸즈온 — 내 자동화 1건 <span class="badge code">Claude Code</span></h2>
+  <ol class="steps">
+    <li>배포된 <b>샘플 폴더</b>(또는 내 폴더의 <b>복사본</b>)를 연다</li>
+    <li>그 폴더에서 <code>claude</code> 실행</li>
+    <li>"이 폴더에 뭐가 있는지 알려줘"로 먼저 파악</li>
+    <li>지난 세션에 적어둔 <b>"반복되는 파일 작업"</b>을 한국어로 시켜본다</li>
+    <li>승인 화면을 읽고 진행 → 결과 확인</li>
+  </ol>
+  <div class="callout tip"><span class="label">막히면</span>에러가 나도 그 메시지를 그대로 Claude에게 "이거 무슨 뜻이야?"라고 물어보세요.</div>
+</section>
+
+<!-- 9 잘 쓰는 법 -->
+<section class="slide">
+  <h2>Claude Code 잘 쓰는 법</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>먼저 '보여줘'</h3><p>"바꾸기 전에 계획을 보여줘" → 안전하게 검토 후 승인.</p></div>
+    <div class="card hi"><h3>작게 시작</h3><p>폴더 하나, 작업 하나. 되면 점점 키우기.</p></div>
+    <div class="card hi"><h3>복사본으로 연습</h3><p>원본은 보존. 결과 확인 후 적용.</p></div>
+    <div class="card hi"><h3>대화로 고친다</h3><p>"방금 건 이렇게 바꿔줘"로 이어서 다듬기.</p></div>
+  </div>
+</section>
+
+<!-- 10 보안 -->
+<section class="slide">
+  <h2 class="warn">데이터·보안 — Code에서 특히</h2>
+  <ul>
+    <li><b>로컬 처리</b>: 파일은 내 컴퓨터에 있지만, 처리를 위해 내용이 Claude로 전송됩니다 → <b>기밀 폴더 주의</b>.</li>
+    <li>비밀번호·키·인증서가 든 폴더에서는 실행하지 않기.</li>
+    <li>고객정보·계약 등은 회사 정책 확인 후, 가능하면 <b>익명화 사본</b>으로.</li>
+    <li>삭제·이동은 항상 <b>승인 화면을 읽고</b> 진행.</li>
+  </ul>
+  <div class="callout warn"><span class="label">회사 정책 우선</span>보안팀이 정한 "허용 도구·허용 데이터" 범위를 항상 먼저 따릅니다.</div>
+</section>
+
+<!-- 11 과제 -->
+<section class="slide">
+  <h2>📌 실천 과제 (다음 세션 전 또는 직후)</h2>
+  <ol class="steps">
+    <li>Claude Code로 <b>실제 업무 자동화 1건</b> 해보기 (작은 것 OK)</li>
+    <li>"매주/매월 <b>반복</b>하는 업무" 1가지를 골라두기 (다음 세션에 워크플로우로 만듦)</li>
+    <li>잘 된 점·막힌 점 메모 (다음 세션 공유용)</li>
+  </ol>
+</section>
+
+<!-- 12 -->
+<section class="slide cover">
+  <span class="title-tag">Session 3 끝</span>
+  <h1>오늘의 한 줄<br><span class="gold">"명령어 대신 한국어, 실행 대신 승인"</span></h1>
+  <p class="sub">다음 세션(마지막): <b class="accent">내 업무에 심기</b> —<br>반복 업무를 워크플로우로 만들고 도입 계획을 세웁니다.</p>
+  <p class="foot">←/→ 로 다시 보기</p>
+</section>
+
+<script src="assets/slides.js"></script>
+</body>
+</html>

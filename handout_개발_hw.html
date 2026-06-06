@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>직무별 핸드아웃 — 회로/HW 설계</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:940px;margin:0 auto;padding:5vh 6vw 10vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.5em 0 2vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.4vh}
+h3{font-size:1.08em;color:#4ecdc4;margin:1.2vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.warn{border-color:#ff6b6b}.card.tip{border-color:#4ecdc4}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;margin:.8em 0}
+.scn{border-left:3px solid #4ecdc4;padding:.5em 0 .5em 1em;margin:.6em 0;background:#0c1a18;border-radius:0 8px 8px 0}
+.scn .t{color:#4ecdc4;font-weight:700}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.9em;white-space:pre-wrap;display:block;line-height:1.6}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.94em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .7em;vertical-align:top}
+td{padding:.5em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+.mat{color:#4ecdc4;font-weight:600}.mat.new{color:#ffd93d}.mat.lab{color:#ff9e6b}
+.foot{margin-top:4vh;border-top:1px solid #1a2a3a;padding-top:1.6vh;color:#667;font-size:.82em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}.scn{background:#eef7f5}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">직무별 핸드아웃 · 회로/HW(전자) — 아직 안 쓰는 팀을 위한 '시작' 가이드</span>
+  <h1>회로/HW 설계 <span class="accent">×</span> AI</h1>
+  <p class="sub">2025–2026 기준, 보드 설계팀이 <b>지금 현실적으로 쓸 수 있는 범위</b>와 같이 쓰면 좋은 툴·사례입니다. (자율 레이아웃은 아직 PoC 단계)</p>
+
+  <h2>① 활용 가능 범위 — 지금 바로 되는 것</h2>
+  <div class="scn"><span class="t">1. 데이터시트·표준 Q&A</span><p>긴 데이터시트/앱노트/규격(USB·CAN·JEDEC 등)에서 핀맵·전기적 특성·권장 회로를 빠르게 추출·요약. (범용 LLM)</p></div>
+  <div class="scn"><span class="t">2. 계산·설계검토 보조</span><p>전압분배·전류제한·디커플링·열 추정 초안, 설계 리뷰 체크리스트 자동 생성.</p></div>
+  <div class="scn"><span class="t">3. 코드/스크립트 생성</span><p>레지스터맵→드라이버/HAL 코드, 테스트 스크립트, EDA 자동화 스크립트(Tcl/SKILL/Python), 펌웨어 보일러플레이트.</p></div>
+  <div class="scn"><span class="t">4. 부품·BOM 리서치</span><p>대체 부품 탐색, 단종·공급망 리스크, BOM 비용/가용성 검토.</p></div>
+  <div class="scn"><span class="t">5. 문서화</span><p>설계 노트·변경 이력·리뷰 코멘트·요구사항 정리.</p></div>
+  <div class="scn"><span class="t">6. (상용 EDA 내) 부분 자동화</span><p>디커플링 캡 배치, 버스/critical-net 라우팅 보조 — 상용 EDA의 AI 기능.</p></div>
+
+  <h2>② 같이 쓰면 좋은 툴</h2>
+  <table>
+    <tr><th>툴</th><th>용도</th><th>성숙도</th></tr>
+    <tr><td class="b">범용 LLM (Claude·GPT)</td><td>데이터시트 분석·드라이버/테스트 코드·계산·문서</td><td class="mat">즉시(검증 전제)</td></tr>
+    <tr><td class="b">SnapMagic(구 SnapEDA)</td><td>심볼·풋프린트·3D 모델 + AI 보조</td><td class="mat">라이브러리 성숙</td></tr>
+    <tr><td class="b">Octopart / Part Analytics</td><td>AI 부품 탐색·공급망 분석</td><td class="mat">부품검색 성숙</td></tr>
+    <tr><td class="b">Cadence Allegro X AI</td><td>생성형 PCB 배치·라우팅(클라우드)</td><td class="mat">상용·성숙</td></tr>
+    <tr><td class="b">Zuken CR-8000 Copilot</td><td>스키매틱 패턴·제약 기반 라우팅·디커플링 배치</td><td class="mat">상용·보조 지향</td></tr>
+    <tr><td class="b">Flux.ai (Flux Copilot)</td><td>대화로 스키매틱·BOM·레이아웃 초안, AI 리뷰</td><td class="mat new">클라우드 신생</td></tr>
+    <tr><td class="b">Quilter</td><td>물리 기반 자율 PCB 배치·라우팅</td><td class="mat lab">신생·PoC 권장</td></tr>
+    <tr><td class="b">CELUS / JITX</td><td>기능블록→스키매틱 자동 / 코드로 회로 정의</td><td class="mat lab">초기·틈새</td></tr>
+  </table>
+  <p class="small" style="color:#888;font-size:.85em">※ Synopsys DSO.ai·Cadence Cerebrus는 칩(IC) 설계용 — 보드팀과 직접 무관(혼동 주의).</p>
+
+  <h2>③ 사례 (출처 표기)</h2>
+  <div class="card">
+    <p>· <b>Cadence Allegro X AI</b>: 한 고객 PCB 배치 수동 3일 → AI 75분, wire length 12–14%↓ (2023 발표, 단일 고객 일화).</p>
+    <p>· <b>Quilter</b>: 1200핀 FPGA BGA를 약 2.5시간에 DRC-clean 레이아웃 생성; 자체 벤치(2025.11) 전통 플로우 대비 약 7배·via 10–17%↓ <span class="warn">(자사 측정)</span>.</p>
+    <p>· <b>NVIDIA ChipNeMo</b>: 사내 파인튜닝 LLM, 엔지니어 Q&A·EDA 스크립트 생성에서 GPT-4 능가(내부 파일럿, 칩 영역).</p>
+    <p>· <b>Verilog/RTL</b>: VerilogEval 재평가에서 GPT-4o spec-to-RTL pass@1 ~63% — 일반 LLM도 절반↑ 통과하나 <b>검증 필수</b> 수준.</p>
+  </div>
+
+  <h2>④ 주의 · 한계</h2>
+  <div class="card warn">
+    <p>· <b class="warn">할루시네이션</b>: 핀번호·정격·부품값을 자신있게 틀림 → 안전·인증 회로는 반드시 원문/측정 대조.</p>
+    <p>· <b>아날로그·SI/PI·EMC·안전인증</b>은 여전히 사람 영역(정성적 노하우·측정 의존).</p>
+    <p>· 신생 클라우드 툴 수치는 대부분 벤더 자체 측정 → <b>사내 파일럿으로 검증</b>.</p>
+    <p>· 보안: 사내 데이터시트·설계 유출 위험 → 엔터프라이즈/온프레 옵션·기밀 정책 확인.</p>
+  </div>
+
+  <h2>⑤ 권장 시작 순서</h2>
+  <div class="card tip"><p><b>1단계</b> 범용 LLM(데이터시트 Q&A·코드·문서) → <b>2단계</b> 부품/BOM AI(Octopart·SnapMagic) → <b>3단계</b> 상용 EDA의 AI 보조기능(Allegro X AI·Zuken Copilot) → <b>4단계</b> 자율 레이아웃(Quilter 등)은 PoC 후 단계 도입.</p></div>
+
+  <div class="foot">
+    출처: <a href="https://www.cadence.com/en_US/home/company/newsroom/press-releases/pr/2023/cadence-introduces-allegro-x-ai-accelerating-pcb-design-with.html">Cadence Allegro X AI</a> ·
+    <a href="https://www.quilter.ai/blog/case-study-how-quilter-ai-routed-a-1200-pin-fpga-bga-in-hours-a-deep-dive-into-dense-bga-automation">Quilter</a> ·
+    <a href="https://www.zuken.com/en/blog/ai-in-pcb-design-from-misconception-to-meaningful-assistance/">Zuken</a> ·
+    <a href="https://www.allaboutcircuits.com/news/flux-upgrade-graduates-ai-assistant-ai-circuit-co-designer/">Flux</a> ·
+    <a href="https://arxiv.org/pdf/2311.00176">NVIDIA ChipNeMo</a> ·
+    <a href="https://www.csl.cornell.edu/~cbatten/pdfs/pinckney-revisiting-verilogeval-todaes2025.pdf">VerilogEval 2025</a>.
+    벤더 수치는 자체 측정 다수 — 사내 검증 권장. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+  </div>
+</div>
+</body>
+</html>

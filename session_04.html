@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 4 — 내 업무에 심기</title>
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body>
+<div class="kicker">AI Agent 활용 세미나 · Session 4</div>
+
+<!-- 1 -->
+<section class="slide cover active">
+  <span class="title-tag">Session 4 / 4 · 약 90분 · 마지막</span>
+  <h1>내 업무에 <span class="accent">심기</span><br>워크플로우 + 도입 실행계획</h1>
+  <p class="sub">반복 업무를 <b>재사용 가능한 워크플로우</b>로 만들고,<br>리더로서 <b>팀 도입 계획(30/60/90일)</b>을 세웁니다.</p>
+  <p class="foot">핸즈온: 직무별 실행계획 작성 → 공유</p>
+</section>
+
+<!-- 2 목표 -->
+<section class="slide">
+  <h2>오늘 끝나면</h2>
+  <div class="grid grid-3">
+    <div class="card hi"><h3>표준화한다</h3><p>잘 되는 작업을 매번 같은 품질로 재사용하는 법.</p></div>
+    <div class="card hi"><h3>확장한다</h3><p>슬래시 커맨드·스킬·MCP·플러그인 확장의 가능성을 안다.</p></div>
+    <div class="card hi"><h3>결정한다</h3><p>팀 도입 정책·비용·보안을 의사결정자 관점에서 정리.</p></div>
+  </div>
+</section>
+
+<!-- 3 워크플로우 개념 -->
+<section class="slide">
+  <h2>'반복'을 '자산'으로 — 워크플로우</h2>
+  <p class="lead">매번 새로 부탁하는 대신, <b>잘 된 지시를 저장해 두고 재사용</b>합니다.</p>
+  <div class="grid grid-2">
+    <div class="card warn"><h3 class="warn">Before</h3><p>매주 보고서 정리를 매번 처음부터 설명·요청</p></div>
+    <div class="card hi"><h3>After</h3><p>"주간보고 정리" 한 번 클릭 → 같은 형식으로 완성</p></div>
+  </div>
+</section>
+
+<!-- 4 CLAUDE.md -->
+<section class="slide">
+  <h2>① CLAUDE.md — 프로젝트의 '상시 지침'</h2>
+  <p>작업 폴더에 <code>CLAUDE.md</code> 파일을 두면, Claude Code가 매번 그 규칙을 먼저 읽습니다.</p>
+  <pre><code><span class="cmt"># CLAUDE.md (예: 우리 팀 문서 작업 규칙)</span>
+- 모든 보고서는 '배경/현황/제안/리스크' 순서로
+- 톤은 정중한 보고체, 한 페이지 이내
+- 숫자는 원본과 대조하고, 불확실하면 [확인 필요] 표시
+- 고객 실명·연락처는 절대 포함하지 않는다</code></pre>
+  <p class="quote">팀의 <span class="accent">"일하는 방식"</span>을 한 파일에 적어두면, 누가 시켜도 같은 결과.</p>
+</section>
+
+<!-- 5 슬래시 커맨드 -->
+<section class="slide">
+  <h2>② 슬래시 커맨드 — 자주 쓰는 지시를 단축키로</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>개념</h3><p>긴 프롬프트를 <code>/주간보고</code> 같은 짧은 명령으로 저장해 재사용.</p></div>
+    <div class="card hi"><h3>효과</h3><p>팀원 누구나 같은 명령으로 같은 품질의 결과를 냄.</p></div>
+  </div>
+  <p style="margin-top:.6em">예: <code>/회의록정리</code>, <code>/제안서초안</code>, <code>/번역검수</code> — 우리 팀 업무에 맞춰 만들 수 있습니다.</p>
+  <p class="small">오늘은 "이런 게 가능하다"까지. 실제 설정은 진행자/도입 담당이 지원합니다.</p>
+</section>
+
+<!-- 6 스킬/MCP -->
+<section class="slide">
+  <h2>③ 더 멀리 — 스킬 & 연동(MCP)</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>스킬(Skills)</h3><p>특정 업무 노하우를 패키지로 만들어 재사용. (예: "사내 보고서 양식대로 작성")</p></div>
+    <div class="card blue"><h3>MCP 연동</h3><p>Claude를 외부 도구와 연결. 예: <b>Google Drive</b> 문서 읽기, 사내 시스템 연동 등.</p></div>
+  </div>
+  <div class="callout tip"><span class="label">메시지</span>지금은 채팅으로 시작하지만, 점차 <b>우리 업무 시스템과 연결</b>되며 더 강력해집니다.</div>
+</section>
+
+<!-- 7 플러그인 -->
+<section class="slide">
+  <h2>④ 플러그인 — 확장 기능의 '배포 단위'</h2>
+  <p class="lead">커맨드·스킬·연동(MCP)을 <b>하나의 패키지</b>로 묶어 설치·공유합니다. 설치 범위를 4단계로 고를 수 있습니다.</p>
+  <!-- mermaid 소스 (수정용):
+  flowchart TB
+    M["조직 Managed — 회사 전체·강제 (managed-settings.json)"] ==> L["폴더-개인 Local — 나만·오버라이드 (.claude/settings.local.json)"]
+    L ==> P["프로젝트 Project — 팀 공유·git 커밋 (.claude/settings.json)"]
+    P ==> U["사용자 User — 내 PC 전체·기본값 (~/.claude/settings.json)"]
+  -->
+  <svg viewBox="0 0 900 300" role="img" aria-label="플러그인 설치 범위 4단계: 위에서부터 조직, 폴더-개인, 프로젝트, 사용자 순으로 우선 적용" style="width:96%;max-width:900px;display:block;margin:.4em auto 0;font-family:inherit">
+    <defs>
+      <marker id="arG1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ecdc4"/></marker>
+    </defs>
+    <line x1="42" y1="278" x2="42" y2="46" stroke="#4ecdc4" stroke-width="2" marker-end="url(#arG1)"/>
+    <text x="30" y="162" text-anchor="middle" font-size="11" font-weight="700" fill="#4ecdc4" transform="rotate(-90 30 162)">먼저 적용 (우선순위)</text>
+    <text x="760" y="30" text-anchor="middle" font-size="10.5" fill="#889">설정 파일 위치</text>
+    <rect x="70" y="38" width="560" height="52" rx="10" fill="#1a0e0e" stroke="#ff6b6b" stroke-width="1.6"/>
+    <text x="90" y="60" font-size="13" font-weight="800" fill="#ff6b6b">① 조직 (Managed)</text>
+    <text x="90" y="80" font-size="10.5" fill="#e8aaaa">회사 전체 · 강제 — IT 일괄 배포, 개인이 끌 수 없음</text>
+    <text x="650" y="68" font-size="10.5" fill="#9fe6dd" font-family="'D2Coding','Consolas',monospace">managed-settings.json</text>
+    <rect x="70" y="102" width="560" height="52" rx="10" fill="#10302b" stroke="#4ecdc4" stroke-width="1.6"/>
+    <text x="90" y="124" font-size="13" font-weight="800" fill="#4ecdc4">② 폴더-개인 (Local)</text>
+    <text x="90" y="144" font-size="10.5" fill="#bff5ee">이 프로젝트에서 나만 — 팀 설정 오버라이드 (git 제외)</text>
+    <text x="650" y="132" font-size="10.5" fill="#9fe6dd" font-family="'D2Coding','Consolas',monospace">.claude/settings.local.json</text>
+    <rect x="70" y="166" width="560" height="52" rx="10" fill="#11233a" stroke="#7eb8ff" stroke-width="1.6"/>
+    <text x="90" y="188" font-size="13" font-weight="800" fill="#7eb8ff">③ 프로젝트 (Project)</text>
+    <text x="90" y="208" font-size="10.5" fill="#cfe4ff">같은 폴더의 팀 전체 — git에 커밋해 공유 (팀 표준)</text>
+    <text x="650" y="196" font-size="10.5" fill="#9fe6dd" font-family="'D2Coding','Consolas',monospace">.claude/settings.json</text>
+    <rect x="70" y="230" width="560" height="52" rx="10" fill="#2a210c" stroke="#ffd93d" stroke-width="1.6"/>
+    <text x="90" y="252" font-size="13" font-weight="800" fill="#ffd93d">④ 사용자 (User)</text>
+    <text x="90" y="272" font-size="10.5" fill="#ffe9a8">내 PC의 모든 프로젝트 — 개인 취향 도구 (기본값)</text>
+    <text x="650" y="260" font-size="10.5" fill="#9fe6dd" font-family="'D2Coding','Consolas',monospace">~/.claude/settings.json</text>
+    <text x="450" y="297" text-anchor="middle" font-size="10.5" fill="#8aa" font-style="italic">겹치면 위가 이김 — 출처: Claude Code Docs (Settings precedence · Plugins)</text>
+  </svg>
+  <div class="callout tip"><span class="label">우선순위</span>겹치면 <b>조직 &gt; 폴더-개인 &gt; 프로젝트 &gt; 사용자</b> 순. 팀 표준은 프로젝트에 커밋해 공유하고, 개인은 자기 폴더(Local)에서만 켜고 끌 수 있습니다.</div>
+</section>
+
+<!-- 8 거버넌스 -->
+<section class="slide">
+  <h2 class="warn">의사결정자 체크리스트 — 도입 거버넌스</h2>
+  <div class="grid grid-2">
+    <div class="card warn"><h3 class="warn">데이터·보안</h3><p>· 허용 데이터/금지 데이터 명문화<br>· 허용 도구·계정(회사 플랜) 지정<br>· 민감 업무 가이드</p></div>
+    <div class="card gold"><h3>비용·계정</h3><p>· <b>Team 이상 권장</b>(데이터 학습 미사용·중앙관리)<br>· 좌석 발급/회수·사용량 관리<br>· ROI: 절감 시간 측정</p></div>
+    <div class="card blue"><h3>역량·확산</h3><p>· 챔피언(잘 쓰는 사람) 지정<br>· 직무별 핸드아웃 공유<br>· 사례 공유 정례화</p></div>
+    <div class="card hi"><h3>품질·책임</h3><p>· "사람이 최종 검토" 원칙<br>· 검증 절차·출처 표기<br>· 실패 사례도 공유</p></div>
+  </div>
+</section>
+
+<!-- 9 30/60/90 -->
+<section class="slide">
+  <h2>30 / 60 / 90일 도입 로드맵</h2>
+  <table>
+    <tr><th>기간</th><th>개인</th><th>팀(리더로서)</th></tr>
+    <tr><td class="b accent">~30일</td><td>매일 1업무를 Claude로. 잘 된 프롬프트 저장.</td><td>허용 데이터 기준 공지 · 챔피언 지정</td></tr>
+    <tr><td class="b blue">~60일</td><td>프로젝트·CLAUDE.md로 반복업무 표준화.</td><td>직무별 핸드아웃 배포 · 주간 사례공유</td></tr>
+    <tr><td class="b gold">~90일</td><td>Claude Code로 파일·데이터 자동화 정착.</td><td>슬래시 커맨드/연동 검토 · 효과(시간) 측정</td></tr>
+  </table>
+</section>
+
+<!-- 10 핸즈온 -->
+<section class="slide">
+  <h2>🙌 핸즈온 — 나의 실행계획 만들기</h2>
+  <p class="lead">Claude에게 도와달라고 하면서 함께 작성합니다.</p>
+  <pre><code>나는 [직무/부서]의 리더야. AI 도입 실행계획을 같이 만들어줘.
+- 내 부서가 매주 반복하는 업무 3가지: [적기]
+- 각각을 Claude 앱/Claude Code 중 무엇으로, 어떻게 처리할지
+- 30/60/90일 계획 표로
+- 보안상 주의할 점도 포함</code></pre>
+  <ol class="steps">
+    <li>위 프롬프트로 내 부서 실행계획 초안 생성</li>
+    <li>현실에 맞게 수정 (담당·일정)</li>
+    <li>3가지 중 <b>이번 주 시작할 1가지</b> 정하기</li>
+  </ol>
+</section>
+
+<!-- 11 공유 -->
+<section class="slide">
+  <h2>공유 — 한 사람씩 1분</h2>
+  <div class="grid grid-3">
+    <div class="card hi"><h3>무엇을</h3><p>우리 부서가 가장 먼저 자동화할 업무 1가지</p></div>
+    <div class="card hi"><h3>어떻게</h3><p>앱 / Code 중 무엇으로</p></div>
+    <div class="card hi"><h3>언제까지</h3><p>이번 달 안에 할 첫걸음</p></div>
+  </div>
+  <p class="quote">리더가 먼저 쓰면 팀이 따라옵니다. <span class="accent">오늘의 1가지</span>가 시작입니다.</p>
+</section>
+
+<!-- 12 자료 -->
+<section class="slide">
+  <h2>계속 쓸 자료</h2>
+  <div class="grid grid-2">
+    <div class="card hi"><h3>직무별 핸드아웃</h3><p>기획·마케팅/영업·디자인/콘텐츠·경영지원/HR/재무·개발(SW/HW/기구) — 인쇄해 책상에.</p></div>
+    <div class="card hi"><h3>세미나 슬라이드</h3><p>index에서 Session 1~4 다시 보기. 팀원 온보딩에 재사용.</p></div>
+    <div class="card blue"><h3>사내 지원</h3><p>도입 담당·챔피언·보안 가이드 문의 창구.</p></div>
+    <div class="card gold"><h3>공식 문서</h3><p>Claude 도움말·Claude Code 문서(진행자 링크 공유).</p></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide cover">
+  <span class="title-tag">세미나 수료 🎉</span>
+  <h1>이 과정의 결론<br><span class="accent">"리더가 직접 쓰는 조직이 빨라진다"</span></h1>
+  <p class="sub">개념 → 앱 → Code → 도입계획.<br>이제 <b>이번 주의 1가지</b>부터 실제로 시작하세요.</p>
+  <p class="foot">팅크웨어 선행개발부 · 감사합니다</p>
+</section>
+
+<script src="assets/slides.js"></script>
+</body>
+</html>
