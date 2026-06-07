@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenAI · Anthropic · Google — 업무 자동화 AI 에이전트 신기술 (2025H2–2026)</title>
+<title>OpenAI · Anthropic · Google · Meta · NVIDIA · 중국 — 업무 자동화 AI 에이전트·모델 신기술 (2025H2–2026)</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
@@ -48,13 +48,13 @@ a{color:#7eb8ff}
 </head>
 <body>
 <div class="wrap">
-  <span class="tag">조사 보고 · 적대적 교차검증 (25/25 claims 3-0) + 1차 출처 직접 확인 · 2026-06-06 기준</span>
-  <h1>OpenAI · Anthropic · Google<br><span class="accent">업무 자동화 AI 에이전트 신기술</span> (2025 하반기 – 2026)</h1>
-  <p class="sub">3사가 최근 1년간 내놓은 에이전트 제품·하네스·모델을 <b>정식 명칭 + 출시 시점 + 용도 + 출처</b>로 정리.
+  <span class="tag">조사 보고 · 적대적 교차검증 (빅3 25/25 + 확장 21 claims 확정·4 기각) + 1차 출처 직접 확인 · 2026-06-07 기준</span>
+  <h1>OpenAI · Anthropic · Google · Meta · NVIDIA · 중국<br><span class="accent">업무 자동화 AI 에이전트·모델 신기술</span> (2025 하반기 – 2026)</h1>
+  <p class="sub">빅3의 에이전트 제품·하네스에 더해 <b>Meta·NVIDIA·중국 오픈웨이트 진영의 모델</b>까지 — <b>정식 명칭 + 출시 시점 + 스펙·라이선스 + 출처</b>로 정리.
   <span class="v1">1차</span> = 공식 발표/문서 직접 확인, <span class="v2">2차</span> = 언론·교차 출처만.</p>
 
   <div class="toc"><b style="color:#aaa">목차 </b>
-    <a href="#timeline">통합 타임라인</a> <a href="#openai">OpenAI</a> <a href="#anthropic">Anthropic</a> <a href="#google">Google</a> <a href="#insight">시사점</a></div>
+    <a href="#timeline">통합 타임라인</a> <a href="#openai">OpenAI</a> <a href="#anthropic">Anthropic</a> <a href="#google">Google</a> <a href="#meta">Meta</a> <a href="#nvidia">NVIDIA</a> <a href="#china">중국 진영</a> <a href="#license">라이선스 스펙트럼</a> <a href="#insight">시사점</a></div>
 
   <h2 id="timeline">통합 타임라인 — 한눈에</h2>
   <table>
@@ -64,6 +64,16 @@ a{color:#7eb8ff}
     <tr><td class="b">2025.11–12</td><td></td><td>Opus 4.5 + effort 파라미터 (11.24) · Skills 오픈 표준화 (12.18)</td><td>Gemini 3 (11.18) · Antigravity IDE (11.20) · NotebookLM Deep Research (11.13)</td></tr>
     <tr><td class="b">2026.01–04</td><td>GPT-5.5 / 5.5 Pro (04.23)</td><td>Cowork 프리뷰(01.12)→GA(04.09) · Opus 4.6(02.05)/4.7(04.16)</td><td>Antigravity 2.0 + CLI 통합 (I/O 2026)</td></tr>
     <tr><td class="b">2026.05–06</td><td></td><td>Opus 4.8 — 1M 기본·effort high·Workflows (05.28)</td><td></td></tr>
+  </table>
+
+  <p class="small" style="margin-top:1.2em"><b style="color:#aaa">확장 진영 — Meta · NVIDIA · 중국 오픈웨이트</b></p>
+  <table>
+    <tr><th>시점</th><th>Meta</th><th>NVIDIA</th><th>중국 (오픈웨이트)</th></tr>
+    <tr><td class="b">2025.03–04</td><td>Llama 4 Scout·Maverick (04.05)</td><td>Llama Nemotron Nano/Super/Ultra (03.18)</td><td></td></tr>
+    <tr><td class="b">2025 H2</td><td>Superintelligence Labs 신설 (06.30) · Behemoth 보류</td><td></td><td>Kimi K2 (07) · GLM-4.5/4.6 · MiniMax-M2</td></tr>
+    <tr><td class="b">2025.12</td><td></td><td>Nemotron 3 발표 + Nano 출시 (12.15)</td><td>DeepSeek-V3.2 / -Speciale</td></tr>
+    <tr><td class="b">2026.03–04</td><td>Muse Spark (04.08, 클로즈드)</td><td>Nemotron 3 Super (03.10)</td><td>Qwen3.6-35B-A3B (04.16) · Qwen3.6-27B (04.22)</td></tr>
+    <tr><td class="b">2026.05–06</td><td></td><td>OpenMDW 전환 발표 (05.28) · Nemotron 3 Ultra (06.04)</td><td></td></tr>
   </table>
 
   <h2 id="openai">OpenAI — "에이전트 빌딩 블록 + 브라우저"</h2>
@@ -101,11 +111,59 @@ a{color:#7eb8ff}
   </table>
   <div class="callout warn"><span class="label">주의</span>Google 라인업은 <b>통합 재편 중</b> — Gemini CLI→Antigravity CLI 전환, Mariner 단종 수순. 도입 검토 시 "현행 제품" 여부를 반드시 재확인할 것.</div>
 
-  <h2 id="insight">시사점 — 3사 공통 방향 (D-level)</h2>
+  <h2 id="meta">Meta — "오픈웨이트 선봉에서 클로즈드 플래그십으로"</h2>
+  <table>
+    <tr><th>제품</th><th>시점</th><th>스펙 · 용도</th><th>확인</th></tr>
+    <tr><td class="b">Llama 4 Scout / Maverick</td><td>2025-04-05</td><td>네이티브 멀티모달 MoE 오픈웨이트 — Scout 총 109B/활성 17B(16 experts)·10M 컨텍스트 표방, Maverick 총 400B/활성 17B(128 experts). 단 <b>Community License 700M MAU 조항</b> — OSI 오픈소스 아님</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Llama 4 Behemoth</td><td>발표 2025-04-05 · <span class="warn">미출시</span></td><td>총 ~2T/활성 288B — 증류용 teacher 모델. 수차례 연기 끝에 <b>사실상 무기한 보류</b> (공식 취소 발표는 없음)</td><td><span class="v1">1차</span> 스펙 / <span class="v2">2차</span> 보류 상태</td></tr>
+    <tr><td class="b">Meta Superintelligence Labs</td><td>2025-06-30</td><td>Scale AI ~$15B 딜과 함께 Alexandr Wang을 Chief AI Officer로 영입 — AI 조직 전면 재편 (TBD Lab·FAIR·Products·Infra 4팀)</td><td><span class="v2">2차</span></td></tr>
+    <tr><td class="b">Muse Spark</td><td>2026-04-08</td><td>MSL 첫 모델 — 멀티모달 추론 + tool-use + <b>"Contemplating mode"</b>(멀티에이전트 병렬 오케스트레이션). meta.ai·Meta AI 앱 탑재. <b class="warn">클로즈드</b>(파라미터·아키텍처 비공개, API는 일부 파트너 프리뷰)</td><td><span class="v1">1차</span></td></tr>
+  </table>
+  <div class="callout warn"><span class="label">주의</span>Meta 스스로 Muse Spark의 <b>"코딩·장기 agentic 워크플로"를 현재 약점으로 명시</b> — 코딩 에이전트 강세인 Anthropic·OpenAI와 대조적. Llama 4의 LMArena 1417점은 실험 변형 제출 논쟁이 있어 인용 부적합. 벤치마크(HLE 58% 등)는 전부 벤더 자체 보고.</div>
+  <div class="callout"><span class="label">패턴</span>오픈웨이트 Llama(2025.04)에서 <b>클로즈드 Muse Spark(2026.04)로 전환</b> — Superintelligence Labs 재편 이후 Meta가 오픈웨이트 노선에서 이탈. "향후 버전 오픈소스 희망"은 약속이 아닌 희망 표명.</div>
+
+  <h2 id="nvidia">NVIDIA — "에이전트용 오픈 모델 + 하이브리드 아키텍처"</h2>
+  <table>
+    <tr><th>제품</th><th>시점</th><th>스펙 · 용도</th><th>확인</th></tr>
+    <tr><td class="b">Llama Nemotron</td><td>2025-03-18</td><td>Llama 기반 + 추론 후처리 (Nano/Super/Ultra) — agentic AI 플랫폼용, NIM 마이크로서비스 제공. <b>Nemotron 3와 별개 패밀리</b>(혼동 주의)</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Nemotron 3 Nano</td><td>2025-12-15</td><td>자체 사전학습 <b>하이브리드 Mamba-Transformer MoE</b> — 총 31.6B/활성 3.2B (128 expert 중 6 활성). 패밀리 공통 1M 컨텍스트</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Nemotron 3 Super</td><td>2026-03-10</td><td>총 120.6B/활성 12.7B — LatentMoE(512 expert·top-22) + MTP 2층(투기 디코딩), <b>NVFP4 사전학습</b>, 25T 토큰 코퍼스</td><td><span class="v1">1차</span> (기술 보고서)</td></tr>
+    <tr><td class="b">Nemotron 3 Ultra</td><td>2026-06-04</td><td>총 550B/활성 55B — Computex 2026 공개. 코드(GitHub 173B 토큰)·법률 도메인 데이터셋 동시 공개</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">라이선스 전환</td><td>2026-05-28 발표</td><td>현행 = <b>NVIDIA Nemotron Open Model License</b>(상용·파생 OK, 단 NVIDIA 면책 의무 + 라이선시가 특허/저작권 소송 제기 시 자동 종료 — OSI 아님). <b>향후 릴리스부터 Linux Foundation OpenMDW</b>로 전환</td><td><span class="v1">1차</span></td></tr>
+  </table>
+  <div class="callout"><span class="label">패턴</span>NVIDIA는 모델 자체보다 <b>"에이전트 추론 비용"을 공략</b> — sparse MoE(활성 10% 수준)·Mamba 하이브리드·NVFP4·MTP 전부 추론 처리량 최적화 기술. 공개 벤치마크는 전부 자체 보고이며, "NVIDIA HW 전용 제약" 루머는 라이선스 원문에 근거 없음 — 실제 주의 조항은 면책 의무와 소송 시 종료.</div>
+
+  <h2 id="china">중국 오픈웨이트 진영 — "에이전트 파운데이션 모델의 가격 파괴"</h2>
+  <table>
+    <tr><th>모델</th><th>시점</th><th>스펙 · 라이선스</th><th>확인</th></tr>
+    <tr><td class="b">DeepSeek-V3.2 / -Speciale</td><td>2025-12</td><td>총 685B MoE + <b>DSA</b>(DeepSeek Sparse Attention) — <b>MIT</b>. 표준/Speciale 2종</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Kimi K2 (Moonshot)</td><td>2025-07</td><td>총 1T/활성 32B MoE — <b>"Open Agentic Intelligence"</b> 포지셔닝. <b>Modified MIT</b>(대규모 상용 배포 시 UI 표기 의무)</td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">GLM-4.5 / 4.6 (Zhipu)</td><td>2025 H2</td><td>에이전트 파운데이션 모델 — 4.5 <b>MIT</b>(경량 Air 총 106B/활성 12B), 4.6 총 357B MoE·<b>MIT</b></td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">MiniMax-M2</td><td>2025 H2</td><td>총 230B/활성 10B MoE — 코딩·agentic 툴체인 특화. <b>Modified MIT</b></td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Qwen3.6-35B-A3B (Alibaba)</td><td>2026-04-16</td><td>MoE — <b>Apache 2.0</b></td><td><span class="v1">1차</span></td></tr>
+    <tr><td class="b">Qwen3.6-27B</td><td>2026-04-22</td><td>dense 코딩 플래그십 — <b>Apache 2.0</b>. SWE-bench 77.2 (벤더 보고)</td><td><span class="v1">1차</span></td></tr>
+  </table>
+  <div class="callout warn"><span class="label">주의</span>"GPT-5 동급" 류의 성능 우위 주장은 <b>전부 벤더 자체 보고</b> — 교차검증에서 "Qwen3 전 모델 Apache 2.0", "MiniMax-M2 오픈소스 종합 1위" 등 일반화 주장 4건이 기각됨(0-3). <b>라이선스·성능은 모델 단위로 1차 출처 확인</b>이 원칙. 파라미터는 MoE 총/활성 구분 필수.</div>
+  <div class="callout"><span class="label">패턴</span>중국 진영의 공통 전략: <b>agentic 용도를 정조준한 오픈웨이트 + 관대한 라이선스</b>. 활성 파라미터를 총량의 3–10%로 줄인 sparse MoE로 자체 호스팅 추론 비용을 낮춰, 빅3 API 대비 가격 경쟁력 확보. 단 기업 도입 시 데이터 거버넌스(학습 데이터·호스팅 위치)는 별도 검토 필요.</div>
+
+  <h2 id="license">"오픈"의 스펙트럼 — 라이선스 한눈에</h2>
+  <table>
+    <tr><th>등급</th><th>라이선스</th><th>해당 모델</th><th>핵심 조건</th></tr>
+    <tr><td class="b accent">완전 관대</td><td>Apache 2.0 / MIT</td><td>Qwen3.6 · DeepSeek-V3.2 · GLM-4.5/4.6</td><td>상용·파생·재배포 자유</td></tr>
+    <tr><td class="b gold">조건부 관대</td><td>Modified MIT</td><td>Kimi K2 · MiniMax-M2</td><td>대규모 상용 배포 시 UI 표기 의무</td></tr>
+    <tr><td class="b gold">벤더 라이선스</td><td>NVIDIA Open Model License</td><td>Nemotron 3 (현행)</td><td>상용 OK, 단 면책 의무 + 소송 시 자동 종료 (→ OpenMDW 전환 예정)</td></tr>
+    <tr><td class="b warn">제한적 오픈</td><td>Llama Community License</td><td>Llama 4</td><td>700M MAU 초과 시 Meta 별도 허가 필요</td></tr>
+    <tr><td class="b warn">클로즈드</td><td>—</td><td>Muse Spark · 빅3 프런티어 모델</td><td>API/제품으로만 접근</td></tr>
+  </table>
+
+  <h2 id="insight">시사점 — 전 진영 공통 방향 (D-level)</h2>
   <div class="grid3">
-    <div class="card"><h3>① 모델 → 하네스 경쟁</h3><p>2026년 차별화는 모델 점수보다 <b>에이전트 운영 구조</b>(하네스·플랫폼·표준)에서 발생. 3사 모두 CLI·IDE·클라우드·브라우저로 에이전트 접점을 다층화.</p></div>
+    <div class="card"><h3>① 모델 → 하네스 경쟁</h3><p>2026년 차별화는 모델 점수보다 <b>에이전트 운영 구조</b>(하네스·플랫폼·표준)에서 발생. 빅3 모두 CLI·IDE·클라우드·브라우저로 에이전트 접점을 다층화.</p></div>
     <div class="card"><h3>② 표준 수렴</h3><p>MCP(도구 연결)·AGENTS.md(지침)·Agent Skills(노하우)가 <b>벤더 경계를 넘는 공통 규격</b>으로 — 한 번 만든 자산이 도구를 갈아타도 살아남음. 도입 시 표준 준수 자산에 투자할 것.</p></div>
     <div class="card"><h3>③ 비개발자 확장</h3><p>Cowork(Anthropic)·Atlas agent mode(OpenAI)·NotebookLM Deep Research(Google) — 코딩을 넘어 <b>일반 지식노동 자동화</b>로 전선 확대. 사무직 대상 교육 수요 증가.</p></div>
+    <div class="card"><h3>④ 오픈웨이트 주도권 = 중국</h3><p>Meta가 클로즈드로 선회한 사이 DeepSeek·Qwen·Kimi·GLM·MiniMax가 <b>agentic 특화 오픈웨이트</b>를 MIT/Apache로 공급 — 자체 호스팅·커스텀의 사실상 유일한 프런티어급 선택지. 단 데이터 거버넌스 검토는 별도.</p></div>
+    <div class="card"><h3>⑤ "오픈"은 스펙트럼</h3><p>같은 "오픈 모델"이라도 Apache/MIT ↔ Modified MIT ↔ 벤더 라이선스 ↔ 700M MAU 조항까지 <b>조건이 제각각</b> — 도입 전 라이선스 원문을 모델 단위로 확인할 것 (위 표 참조).</p></div>
+    <div class="card"><h3>⑥ 추론 비용이 아키텍처를 결정</h3><p>sparse MoE(활성 3–10%)·Mamba 하이브리드(Nemotron 3)·Sparse Attention(DSA)·MTP — 전 진영이 <b>에이전트의 토큰 대량 소비</b>를 겨냥한 추론 효율 기술로 수렴. 장시간 자율 루프의 비용 구조가 모델 설계를 끌고 가는 중.</p></div>
   </div>
 
   <p class="small" style="color:#888;margin-top:2vh">관련: <a href="claude_code_codex_manual.html">Claude Code ↔ Codex CLI 전환 매뉴얼</a> · <a href="agents_landscape.html">에이전트 지형도</a> · <a href="how_agents_work.html">작동 원리</a> · <a href="index.html">세미나 허브</a></p>
@@ -113,8 +171,11 @@ a{color:#7eb8ff}
   <div class="foot">
     출처(1차) — OpenAI: <a href="https://openai.com/index/introducing-gpt-5-5/">GPT-5.5</a> · <a href="https://openai.com/index/introducing-agentkit/">AgentKit</a> · <a href="https://openai.com/index/introducing-chatgpt-atlas/">Atlas</a> · <a href="https://developers.openai.com/codex/cli">Codex Docs</a> · <a href="https://agents.md/">agents.md</a> /
     Anthropic: <a href="https://www.anthropic.com/news/claude-opus-4-5">Opus 4.5</a> · <a href="https://platform.claude.com/docs/en/release-notes/overview">릴리스 노트</a> · <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a> · <a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk">Agent SDK</a> /
-    Google: <a href="https://blog.google/products/gemini/gemini-3/">Gemini 3</a> · <a href="https://developers.googleblog.com/build-with-google-antigravity-our-new-agentic-development-platform/">Antigravity</a> · <a href="https://blog.google/technology/google-labs/jules-now-available/">Jules GA</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/notebooklm-deep-research-file-types/">NotebookLM</a>.
-    <br>검증: deep-research 적대적 교차검증(OpenAI·Anthropic 25/25 claims 3-0 만장일치) + Google 1차 출처 직접 확인 패스. 빠르게 변하는 분야 — 인용 전 재확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
+    Google: <a href="https://blog.google/products/gemini/gemini-3/">Gemini 3</a> · <a href="https://developers.googleblog.com/build-with-google-antigravity-our-new-agentic-development-platform/">Antigravity</a> · <a href="https://blog.google/technology/google-labs/jules-now-available/">Jules GA</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/notebooklm-deep-research-file-types/">NotebookLM</a> /
+    Meta: <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/">Llama 4</a> · <a href="https://www.llama.com/llama4/license/">Llama 4 License</a> · <a href="https://ai.meta.com/blog/introducing-muse-spark-msl/">Muse Spark</a> /
+    NVIDIA: <a href="https://nvidianews.nvidia.com/news/nvidia-debuts-nemotron-3-family-of-open-models">Nemotron 3 발표</a> · <a href="https://research.nvidia.com/labs/nemotron/Nemotron-3/">Nemotron 3 Research</a> · <a href="https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/">Open Model License</a> /
+    중국: <a href="https://arxiv.org/abs/2512.02556">DeepSeek-V3.2 논문</a> · <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2">V3.2 모델카드</a> · <a href="https://github.com/QwenLM/Qwen3.6">Qwen3.6</a> · <a href="https://github.com/moonshotai/Kimi-K2">Kimi K2</a> · <a href="https://huggingface.co/zai-org/GLM-4.6">GLM-4.6</a> · <a href="https://github.com/MiniMax-AI/MiniMax-M2">MiniMax-M2</a>.
+    <br>검증: deep-research 적대적 교차검증(OpenAI·Anthropic 25/25 claims 3-0 만장일치, 확장편 21 확정·4 기각) + Google·Meta·NVIDIA 1차 출처 직접 확인 패스. 빠르게 변하는 분야 — 인용 전 재확인. · AI Agent 활용 세미나 · 팅크웨어 선행개발부
   </div>
 </div>
 </body>
