@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>북미 Amazon — 바로 쓰는 Claude 프롬프트 묶음</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:5vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.3em;font-weight:800;line-height:1.18}
+.sub{color:#aaa;font-size:1.12em;margin:.6em 0 1vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3.4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.6vh}
+h3{font-size:1.1em;color:#4ecdc4;margin:1.8vh 0 .3vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.8em 0}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.need{display:inline-block;font-size:.74em;font-weight:700;padding:.12em .55em;border-radius:5px;margin-left:.4em;vertical-align:middle}
+.need.data{background:#2a210c;color:#ffd93d;border:1px solid #ffd93d}
+.need.nodata{background:#11233a;color:#7eb8ff;border:1px solid #7eb8ff}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0 1em;overflow:auto;position:relative}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.9em;white-space:pre-wrap;display:block;line-height:1.6}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.84em}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}.callout{background:#f3f7fb}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">바로 쓰는 프롬프트 · 복사해서 Claude 앱에 붙여넣기</span>
+  <h1>북미 Amazon <span class="accent">프롬프트 묶음</span></h1>
+  <p class="sub">리스팅·콘텐츠 / 광고(PPC) / 리뷰분석 / 키워드·리서치 — <b class="blue">Claude 앱(채팅·Projects)</b>에 바로 붙여 쓰는 검증된 프롬프트 모음입니다.</p>
+
+  <div class="callout"><span class="label">사용법 4가지</span>
+    <ul style="margin-bottom:0">
+      <li><code>[ ]</code>·<code>(... 붙여넣기)</code> <b>자리표시자를 내 정보로 교체</b>하세요.</li>
+      <li><span class="need data">데이터 필요</span> 표시 프롬프트는 <b>실데이터를 직접 붙여넣어야</b> 합니다. AI는 실검색량·가격·BSR을 모릅니다.</li>
+      <li>매번 쓰는 작업은 <b>Projects</b>에 브랜드 가이드·금칙어·예시 리스팅을 올려두면 일관성이 올라갑니다.</li>
+      <li>마지막 줄에 <b>"확실하지 않으면 추측하지 말고 모른다고 해"</b>를 붙이면 환각이 줄어듭니다.</li>
+    </ul>
+  </div>
+
+  <!-- ============ 1. 리스팅·콘텐츠 ============ -->
+  <h2>1. 리스팅 · 콘텐츠</h2>
+
+  <h3>① 리스팅 풀세트 생성 <span class="need nodata">데이터 불필요</span></h3>
+  <pre><code>너는 미국 아마존 리스팅 카피라이터야. 아래 제품 정보로 US 마켓 리스팅을 만들어줘.
+
+[제품명/카테고리]: ...
+[핵심 스펙·소재·사이즈]: ...
+[차별점 3가지]: ...
+[타깃 고객]: ...
+[꼭 넣을 키워드]: ...
+
+출력:
+1) Title (200자 이내, 핵심 키워드 앞쪽)
+2) Bullet points 5개 (각 베네핏 중심, 대문자 남발 금지)
+3) Product Description (단락형)
+4) A+ Content 섹션 3개 (헤드라인 + 본문)
+- 톤: 신뢰감, 미국 원어민 자연스러움. FTC상 과장·의학적 단정 표현 회피.
+- 금지표현: best, #1, guaranteed cure 같은 단정/허위 소지 표현 제외.</code></pre>
+
+  <h3>② 기존 리스팅 진단·최적화 <span class="need data">데이터 필요</span></h3>
+  <pre><code>아래는 우리 현재 리스팅과 상위 경쟁사 리스팅이야.
+우리 것을 진단하고 개선안을 제시해줘.
+
+[우리 리스팅]: (제목/불릿/설명 붙여넣기)
+[경쟁사 리스팅 2~3개]: (붙여넣기)
+
+출력:
+- 우리 리스팅의 약점 5가지 (구체적으로)
+- 누락된 키워드/베네핏
+- 개선된 Title·Bullet 제안 (before→after 표)
+- 전환율 관점 우선순위 Top 3</code></pre>
+
+  <h3>③ 한→영 마케팅 현지화 <span class="need nodata">데이터 불필요</span></h3>
+  <pre><code>아래 한국어 마케팅 문구를 미국 아마존용 영어로 현지화해줘.
+직역하지 말고, 미국 소비자가 자연스럽게 받아들이는 표현·관용구로.
+한국식 과장은 빼고, 베네핏 중심으로. 2가지 버전(차분/활기) 제시.
+
+(한국어 문구 붙여넣기)</code></pre>
+
+  <!-- ============ 2. 광고 PPC ============ -->
+  <h2>2. 광고 (PPC)</h2>
+
+  <h3>① 캠페인 구조 설계 <span class="need nodata">데이터 불필요</span></h3>
+  <pre><code>신제품의 아마존 Sponsored Products 캠페인 구조를 설계해줘.
+
+[제품/카테고리]: ...
+[목표]: 초기 런칭(노출 확보) / 또는 수익화(ACoS 관리)
+[예산(월)]: $...
+
+출력:
+- Auto / Manual(Broad·Phrase·Exact) 캠페인 분리안
+- 광고그룹·키워드 그룹핑 전략
+- 시작 입찰·예산 배분 가이드(원칙)
+- 2주 후 점검 체크리스트(어떤 지표로 무엇을 조정)
+주의: 실검색량은 모르니 전략·구조만. 실제 키워드 볼륨은 별도 툴로 확인하겠음.</code></pre>
+
+  <h3>② 광고 리포트 분석 → 낭비 키워드·네거티브 <span class="need data">데이터 필요</span></h3>
+  <pre><code>아래는 지난 30일 Sponsored Products 검색어 리포트(CSV)야.
+분석해서 액션을 뽑아줘.
+
+(CSV 붙여넣기 — 또는 파일 업로드)
+
+출력:
+- 전환 0인데 클릭·비용 높은 검색어 → 네거티브 후보 목록
+- ACoS 높은(>목표) 키워드 → 입찰 인하 후보
+- 전환 좋은(ACoS 낮은) 키워드 → 입찰 상향/Exact 승격 후보
+- 표로 정리하고, 예상 절감액 큰 순으로 우선순위
+[목표 ACoS]: ...%</code></pre>
+
+  <h3>③ 광고 헤드라인·카피 다량 <span class="need nodata">데이터 불필요</span></h3>
+  <pre><code>아래 제품으로 Sponsored Brands 헤드라인을 만들어줘.
+- 50자 이내, 미국 톤, 베네핏 중심
+- 8종 제시 후 가장 추천 1개 표시. 금지: 과장·단정 표현
+(제품 정보 붙여넣기)</code></pre>
+
+  <!-- ============ 3. 리뷰 분석 ============ -->
+  <h2>3. 리뷰 · VOC 분석</h2>
+
+  <h3>① 대량 리뷰 감정분석·토픽 <span class="need data">데이터 필요</span></h3>
+  <pre><code>아래는 우리 제품 리뷰 모음이야. 분석해줘.
+
+(리뷰 텍스트/CSV 붙여넣기 — 또는 파일 업로드)
+
+출력:
+- 긍정/부정/중립 비율
+- 자주 언급되는 칭찬 토픽 Top 5 (빈도와 대표 인용)
+- 자주 언급되는 불만 토픽 Top 5 (빈도와 대표 인용)
+- 별점 하락의 핵심 원인 가설 3가지
+- 리스팅/제품에 즉시 반영할 액션 5가지</code></pre>
+
+  <h3>② 부정 리뷰 → 개선 액션 매핑 <span class="need data">데이터 필요</span></h3>
+  <pre><code>아래 별점 1~3 리뷰들을 보고, 각 불만을
+[제품 개선] / [리스팅 보완(오해 해소)] / [CS 응대] 중 어디로 풀지 분류해줘.
+표: 불만요지 | 빈도 | 분류 | 구체 조치 제안
+(부정 리뷰 붙여넣기)</code></pre>
+
+  <h3>③ 경쟁사 리뷰로 차별화 포인트 <span class="need data">데이터 필요</span></h3>
+  <pre><code>아래는 경쟁사 제품 리뷰야. 경쟁사의 약점(고객 불만)을 뽑고,
+우리가 리스팅·제품에서 강조하면 좋을 차별화 포인트로 변환해줘.
+(경쟁사 리뷰 붙여넣기)</code></pre>
+
+  <!-- ============ 4. 키워드·리서치 ============ -->
+  <h2>4. 키워드 · 시장 리서치</h2>
+
+  <h3>① 시드 키워드 확장·검색의도 분류 <span class="need nodata">데이터 불필요</span></h3>
+  <pre><code>아래 제품의 아마존 키워드 후보를 확장해줘.
+[제품/용도]: ...
+[시드 키워드]: ...
+
+출력:
+- 롱테일·연관 키워드 30개 (영어)
+- 검색의도별 분류: 정보형 / 비교형 / 구매임박형
+- 백엔드 search term 후보(중복·금지어 제외)
+주의: 실검색량은 모르니 후보·분류만. 볼륨은 Helium10 등으로 검증하겠음.</code></pre>
+
+  <h3>② 경쟁사 비교표 <span class="need data">데이터 필요</span></h3>
+  <pre><code>아래 경쟁 제품들의 리스팅 정보로 비교표를 만들어줘.
+열: 제품 | 가격대 | 핵심 베네핏 | 약점(리뷰 기반) | 우리 대비 포지션
+마지막에 우리 제품의 빈틈(기회) 3가지.
+(경쟁 제품 정보·리뷰 붙여넣기)</code></pre>
+
+  <h3>③ 시장 동향 리서치 <span class="need data">웹검색 환경 필요</span></h3>
+  <pre><code>(웹 검색이 켜진 Claude 또는 리서치 기능에서)
+미국 아마존 "[카테고리]" 시장의 2025~2026 트렌드를 조사해줘.
+- 수요 동향, 가격대, 주요 플레이어, 소비자 관심 변화
+- 신규 진입 기회와 리스크
+- 각 주장에 출처 링크를 붙이고, 불확실한 건 불확실하다고 표시</code></pre>
+
+  <div class="callout warn"><span class="label">⚠ 공통 주의</span>
+    실검색량·BSR·가격 등 <b>실수치는 Claude가 모릅니다</b> — 물어보면 지어낼 수 있으니 실데이터를 주고 "해석"만 시키고, 수치는 아마존/특화 툴로 검증하세요.
+    광고·데이터 <b>자동화·수집은 Amazon 약관 준수</b>. 고객 리뷰에 개인정보가 있으면 마스킹 후 사용.</div>
+
+  <div class="callout tip"><span class="label">다음 단계</span>
+    이 프롬프트들의 "분석·자동화"를 <b>매주 반복</b>하고 싶다면 →
+    <a href="amazon_na_weekly_report_lab.html"><b>Claude Code 주간 리포트 자동화 실습</b></a>으로.
+    도구 선택 큰 그림은 <a href="amazon_na_marketing_ai.html">기업용 AI로 어디까지?</a> 참고.</div>
+
+  <div class="foot">
+    AI Agent 활용 세미나 · 팅크웨어 선행개발부 · 마케팅 프롬프트 실무 자료 ·
+    관련: <a href="handout_마케팅_영업.html">마케팅·영업 핸드아웃</a> · <a href="amazon_na_marketing_ai.html">북미 Amazon — 기업용 AI로 어디까지?</a>
+  </div>
+</div>
+</body>
+</html>

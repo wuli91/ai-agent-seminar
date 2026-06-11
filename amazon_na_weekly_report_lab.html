@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 실습 — Amazon 주간 성과 리포트 자동화</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:940px;margin:0 auto;padding:5vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.2em;font-weight:800;line-height:1.18}
+.sub{color:#aaa;font-size:1.12em;margin:.6em 0 1vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3.4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.6vh}
+h3{font-size:1.12em;color:#4ecdc4;margin:1.6vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.3em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.8em 0}
+.lvl{border-radius:10px;padding:.2em .8em;font-weight:700;font-size:.85em;display:inline-block;margin-bottom:.3em}
+.lvl1{background:#0c1a18;color:#4ecdc4;border:1px solid #4ecdc4}
+.lvl2{background:#2a210c;color:#ffd93d;border:1px solid #ffd93d}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.step{border-left:3px solid #7eb8ff;padding:.5em 0 .5em 1em;margin:.7em 0;background:#0e1722;border-radius:0 8px 8px 0}
+.step .n{color:#7eb8ff;font-weight:700}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0 1em;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.88em;white-space:pre;display:block;line-height:1.55}
+pre.say code{color:#9fe6dd}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.93em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .7em}
+td{padding:.5em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.84em}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}.callout{background:#f3f7fb}.step{background:#eef3f8}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}.accent{color:#0a8a7d}.blue{color:#0055aa}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">Claude Code 실습 (시나리오 A) · 핸즈온</span>
+  <h1>Amazon <span class="accent">주간 성과 리포트</span> 자동화</h1>
+  <p class="sub">매주 손으로 만들던 매출·광고 리포트를 <b class="gold">Claude Code</b>로 자동화합니다. 누구나 따라 하는 <b>레벨 1(CSV 기반)</b>부터, 개발형 <b>레벨 2(SP-API 연동)</b>까지.</p>
+
+  <div class="callout"><span class="label">목표 산출물</span>
+    SKU별 매출·ACoS·반품률을 계산하고, <b>전주 대비 변화 표 + 차트</b>가 들어간 <b>주간 리포트(PDF/HTML)</b>를 자동 생성.
+    레벨 2에서는 <b>매주 월요일 자동 실행</b>까지.</div>
+
+  <div class="callout warn"><span class="label">이 실습의 현실적 설계</span>
+    세미나에서 SP-API 전체 연동은 무겁습니다. 그래서 <b>레벨 1 = Seller Central에서 수동 다운로드한 CSV</b>로 먼저 자동화를 완성하고,
+    <b>레벨 2 = 다운로드까지 API로 자동화 + 스케줄</b>로 확장합니다. 레벨 1만으로도 "리포트 작성" 자체는 100% 자동화됩니다.</div>
+
+  <!-- ============ 사전 준비 ============ -->
+  <h2>0. 사전 준비</h2>
+  <ul>
+    <li>Claude Code 설치 (세미나 3회차 사전 준비 — <a href="setup_guide.html">가이드</a>)</li>
+    <li>실습 폴더 1개. Seller Central → Reports에서 <b>지난주/전주 CSV</b>를 받아 둡니다 (매출·트래픽, 광고 검색어 리포트 등).</li>
+    <li>레벨 2만: SP-API/Amazon Ads API 개발자 등록·자격증명(LWA) — <b>개발 인력 동반 권장</b>.</li>
+  </ul>
+
+  <!-- ============ 레벨 1 ============ -->
+  <h2>1. 레벨 1 — CSV 기반 자동 리포트 <span class="lvl lvl1">누구나</span></h2>
+
+  <h3>① 폴더 구조 만들기</h3>
+  <pre><code>amazon-weekly/
+├─ data/
+│  ├─ this_week/      ← 이번 주 CSV 넣기 (매출, 광고 등)
+│  └─ last_week/      ← 전주 CSV 넣기
+├─ reports/           ← 결과물이 여기에 쌓임
+└─ CLAUDE.md          ← Claude Code에게 주는 규칙</code></pre>
+
+  <h3>② CLAUDE.md 작성 (Claude Code의 작업 규칙)</h3>
+  <p>폴더에 <code>CLAUDE.md</code>를 만들어 두면 Claude Code가 매번 이 규칙을 읽고 일관되게 일합니다.</p>
+  <pre><code># Amazon 주간 리포트 자동화 규칙
+
+## 데이터
+- 이번 주 CSV: data/this_week/  / 전주 CSV: data/last_week/
+- CSV 인코딩·구분자가 섞여 있을 수 있으니 자동 감지해서 읽을 것.
+
+## 계산 지표 (SKU별)
+- 매출, 주문수, 광고비, 광고매출, ACoS(=광고비/광고매출),
+  전환율, 반품률, 전주 대비 증감(%)
+
+## 산출물
+- reports/ 폴더에 "weekly_YYYY-MM-DD.html" 생성
+- 구성: ① 요약(총매출·총ACoS·주요 변화 3줄) ② SKU별 표(전주 대비 ▲▼)
+  ③ 차트(매출 추이·ACoS 상위) ④ 주의 신호(재고소진·ACoS급등) 자동 코멘트
+- 한국어 리포트. 숫자는 천단위 콤마, 통화 $ 표기.
+
+## 원칙
+- CSV에 없는 값은 추측하지 말고 "데이터 없음"으로 표기.
+- 계산식은 리포트 하단에 명시.</code></pre>
+
+  <h3>③ Claude Code에 시키기 (자연어 한 줄)</h3>
+  <pre class="say"><code>data 폴더의 이번주/전주 CSV를 읽어서 CLAUDE.md 규칙대로
+주간 리포트 HTML을 reports/에 만들어줘. 먼저 어떤 컬럼을 어떻게
+매핑했는지 보여주고, 내가 확인하면 리포트를 생성해.</code></pre>
+  <p>Claude Code가 CSV 구조를 파악 → 매핑 제안 → (승인) → 정제·계산·차트·HTML 생성까지 수행합니다. 결과가 어긋나면 그대로 대화로 수정 지시("ACoS 계산이 틀렸어, 광고비/광고매출이야").</p>
+
+  <div class="callout tip"><span class="label">레벨 1 완료 = 사람이 하던 '작성'은 끝</span>
+    이제 매주 CSV만 폴더에 넣고 같은 한 줄을 치면 리포트가 나옵니다. 다운로드와 실행 클릭만 남았고, 그건 레벨 2에서 없앱니다.</div>
+
+  <!-- ============ 레벨 2 ============ -->
+  <h2>2. 레벨 2 — API 연동 + 스케줄 <span class="lvl lvl2">개발형</span></h2>
+
+  <h3>① 자격증명 보관 (보안 필수)</h3>
+  <pre><code>amazon-weekly/
+├─ .env            ← API 키/토큰 (절대 git에 올리지 않음)
+├─ .gitignore      ← .env, data/ 제외
+└─ scripts/        ← Claude Code가 만든 수집 스크립트</code></pre>
+  <pre><code># .env  (예시 — 실제 값은 본인 것)
+SP_API_REFRESH_TOKEN=...
+SP_API_CLIENT_ID=...
+SP_API_CLIENT_SECRET=...
+ADS_API_REFRESH_TOKEN=...
+ADS_API_PROFILE_ID=...</code></pre>
+
+  <h3>② Claude Code에 시키기</h3>
+  <pre class="say"><code>.env의 자격증명으로 Amazon SP-API에서 지난주 매출 리포트를,
+Ads API에서 광고 리포트를 자동으로 받아 data/this_week/에 저장하는
+스크립트를 scripts/에 만들어줘. 토큰은 코드에 박지 말고 .env에서 읽고,
+요청 실패 시 재시도와 에러 로그를 넣어. 받은 다음 레벨1 리포트 생성까지
+한 번에 실행되는 명령으로 묶어줘.</code></pre>
+  <p style="font-size:.9em;color:#9fb4c8">※ SP-API 리포트 종류·필요 권한(roles)·Ads API 프로파일은 공식 문서 기준으로 확인하세요. PII 포함 리포트는 별도 승인이 필요할 수 있습니다.</p>
+
+  <h3>③ 매주 자동 실행 (스케줄)</h3>
+  <pre class="say"><code>이 전체 파이프라인을 매주 월요일 오전 9시에 자동 실행되게 해줘.
+(mac/linux면 cron, Windows면 작업 스케줄러로)</code></pre>
+  <pre><code># 예: cron (매주 월 09:00)
+0 9 * * 1  cd ~/amazon-weekly && ./run_weekly.sh >> reports/run.log 2>&1</code></pre>
+  <p>완성 후엔 사람이 손대는 시간이 <b>0분</b> — 월요일 아침 reports/에 새 리포트가 쌓입니다. 슬랙/메일 발송까지 같은 방식으로 추가 가능.</p>
+
+  <!-- ============ 검증·안전 ============ -->
+  <h2>3. 검증 & 안전 수칙</h2>
+  <table>
+    <tr><th>항목</th><th>확인</th></tr>
+    <tr><td>숫자 검증</td><td>첫 1~2주는 <b>손계산/Seller Central과 대조</b>. ACoS·반품률 정의 일치 확인</td></tr>
+    <tr><td>권한 승인</td><td>Claude Code의 파일 쓰기·실행은 <b>처음엔 매번 승인</b>하며 무엇을 하는지 확인</td></tr>
+    <tr><td>키 보안</td><td><code>.env</code>는 <b>git 제외</b>, 공유 금지. 키는 최소 권한으로 발급</td></tr>
+    <tr><td>API 약관</td><td>SP-API/Ads API <b>호출 한도·이용약관 준수</b>. 무단 스크래핑 금지</td></tr>
+    <tr><td>데이터 보안</td><td>고객 PII 포함 리포트는 <b>접근 통제</b>, 외부 공유 시 마스킹</td></tr>
+  </table>
+
+  <div class="callout"><span class="label">왜 이게 ① 앱·② SaaS로 안 되나</span>
+    Claude 앱은 복붙 수작업(반복·스케줄 불가), 특화 SaaS는 정해진 대시보드만(우리 지표·우리 포맷·우리 스케줄에 맞춤 어려움).
+    <b>"우리 계정·우리 규칙·매주 자동"</b>의 빈틈을 메우는 게 Claude Code입니다. 큰 그림: <a href="amazon_na_marketing_ai.html">기업용 AI로 어디까지?</a></div>
+
+  <div class="callout tip"><span class="label">짝꿍 자료</span>
+    리포트 안의 "분석" 문구나 카피가 필요하면 → <a href="amazon_na_prompt_pack.html"><b>바로 쓰는 프롬프트 묶음</b></a>.
+    Claude Code 기본기는 → <a href="session_03.html">Session 3</a>, <a href="setup_guide.html">사전 준비</a>.</div>
+
+  <div class="foot">
+    AI Agent 활용 세미나 · 팅크웨어 선행개발부 · Claude Code 핸즈온(시나리오 A) ·
+    API 종류·권한·요금 정책은 빠르게 변동 — 도입 시점 재확인.
+  </div>
+</div>
+</body>
+</html>

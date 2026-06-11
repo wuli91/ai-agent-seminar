@@ -1,0 +1,26 @@
+# 세션 메모 / 핸드오프 노트
+.remember/
+
+# 자격증명 / API 키
+.env
+.env.*
+!.env.example
+
+# 실습 데이터 (실제 판매·광고 CSV는 올리지 않음)
+amazon-weekly/data/
+*.csv
+*.xlsx
+*.xls
+
+# 실습 생성 리포트
+reports/
+*.log
+
+# macOS
+.DS_Store
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+*~
