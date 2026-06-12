@@ -118,10 +118,12 @@ a.plain:hover{text-decoration:underline}
   <div class="section-title">🧰 직무별 활용 핸드아웃</div>
   <p style="color:#aaa;margin-bottom:1em">자기 직무 1장을 골라 인쇄/저장하세요. 바로 쓰는 시나리오·프롬프트·주의사항이 담겨 있습니다.</p>
   <div class="handout-list">
+    <a class="card session-card hi" href="app_feature_guide.html"><h3>🗺 AI 앱 기능 지도 <span class="small" style="color:#7eb8ff">전 직군 공통</span></h3><p class="small">Claude 기능별 의도·쓰임·화면 위치 → ChatGPT·Gemini·웍스AI 매핑 (Session 2 보조)</p></a>
     <a class="card session-card" href="handout_기획_pm.html"><h3>기획 · PM · 전략</h3><p class="small">보고서·기획서·리서치·로드맵</p></a>
     <a class="card session-card" href="handout_마케팅_영업.html"><h3>마케팅 · 영업</h3><p class="small">카피·캠페인·제안서·고객 분석</p></a>
     <a class="card session-card" href="handout_디자인_콘텐츠.html"><h3>디자인 · 콘텐츠</h3><p class="small">아이데이션·카피·이미지·문서</p></a>
     <a class="card session-card" href="handout_경영지원_hr_재무.html"><h3>경영지원 · HR · 재무</h3><p class="small">규정·채용·데이터 정리·요약</p></a>
+    <a class="card session-card" href="handout_개발_입문.html"><h3>개발 · SW <span class="small" style="color:#7eb8ff">입문</span></h3><p class="small">이제 시작하는 개발자 — 첫 1주 루틴·복붙 프롬프트</p></a>
     <a class="card session-card" href="handout_개발_sw.html"><h3>개발 · SW/QA <span class="small" style="color:#4ecdc4">고급</span></h3><p class="small">이미 쓰는 팀을 위한 더 잘 쓰는 법·근거</p></a>
     <a class="card session-card" href="handout_개발_hw.html"><h3>회로 · HW(전자)</h3><p class="small">활용 범위·EDA AI 툴·사례 (시작 가이드)</p></a>
     <a class="card session-card" href="handout_개발_기구.html"><h3>기구 · ME(기계)</h3><p class="small">생성형 설계·CAD AI·DfM (시작 가이드)</p></a>
@@ -145,18 +147,43 @@ a.plain:hover{text-decoration:underline}
     <a class="card session-card" href="claude_code_cost_guide.html"><h3>Claude Code 비용 최적화 실전</h3><p class="small">캐싱·모델 라우팅·측정(OTEL) 적용법 · 30일 플랜</p></a>
   </div>
 
+  <div class="section-title">🧪 워크숍 샘플 — 실습 과제 &amp; 자료</div>
+  <p style="color:#aaa;margin-bottom:1em">핸즈온 실습에 쓰는 과제 설명서와 샘플 자료입니다. 실습용 데이터 파일(CSV·txt)은 <code>workshop_samples/</code> 폴더에 함께 들어 있습니다. 과제 문서는 한국어판 기준이며, 각 문서 안에 영문판 링크가 있습니다.</p>
+  <div class="handout-list">
+    <a class="card session-card hi" href="workshop_samples/practice_kit.html"><h3>🧰 실습 소재 모음 (Practice Kit)</h3><p class="small">샘플 회의록 · Projects 지침 템플릿 · 직무별 반복업무 예시 · Code 실습 폴더 안내 — 전 세션 공통</p></a>
+    <a class="card session-card" href="workshop_samples/marketing_analysis/task_description_ko.html"><h3>마케팅 분석 과제 <span class="small" style="color:#7eb8ff">Level 2</span></h3><p class="small">Amazon 대시캠 경쟁 포지셔닝 분석 — 매트릭스·갭 분석·전략 제안</p></a>
+    <a class="card session-card" href="workshop_samples/marketing_analysis/model_answer_report_ko.html"><h3>마케팅 분석 — 모범 답안</h3><p class="small">시장 분석 리포트 완성 예시 (Guardian Lite 전략)</p></a>
+    <a class="card session-card" href="workshop_samples/hr_recruitment/task_description_ko.html"><h3>HR 채용 스크리닝 과제 <span class="small" style="color:#7eb8ff">Level 1</span></h3><p class="small">후보자 스코어링 → 면접 질문 생성 → 안내 메일 작성</p></a>
+    <a class="card session-card" href="workshop_samples/hr_advanced/prompt_guide.html"><h3>HR 심화 — 노동법 준수 검토 가이드 <span class="small" style="color:#7eb8ff">Level 2/3</span></h3><p class="small">Perplexity 수집 → 페르소나 분석 → 검증 3단계 (비개발자용)</p></a>
+    <a class="card session-card" href="workshop_samples/hr_advanced/company_rules.html"><h3>HR 심화 — 분석 대상 취업규칙</h3><p class="small">(주)테크컴퍼니 샘플 취업규칙 — 법령 충돌 조항 찾기 실습용</p></a>
+    <a class="card session-card" href="workshop_samples/hr_advanced/dev_guide.html"><h3>HR 심화 — 개발자 가이드 <span class="small" style="color:#4ecdc4">Track B · Level 2/3</span></h3><p class="small">CLAUDE.md 페르소나 + /check_rules 커맨드로 규정 검토 에이전트 구축</p></a>
+    <a class="card session-card" href="workshop_samples/amazon_na_sales_summary_example_ko.html"><h3>Amazon 주간 리포트 — 결과물 예시 <span class="small" style="color:#7eb8ff">Level 1</span></h3><p class="small">CSV → 주간 매출 요약 리포트 샘플 (실습 목표 산출물)</p></a>
+    <a class="card session-card" href="data_policy_template.html"><h3>🚦 데이터 정책 1장 템플릿 <span class="small" style="color:#ffd93d">도입 담당용</span></h3><p class="small">허용/조건부/금지 3등급 기준 — 노란 칸만 채워 그대로 공지</p></a>
+  </div>
+
+  <div class="section-title">🧭 운영 · 후속 자료</div>
+  <p style="color:#aaa;margin-bottom:1em">세미나를 진행하는 사람, 그리고 세미나가 끝난 뒤 팀에 정착시키는 사람을 위한 문서입니다.</p>
+  <div class="handout-list">
+    <a class="card session-card" href="facilitator_guide.html"><h3>🎤 진행자 가이드 <span class="small" style="color:#ffd93d">주최용</span></h3><p class="small">세션별 분 단위 타임테이블 · 데모 대본 · 예상 Q&A 12 · 준비 체크리스트</p></a>
+    <a class="card session-card" href="troubleshooting.html"><h3>🛠 트러블슈팅 — 막혔을 때</h3><p class="small">설치·로그인·프록시·터미널 기초 — 증상별 해결 (비개발자용)</p></a>
+    <a class="card session-card" href="workflow_guide.html"><h3>⚙️ 워크플로우 만들기 <span class="small" style="color:#7eb8ff">세미나 후 30분</span></h3><p class="small">CLAUDE.md 직무별 예시 · 슬래시 커맨드 · MCP 맛보기 · 권한 설정</p></a>
+    <a class="card session-card" href="team_playbook.html"><h3>📈 팀 도입 플레이북 & 효과 측정 <span class="small" style="color:#ffd93d">팀장용</span></h3><p class="small">4주 파일럿 설계 · KPI·측정 시트 · 사후 설문 양식 · 리스크 대응</p></a>
+    <a class="card session-card" href="model_selection_guide.html"><h3>🧠 모델 선택 가이드</h3><p class="small">Opus / Sonnet / Haiku — 업무별 추천 · 바꾸는 법 · 사용량 관리</p></a>
+  </div>
+
   <div class="section-title">✅ 사전 준비 체크리스트</div>
   <p style="color:#9fb4c8;margin:.4em 0 .2em"><b>도입 담당(주최)</b></p>
   <ul class="chk">
-    <li>플랜 결정(<b>Team 이상 권장</b>) — <a class="plain" href="plans_security.html">요금제 & 보안 비교</a></li>
+    <li>플랜 결정(<b>Team 이상 권장</b>) — <a class="plain" href="plans_security.html">요금제 & 보안 비교</a> (국내 규제 체크 포함)</li>
     <li>회사 계정(좌석) 발급 및 참석자 배정 (세미나 전 로그인 확인)</li>
-    <li>"허용 데이터 / 금지 데이터" 사내 기준 1장 작성 (보안팀 가이드)</li>
-    <li>실습용 샘플 파일 준비·배포</li>
+    <li>"허용 데이터 / 금지 데이터" 사내 기준 1장 작성 — <a class="plain" href="data_policy_template.html">데이터 정책 템플릿</a> 활용 (보안팀 가이드 우선)</li>
+    <li>실습용 샘플 ZIP 생성·배포 — 저장소에서 <code>bash make_workshop_zip.sh</code> 실행 (<a class="plain" href="workshop_samples/practice_kit.html">실습 소재 모음</a> 참고)</li>
+    <li>진행 리허설 — <a class="plain" href="facilitator_guide.html">진행자 가이드</a>의 D-7 / D-1 체크리스트</li>
   </ul>
   <p style="color:#9fb4c8;margin:1em 0 .2em"><b>참석자</b></p>
   <ul class="chk">
     <li>회사가 발급한 계정으로 로그인 (claude.ai) — <a class="plain" href="setup_guide.html">가이드</a></li>
-    <li>Claude Code 설치 (3회차 전까지) — <a class="plain" href="setup_guide.html">가이드</a></li>
+    <li>Claude Code 설치 (3회차 전까지) — <a class="plain" href="setup_guide.html">가이드</a> · 막히면 <a class="plain" href="troubleshooting.html">트러블슈팅</a></li>
     <li>"내 업무 중 반복되는 일" 1~2가지 미리 적어오기</li>
   </ul>
 

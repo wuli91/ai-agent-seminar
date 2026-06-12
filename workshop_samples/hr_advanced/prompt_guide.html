@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[실습 가이드] AI로 5분 만에 끝내는 노동법 준수 여부 검토 — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+h1{font-size:2.3em;font-weight:800;line-height:1.2;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.2em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.2em;margin:.6em 0;overflow:auto}
+pre code{background:none;color:#d6e3ee;padding:0;display:block;white-space:pre-wrap;line-height:1.7}
+.cmt{color:#6a8294}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}
+.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.steps{counter-reset:s;list-style:none;margin:.6em 0}
+.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid #1a2a3a}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:#4ecdc4;color:#04201d;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em}
+.prompt{background:#0d141d;border:1px solid #2a3a4a;border-left:4px solid #ffd93d;border-radius:10px;padding:1em 1.2em;margin:.8em 0;color:#e3d9b8;white-space:pre-wrap;font-size:1em;line-height:1.7}
+.prompt .ph{color:#6a8294;font-style:italic}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.gold{color:#7a5c00}
+  code{background:#eef3f8;color:#0a5}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}
+  .callout{background:#f3f7fb}.prompt{background:#fdfaf0;color:#333;border-color:#e8d98a}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">HR Advanced 실습 · Track A (비개발자)</span>
+  <h1>[실습 가이드] AI로 5분 만에 끝내는<br><span class="accent">'노동법 준수 여부' 검토</span></h1>
+  <p class="lead">이 가이드는 최신 법령 정보를 바탕으로 우리 회사의 취업규칙이 법을 잘 따르고 있는지 확인하는 과정을 <b>3단계</b>로 나누어 설명합니다.</p>
+
+  <h2>🎯 학습 목표</h2>
+  <ol>
+    <li><b>Perplexity</b>를 사용하여 최신 법령 정보를 정확하게 수집한다.</li>
+    <li><b>Claude/ChatGPT</b>를 사용하여 복잡한 법령과 사내 규정을 비교 분석한다.</li>
+    <li>AI의 답변을 검토하고, 실무에 적용 가능한 수준의 리포트를 완성한다.</li>
+  </ol>
+
+  <h2>🛠️ 단계별 실습 가이드</h2>
+
+  <h3>Step 1. [정보 수집] Perplexity로 최신 법령 찾기</h3>
+  <div class="callout">
+    <span class="label">핵심</span>
+    AI의 '환각(거짓말)'을 방지하기 위해, 반드시 <b>출처(Source)가 명확한 검색 도구</b>를 사용합니다.
+  </div>
+  <ul class="steps">
+    <li><a href="https://www.perplexity.ai/">Perplexity.ai</a>에 접속합니다.</li>
+    <li>다음 프롬프트를 입력합니다.</li>
+    <li>AI가 답변한 내용 중 <b>핵심 법령 내용</b>을 복사(Copy)합니다.</li>
+  </ul>
+  <div class="prompt">"최근 1년 이내에 개정된 대한민국 근로기준법 중 '근로시간' 및 '연장근로 수당'과 관련된 핵심 내용을 요약해줘. 답변에는 반드시 참고한 법령의 공식 명칭과 관련 조항을 포함하고, 신뢰할 수 있는 링크를 제공해줘."</div>
+
+  <h3>Step 2. [심층 분석] Claude/ChatGPT로 규정 검토하기</h3>
+  <div class="callout">
+    <span class="label">핵심</span>
+    수집한 '법령'과 우리 회사의 '규칙'을 비교하는 <b>'전문가 페르소나'</b>를 부여합니다.
+  </div>
+  <ul class="steps">
+    <li><a href="https://claude.ai/">Claude.ai</a> 또는 <a href="https://chatgpt.com/">ChatGPT</a>를 엽니다.</li>
+    <li>먼저 <b>우리 회사의 취업규칙 파일</b>을 업로드하거나 내용을 붙여넣은 후, 아래 프롬프트를 입력합니다.</li>
+  </ul>
+
+  <p class="b gold">[복사해서 사용할 프롬프트]</p>
+  <div class="prompt">[Persona]
+너는 대한민국 노동법에 정통한 15년 차 전문 노무사야. 아주 꼼꼼하고 보수적인 관점에서 법 위반 여부를 검토하는 전문가 역할을 수행해줘.
+
+[Context]
+1. 아래는 최신 개정된 [근로기준법] 내용이야:
+<span class="ph">(여기에 Step 1에서 복사한 법령 내용을 붙여넣으세요)</span>
+
+2. 아래는 우리 회사의 [취업규칙] 내용이야:
+<span class="ph">(여기에 업로드한 파일의 내용을 붙여넣거나 파일을 업로드하세요)</span>
+
+[Task]
+위 두 내용을 비교하여, 우리 회사의 취업규칙 중 개정된 법령과 충돌하거나 위반할 가능성이 있는 조항을 찾아줘.
+
+[Output Format]
+분석 결과는 반드시 다음 형식을 지켜줘:
+1. 위반/위험 조항 요약: (문제가 되는 조항 번호와 내용)
+2. 상세 비교: (현행 규정 vs 개정 법령의 차이점 분석)
+3. 리스크 등급: (낮음 / 보통 / 높음 중 선택)
+4. 수정 제안: (법을 준수하면서도 회사 운영에 무리가 없는 수정 문구 초안)</div>
+
+  <h3>Step 3. [마무리] 결과 검토 및 보고</h3>
+  <ul class="steps">
+    <li>AI가 제안한 <b>'수정 문구 초안'</b>이 회사의 실제 운영 방식과 충돌하지 않는지 검토합니다.</li>
+    <li>AI가 언급한 <b>법령 조항</b>이 실제 법제처(<a href="https://www.law.go.kr">law.go.kr</a>)의 내용과 일치하는지 최종 확인합니다.</li>
+  </ul>
+
+  <h2>💡 전문가의 팁 (Pro-Tips for Non-Devs)</h2>
+  <div class="callout tip">
+    <span class="label">"한 번에 다 하려고 하지 마세요"</span>
+    법령이 너무 길다면 "먼저 법령 내용만 요약해줘" → 그 다음 "이제 규칙과 비교해줘" 순으로 <b>단계별로 대화</b>하는 것이 훨씬 정확합니다.
+  </div>
+  <div class="callout tip">
+    <span class="label">"출처를 반드시 물어보세요"</span>
+    AI가 "법 제00조에 따라..."라고 말한다면, 반드시 "그 조항의 전체 문장을 보여줘"라고 다시 물어보세요. 직접 눈으로 확인하는 것이 가장 안전합니다.
+  </div>
+  <div class="callout warn">
+    <span class="label">"실수할 수 있음을 인지하세요"</span>
+    AI는 훌륭한 조수이지만, 최종 법적 판단은 반드시 <b>전문가(노무사/변호사)</b>의 검토를 거쳐야 합니다.
+  </div>
+
+  <div class="foot">이 가이드는 실습 교육 목적으로 작성되었습니다. · AI Agent 활용 세미나</div>
+</div>
+</body>
+</html>

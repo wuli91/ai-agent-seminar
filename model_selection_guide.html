@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모델 선택 가이드 — 언제 어떤 Claude를? — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+h1{font-size:2.4em;font-weight:800;line-height:1.15;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.2em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2em;margin:1em 0}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1.2em}
+.card.opus{border-color:#d8a6ff}.card.sonnet{border-color:#7eb8ff}.card.haiku{border-color:#4ecdc4}
+.card h3{margin-top:0}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}
+.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+table{width:100%;border-collapse:collapse;margin:1em 0}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .8em}
+td{padding:.5em .8em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li,td{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.gold{color:#7a5c00}
+  code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}
+  .card{background:#f5f8fc;border-color:#cdd8e6}.callout{background:#f3f7fb}
+}
+@media(max-width:760px){.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">참고 자료 · 2026-06 기준</span>
+  <h1>모델 선택 가이드<br><span class="accent">언제 어떤 Claude를 쓰나</span></h1>
+  <p class="lead">Claude에는 성능·속도·비용이 다른 여러 모델이 있습니다. 한 줄 요약:
+  <b class="blue">일상 업무는 Sonnet</b>, <b class="gold">어려운 분석·긴 자율 작업은 Opus</b>, <b class="accent">대량 단순 작업은 Haiku</b>.</p>
+
+  <h2>1. 현재 모델 라인업 (2026년 6월 기준)</h2>
+  <div class="grid3">
+    <div class="card opus">
+      <h3 style="color:#d8a6ff">Opus 4.8</h3>
+      <p class="b">가장 강력한 범용 모델</p>
+      <p>복잡한 추론, 장시간 자율(에이전트) 작업, 깊이 있는 분석·코드 작업. 느리고 사용량 소모가 큼.</p>
+    </div>
+    <div class="card sonnet">
+      <h3 class="blue">Sonnet 4.6</h3>
+      <p class="b">속도·성능 균형 — 기본값</p>
+      <p>보고서 초안, 요약, 카피, 일반 코드 작업 등 대부분의 일상 업무에 충분. 빠르고 효율적.</p>
+    </div>
+    <div class="card haiku">
+      <h3 class="accent">Haiku 4.5</h3>
+      <p class="b">가장 빠르고 가벼움</p>
+      <p>분류, 짧은 요약, 형식 변환 같은 단순·대량 작업. 깊은 추론에는 부적합.</p>
+    </div>
+  </div>
+  <p class="small" style="color:#889">이 외에 최상위 모델 <b>Fable 5</b>(가장 까다로운 추론·초장기 에이전트 작업용, 비용 최고)가 있습니다. 일반 업무 도입 단계에서는 Opus/Sonnet/Haiku 3종만 알아도 충분합니다. 모델은 수시로 업데이트되므로 버전 숫자보다 <b>"Opus=최강, Sonnet=균형, Haiku=속도"라는 등급 구조</b>로 기억하세요.</p>
+
+  <h2>2. 업무별 추천</h2>
+  <table>
+    <tr><th>하려는 일</th><th>추천</th><th>이유</th></tr>
+    <tr><td>이메일·공지문·짧은 초안</td><td class="blue b">Sonnet</td><td>품질 충분 + 빠른 응답</td></tr>
+    <tr><td>회의록 요약·표 정리</td><td class="blue b">Sonnet</td><td>일상 반복 업무의 기본값</td></tr>
+    <tr><td>전략 분석·경쟁 리포트·복잡한 의사결정 자료</td><td class="gold b">Opus</td><td>다단계 추론·깊이가 필요</td></tr>
+    <tr><td>법령·규정 검토 (HR 심화 실습)</td><td class="gold b">Opus</td><td>꼼꼼한 비교·누락 탐지</td></tr>
+    <tr><td>Claude Code 자동화 (파일 다수·장시간 작업)</td><td class="gold b">Opus</td><td>긴 작업에서 일관성 유지</td></tr>
+    <tr><td>간단한 파일 정리·형식 변환</td><td class="blue b">Sonnet</td><td>Opus까지 필요 없음</td></tr>
+    <tr><td>수백 건 분류·태깅 같은 대량 단순 작업</td><td class="accent b">Haiku</td><td>속도·비용 효율 최우선</td></tr>
+  </table>
+  <div class="callout tip"><span class="label">실전 요령</span>
+  헷갈리면 <b>Sonnet으로 시작</b>하세요. 결과가 얕다고 느껴지면 같은 프롬프트를 Opus로 다시 돌려 비교 — 차이가 체감되는 업무만 Opus를 쓰는 습관이 사용량 관리에 가장 효과적입니다.</div>
+
+  <h2>3. 모델 바꾸는 방법</h2>
+  <ul>
+    <li><b>Claude 앱:</b> 입력창 옆 <b>모델 선택 메뉴</b>에서 변경 (대화 중에도 변경 가능).</li>
+    <li><b>Claude Code:</b> 대화 중 <code>/model</code> 명령으로 변경.</li>
+  </ul>
+
+  <h2>4. 사용량·비용 관점 (도입 담당용)</h2>
+  <p>Team 등 구독 플랜은 좌석당 정액이지만 <b>사용량 한도</b>가 있고, 상위 모델일수록 한도를 빨리 소모합니다. 참고로 API 종량제 기준 단가(100만 토큰당, 2026-06 기준)는 다음과 같습니다 — 모델 간 <b>상대적 비용 격차</b>를 보는 용도로 활용하세요.</p>
+  <table>
+    <tr><th>모델</th><th>입력</th><th>출력</th><th>상대 비용</th></tr>
+    <tr><td>Fable 5</td><td>$10</td><td>$50</td><td>Sonnet의 약 3.3배</td></tr>
+    <tr><td>Opus 4.8</td><td>$5</td><td>$25</td><td>Sonnet의 약 1.7배</td></tr>
+    <tr><td>Sonnet 4.6</td><td>$3</td><td>$15</td><td>기준</td></tr>
+    <tr><td>Haiku 4.5</td><td>$1</td><td>$5</td><td>Sonnet의 약 1/3</td></tr>
+  </table>
+  <div class="callout"><span class="label">팀 운영 권장 규칙</span>
+  ① 기본 모델은 Sonnet으로 안내 ② "Opus가 필요한 업무 유형"(전략 분석·규정 검토·장시간 자동화)을 팀 차원에서 합의 ③ 한도 소진이 잦으면 사용 패턴을 먼저 점검(불필요한 Opus 사용·과도한 재시도) 후 좌석/플랜 조정. 비용 구조 상세는 <a href="claude_code_cost_guide.html">비용 최적화 실전</a>, 플랜 비교는 <a href="plans_security.html">요금제 &amp; 보안 비교</a> 참고.</div>
+
+  <div class="callout warn"><span class="label">주의</span>
+  모델이 좋아도 <b>검증 원칙은 동일</b>합니다 — 사실·숫자·법령 인용은 모델 등급과 무관하게 원본 대조가 필요합니다. 모델명·단가는 변동되므로 도입 결정 시 공식 페이지에서 최신 정보를 확인하세요.</div>
+
+  <div class="foot">AI Agent 활용 세미나 · 모델 선택 가이드 — 모델·가격 정보는 2026-06 기준이며 변동될 수 있습니다.</div>
+</div>
+</body>
+</html>

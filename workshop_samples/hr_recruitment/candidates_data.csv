@@ -1,0 +1,11 @@
+Name,Email,Current_Role,Years_Exp,Primary_Skills,Education,Current_Location,Notice_Period
+Kim Ji-su,jisu.kim@email.com,Software Engineer,4,Python,React,Java,B.S. Computer Science,Seoul,1 month
+Park Min-jun,minjun.park@email.com,Data Analyst,2,SQL,Python,Tableau,Excel,B.S. Statistics,Busan,2 weeks
+Lee Seo-yeon,seoyeon.lee@email.com,Project Manager,8,Agile,Scrum,Jira,PMP Certified,Gyeonggi,1 month
+Choi Do-hyun,dohyun.choi@email.com,HR Specialist,5,Recruitment,Payroll,Labor Law,Bachelor of HR,Seoul,3 weeks
+Jung Ha-eun,haeun.jung@email.com,Frontend Developer,3,JavaScript,Vue.js,CSS,B.S. Design,Daegu,Immediate
+Kang Min-ho,minho.kang@email.com,DevOps Engineer,6,AWS,Kubernetes,Docker,Terraform,B.S. CS,Seoul,2 months
+Yoon Se-ah,seah.yoon@email.com,Backend Developer,4,Java,Spring,MySQL,B.S. CS,Incheon,1 month
+Lim Jae-wook,jaewook.lim@email.com,Data Scientist,3,Python,R,Machine Learning,M.S. Statistics,Seoul,3 weeks
+Shin Yu-na,yuna.shin@email.com,QA Engineer,5,Selenium,Jira,Automation,B.S. CS,Seoul,1 month
+Han Sang-woo,sangwoo.han@email.com,Fullstack Developer,2,Node.js,React,TypeScript,B.S. CS,Busan,2 weeks

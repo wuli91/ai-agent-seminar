@@ -131,7 +131,7 @@ done</code></pre>
   <pre><code><span class="cmt"># Claude Code OpenTelemetry 활성화 (예시)</span>
 export <span class="var">CLAUDE_CODE_ENABLE_TELEMETRY</span>=1
 export <span class="var">OTEL_METRICS_EXPORTER</span>=otlp
-export <span class="var">OTEL_EXPORTER_OTLP_ENDPOINT</span>="http://<collector>:4317"
+export <span class="var">OTEL_EXPORTER_OTLP_ENDPOINT</span>="http://&lt;collector&gt;:4317"
 <span class="cmt"># → dev별·모델별·작업별 토큰/비용을 대시보드로 추적</span></code></pre>
   <p class="small" style="color:#888">공식 Grafana "Claude Code Usage" 대시보드 등 기성 템플릿 활용 가능. 정확한 env 변수/메트릭명은 공식 monitoring 문서 확인.</p>
 

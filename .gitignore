@@ -1,5 +1,9 @@
 # 세션 메모 / 핸드오프 노트
 .remember/
+handoff.md
+
+# Claude Code 개인 로컬 설정 (프로젝트 공통 settings.json·hooks는 커밋)
+.claude/settings.local.json
 
 # 자격증명 / API 키
 .env
@@ -11,6 +15,11 @@ amazon-weekly/data/
 *.csv
 *.xlsx
 *.xls
+# 단, 워크숍 샘플의 가상 데이터 CSV는 포함
+!workshop_samples/**/*.csv
+
+# 배포용 ZIP 산출물
+dist/
 
 # 실습 생성 리포트
 reports/

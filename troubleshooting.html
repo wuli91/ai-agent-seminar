@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>막혔을 때 — 트러블슈팅 가이드 — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+h1{font-size:2.6em;font-weight:800;line-height:1.15;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.25em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2em;margin:1em 0}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1.2em}
+.card.win{border-color:#7eb8ff}.card.mac{border-color:#4ecdc4}
+.card h3{margin-top:0}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.2em;margin:.6em 0;overflow:auto}
+pre code{background:none;color:#d6e3ee;padding:0;display:block;white-space:pre-wrap;line-height:1.7}
+.cmt{color:#6a8294}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}
+.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+.steps{counter-reset:s;list-style:none;margin:.6em 0}
+.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid #1a2a3a}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:#4ecdc4;color:#04201d;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:1em 0}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .8em}
+td{padding:.5em .8em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+a{color:#7eb8ff}
+.prob{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1.2em 1.4em;margin:1.2em 0}
+.prob h3{margin-top:0}
+.scs{display:block;margin:.5em 0}
+.scs .k{display:inline-block;min-width:3.2em;font-weight:800;border-radius:4px;padding:.05em .5em;margin-right:.5em;font-size:.85em;text-align:center}
+.scs .k.sym{background:#3a1a1a;color:#ff9b9b}
+.scs .k.why{background:#3a3014;color:#ffd93d}
+.scs .k.fix{background:#0f2e2a;color:#4ecdc4}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li,td{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}
+  .card,.prob{background:#f5f8fc;border-color:#cdd8e6}code{background:#eef3f8;color:#0a5}
+  pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}
+  th{background:#e7eef7;color:#003366}.callout{background:#f3f7fb}
+}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">막혔을 때 펴 보는 문서 · 세미나 내내 유효</span>
+  <h1>막혔을 때 — <span class="accent">트러블슈팅 가이드</span></h1>
+  <p class="lead">터미널이 처음이어도 괜찮습니다. 막히는 건 <b>실력 문제가 아니라 통과 의례</b>입니다.
+  아래 표에서 내 증상을 찾아 클릭하세요. 설치 명령은 <a href="setup_guide.html">사전 준비 가이드</a>와 동일합니다.</p>
+
+  <div class="callout tip">
+    <span class="label">먼저 기억할 것 한 가지</span>
+    에러 메시지는 무섭게 생겼지만, 그냥 <b>"왜 안 되는지에 대한 힌트"</b>입니다.
+    이해 안 되면 그대로 복사해서 Claude(claude.ai)에 "이거 무슨 뜻이야?"라고 물어보면 대부분 풀립니다.
+  </div>
+
+  <h2 id="quick">0. 후딱 보는 표 — 증상별 바로가기</h2>
+  <table>
+    <tr><th>이런 증상이라면</th><th>여기로</th></tr>
+    <tr><td>터미널·cd·경로가 뭔지부터 모르겠다</td><td><a href="#basics">1. 터미널 기초 사전지식</a></td></tr>
+    <tr><td>설치 명령(curl / irm)이 에러를 낸다</td><td><a href="#install-curl">2-a. macOS 설치 실패</a> · <a href="#install-policy">2-b. Windows 스크립트 차단</a></td></tr>
+    <tr><td>"관리자 권한이 필요합니다"라고 나온다</td><td><a href="#install-admin">2-c. 관리자 권한</a></td></tr>
+    <tr><td>설치는 됐는데 <code>claude: command not found</code></td><td><a href="#install-notfound">2-d. command not found</a></td></tr>
+    <tr><td>로그인하려는데 브라우저가 안 열린다 / 로그인이 꼬였다</td><td><a href="#login">3. 로그인 문제</a></td></tr>
+    <tr><td>연결 시간 초과·인증서 오류 (회사 네트워크)</td><td><a href="#network">4. 사내 네트워크</a></td></tr>
+    <tr><td>실행 중 멈춘 것 같다 / 승인 화면이 헷갈린다 / 한도 메시지</td><td><a href="#runtime">5. 실행 중 문제</a></td></tr>
+    <tr><td>파일을 실수로 잘못 바꿨다</td><td><a href="#runtime-undo">5-d. 되돌리기</a></td></tr>
+    <tr><td>다 해봤는데도 안 된다</td><td><a href="#lastresort">6. 그래도 안 되면</a></td></tr>
+  </table>
+
+  <h2 id="basics">1. 터미널 기초 사전지식 — 이것만 알면 됩니다</h2>
+  <p><b>터미널(macOS) / PowerShell(Windows)</b>은 마우스 대신 <b>글자로 컴퓨터에 지시하는 창</b>입니다. 이 가이드에 나오는 건 아래가 전부입니다.</p>
+  <table>
+    <tr><th>이것</th><th>뜻</th><th>예시</th></tr>
+    <tr><td><code>cd</code></td><td>폴더로 <b>이동</b>한다 (change directory)</td><td><code>cd ~/Desktop/실습</code></td></tr>
+    <tr><td><code>~</code></td><td><b>내 홈 폴더</b> (내 계정의 시작 위치)</td><td><code>~/Desktop</code> = 내 바탕화면</td></tr>
+    <tr><td><code>pwd</code></td><td>지금 <b>내가 어느 폴더에 있는지</b> 보여준다</td><td><code>pwd</code> 입력 → 현재 경로 출력</td></tr>
+  </table>
+  <div class="callout tip">
+    <span class="label">경로 입력, 손으로 안 쳐도 됩니다</span>
+    <b>폴더를 터미널 창에 마우스로 끌어다 놓으면</b> 경로가 자동으로 입력됩니다.
+    macOS는 터미널 창에, Windows는 PowerShell 창에 드래그하면 됩니다. <code>cd&nbsp;</code>(띄어쓰기 포함)를 먼저 친 뒤 폴더를 드래그하고 Enter — 이게 제일 쉽습니다.
+  </div>
+  <ul>
+    <li><b>경로에 공백이나 한글이 있으면 따옴표</b>로 감싸세요: <code>cd "~/Desktop/실습 폴더"</code> (드래그하면 자동 처리되는 경우가 많습니다)</li>
+    <li><b>위쪽 화살표(↑)</b>를 누르면 방금 친 명령이 다시 나옵니다. 긴 명령을 다시 칠 필요 없습니다.</li>
+    <li>붙여넣기: macOS는 <code>⌘+V</code>, Windows PowerShell은 <code>Ctrl+V</code> 또는 마우스 오른쪽 클릭.</li>
+  </ul>
+
+  <h2 id="install">2. 설치 문제</h2>
+
+  <div class="prob" id="install-curl">
+    <h3>2-a. macOS: <code>curl ... | bash</code> 가 실패한다</h3>
+    <p class="scs"><span class="k sym">증상</span>설치 명령을 붙여넣었는데 <code>Could not resolve host</code>, <code>Connection timed out</code>, <code>SSL certificate problem</code> 같은 빨간 글씨가 나온다.</p>
+    <p class="scs"><span class="k why">원인</span>대부분 <b>네트워크 문제</b>입니다 — 인터넷이 끊겼거나, 회사 프록시/방화벽이 외부 다운로드를 막는 경우.</p>
+    <p class="scs"><span class="k fix">해결</span>순서대로 시도하세요.</p>
+    <ol class="steps">
+      <li>브라우저에서 아무 사이트나 열어 <b>인터넷이 되는지</b> 먼저 확인</li>
+      <li>명령을 <b>한 줄 통째로</b> 다시 복사해서 붙여넣기 (중간에 줄바꿈이 끼면 실패합니다)</li>
+      <li>다시 시도:</li>
+    </ol>
+    <pre><code><span class="cmt"># 사전 준비 가이드와 동일한 설치 명령</span>
+curl -fsSL https://claude.com/install.sh | bash</code></pre>
+    <p>그래도 같은 에러면 회사 네트워크가 막고 있을 가능성이 큽니다 → <a href="#network">4. 사내 네트워크</a> 참고. 휴대폰 핫스팟으로 잠깐 바꿔서 되면 확실히 네트워크 문제이니, IT/진행자에게 알려주세요.</p>
+  </div>
+
+  <div class="prob" id="install-policy">
+    <h3>2-b. Windows: "이 시스템에서 스크립트를 실행할 수 없으므로…" (스크립트 실행 비활성화)</h3>
+    <p class="scs"><span class="k sym">증상</span><code>irm https://claude.com/install.ps1 | iex</code> 를 넣으면 "스크립트 실행이 사용 안 함으로 설정되어 있으므로 로드할 수 없습니다" 비슷한 빨간 메시지가 나온다.</p>
+    <p class="scs"><span class="k why">원인</span>Windows의 보안 설정(ExecutionPolicy)이 스크립트 실행을 막아 둔 상태입니다. 회사 노트북이면 <b>회사가 일부러 잠가둔 것</b>일 수 있습니다.</p>
+    <p class="scs"><span class="k fix">해결</span></p>
+    <ol class="steps">
+      <li><b>회사 노트북이라면 먼저 IT/보안팀에 확인</b>하세요 — 정책으로 잠근 경우 임의로 풀면 안 됩니다.</li>
+      <li>개인 노트북이거나 IT가 괜찮다고 하면, PowerShell에서 현재 설정을 확인:</li>
+    </ol>
+    <pre><code><span class="cmt"># 현재 정책 확인</span>
+Get-ExecutionPolicy
+
+<span class="cmt"># Restricted 라고 나오면, 내 계정에 한해 완화 (IT 확인 후)</span>
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
+    <p>변경 후 PowerShell 창을 <b>새로 열고</b> 설치 명령을 다시 실행하세요.</p>
+    <pre><code>irm https://claude.com/install.ps1 | iex</code></pre>
+    <p>설정 변경 자체가 막혀 있다면(회사 정책) IT에 요청하는 수밖에 없습니다 — 그대로 세미나에 오셔도 됩니다. 3회차에 함께 해결합니다.</p>
+  </div>
+
+  <div class="prob" id="install-admin">
+    <h3>2-c. "관리자 권한이 필요합니다" / Permission denied</h3>
+    <p class="scs"><span class="k sym">증상</span>설치 중 관리자 암호를 묻거나, <code>Permission denied</code>, "이 작업을 수행할 권한이 없습니다" 가 나온다.</p>
+    <p class="scs"><span class="k why">원인</span>회사 노트북은 보통 일반 사용자 계정이라 소프트웨어 설치 권한이 없습니다.</p>
+    <p class="scs"><span class="k fix">해결</span>이건 명령어로 풀 수 있는 문제가 아닙니다. <b>IT 부서에 요청</b>하세요. 요청할 때 이렇게 말하면 빠릅니다:</p>
+    <div class="callout">
+      <span class="label">IT에 보낼 요청 예시</span>
+      "업무용 AI 도구 <b>Claude Code</b>를 설치하려고 합니다. 설치 권한 부여 또는 대리 설치를 부탁드립니다.
+      설치 방법: macOS는 <code>curl -fsSL https://claude.com/install.sh | bash</code>,
+      Windows는 PowerShell에서 <code>irm https://claude.com/install.ps1 | iex</code> 입니다."
+    </div>
+    <p>세미나 전까지 안 되면 그대로 오세요 — 진행자가 함께 봐 드립니다.</p>
+  </div>
+
+  <div class="prob" id="install-notfound">
+    <h3>2-d. 설치는 끝났는데 <code>claude: command not found</code> (가장 흔함)</h3>
+    <p class="scs"><span class="k sym">증상</span>설치가 성공한 것 같은데 <code>claude --version</code> 을 치면 <code>command not found</code>(맥) 또는 "용어가 인식되지 않습니다"(윈도우)가 나온다.</p>
+    <p class="scs"><span class="k why">원인</span>설치 직후에는 <b>지금 열려 있는 터미널 창이 새 프로그램을 아직 모르는 상태</b>입니다. 십중팔구 이것입니다.</p>
+    <p class="scs"><span class="k fix">해결</span></p>
+    <ol class="steps">
+      <li>지금 터미널/PowerShell 창을 <b>완전히 닫고</b>, <b>새 창을 열어서</b> 다시 시도 — 이걸로 대부분 해결됩니다.</li>
+      <li>새 창에서 확인:</li>
+    </ol>
+    <pre><code>claude --version</code></pre>
+    <ol class="steps" start="3">
+      <li>그래도 안 되면 노트북을 한 번 <b>재부팅</b> 후 다시 시도.</li>
+      <li>여전히 안 되면 "PATH"라는 설정(컴퓨터가 프로그램을 찾는 위치 목록)에 등록이 안 된 경우입니다. 이건 환경마다 달라서, 설치 때 나온 메시지를 그대로 복사해 Claude(claude.ai)에 물어보거나 진행자/IT에 보여주는 게 가장 빠릅니다.</li>
+    </ol>
+  </div>
+
+  <h2 id="login">3. 로그인 문제</h2>
+
+  <div class="prob" id="login-browser">
+    <h3>3-a. <code>claude</code> 를 실행했는데 브라우저가 안 열린다</h3>
+    <p class="scs"><span class="k sym">증상</span>로그인하라는데 브라우저 창이 자동으로 뜨지 않는다.</p>
+    <p class="scs"><span class="k why">원인</span>환경에 따라 자동으로 브라우저를 못 여는 경우가 있습니다. 고장이 아닙니다.</p>
+    <p class="scs"><span class="k fix">해결</span>터미널 화면을 보면 <b>로그인용 주소(URL)가 글자로 표시</b>되어 있습니다. 그 URL을 마우스로 긁어 복사한 뒤, 브라우저 주소창에 직접 붙여넣어 여세요. 로그인을 마치면 터미널로 돌아와 계속 진행됩니다.</p>
+  </div>
+
+  <div class="prob" id="login-wrong">
+    <h3>3-b. 개인 계정으로 잘못 로그인했다</h3>
+    <p class="scs"><span class="k sym">증상</span>회사 계정 대신 개인 Gmail 등으로 로그인해 버렸다. 회사 워크스페이스가 안 보인다.</p>
+    <p class="scs"><span class="k why">원인</span>브라우저에 개인 계정이 이미 로그인되어 있으면 그 계정으로 이어지기 쉽습니다.</p>
+    <p class="scs"><span class="k fix">해결</span>Claude Code 안에서 로그아웃 후 다시 로그인하세요.</p>
+    <pre><code><span class="cmt"># claude 실행 중이라면 그 안에서 입력</span>
+/logout
+
+<span class="cmt"># 다시 로그인 (이번엔 회사 계정 선택)</span>
+/login</code></pre>
+    <p>브라우저 쪽에서도 claude.ai 에서 개인 계정을 로그아웃해 두면 헷갈리지 않습니다. <b class="warn">개인 계정으로는 업무 데이터를 다루지 마세요</b> — 회사 계정 초대가 안 왔다면 도입 담당에게 문의.</p>
+  </div>
+
+  <div class="prob" id="login-loop">
+    <h3>3-c. 로그인이 무한 반복된다</h3>
+    <p class="scs"><span class="k sym">증상</span>브라우저에서 로그인을 분명히 마쳤는데, 터미널이 계속 로그인하라고 한다. 혹은 매번 다시 로그인을 요구한다.</p>
+    <p class="scs"><span class="k why">원인</span>인증 정보가 제대로 저장되지 못한 경우입니다. 브라우저의 강한 추적 차단/시크릿 모드, 혹은 회사 보안 프로그램이 원인일 수 있습니다.</p>
+    <p class="scs"><span class="k fix">해결</span>순서대로:</p>
+    <ol class="steps">
+      <li>터미널과 브라우저를 모두 닫고, <b>새 터미널</b>에서 <code>claude</code> 다시 실행</li>
+      <li>시크릿/프라이빗 창이 아닌 <b>일반 브라우저 창</b>으로 로그인 (기본 브라우저를 Chrome/Edge로)</li>
+      <li><code>/logout</code> → <code>/login</code> 으로 처음부터 다시</li>
+      <li>그래도 반복되면 회사 보안 프로그램이 끼어드는 경우일 수 있으니 <b>IT/진행자에게 문의</b></li>
+    </ol>
+  </div>
+
+  <h2 id="network">4. 사내 네트워크 — 프록시 · 방화벽 · SSL 검사</h2>
+  <div class="prob">
+    <h3>회사 네트워크에서만 안 된다</h3>
+    <p class="scs"><span class="k sym">증상</span>이런 메시지가 나온다 — <code>Connection timed out</code>(연결 시간 초과), <code>certificate</code> 가 들어간 오류(인증서 오류), <code>proxy</code> 관련 오류. 집이나 핫스팟에서는 잘 되는데 회사에서만 안 된다.</p>
+    <p class="scs"><span class="k why">원인</span>회사 프록시/방화벽이 외부 연결을 막거나, 보안 장비가 SSL(암호화 통신)을 중간 검사하면서 인증서 오류를 일으키는 경우입니다. <b>내 잘못이 아니고, 내가 명령어로 풀 수 있는 문제도 아닙니다.</b></p>
+    <p class="scs"><span class="k fix">해결</span>IT 부서에 아래처럼 요청하세요.</p>
+    <div class="callout">
+      <span class="label">IT에 보낼 요청 예시</span>
+      "업무용 AI 도구(Claude) 사용을 위해 <b><code>claude.ai</code> 와 <code>anthropic.com</code> 도메인(하위 도메인 포함) 허용</b>을 요청합니다.
+      프록시 환경이라면 적용할 프록시 설정값도 안내 부탁드립니다."
+    </div>
+    <p>프록시를 쓰는 회사라면 IT가 <code>HTTPS_PROXY</code> 라는 환경변수 값을 알려줄 수 있습니다. <b>값은 반드시 IT가 안내한 것</b>을 쓰세요 (아래는 형식 예시일 뿐입니다).</p>
+    <pre><code><span class="cmt"># macOS (터미널) — 값은 IT가 알려준 주소로</span>
+export HTTPS_PROXY=http://proxy.example.com:8080
+
+<span class="cmt"># Windows (PowerShell) — 값은 IT가 알려준 주소로</span>
+$env:HTTPS_PROXY = "http://proxy.example.com:8080"</code></pre>
+    <p>이 설정은 <b>그 터미널 창에서만</b> 적용됩니다(창을 닫으면 사라짐). 매번 설정하기 번거롭거나 인증서 오류가 계속되면, 영구 설정 방법까지 포함해 IT에 맡기는 게 안전합니다.</p>
+  </div>
+
+  <h2 id="runtime">5. 실행 중 문제</h2>
+
+  <div class="prob" id="runtime-stuck">
+    <h3>5-a. 응답이 멈춘 것 같다</h3>
+    <p class="scs"><span class="k sym">증상</span>Claude가 한참 동안 아무 말이 없다. 멈춘 건지 일하는 건지 모르겠다.</p>
+    <p class="scs"><span class="k why">원인</span>여러 파일을 읽거나 큰 작업을 할 때는 원래 시간이 걸립니다. 화면에 작업 중 표시(스피너 등)가 돌고 있으면 일하는 중입니다.</p>
+    <p class="scs"><span class="k fix">해결</span></p>
+    <ul>
+      <li>1~2분은 기다려 보세요. 진행 표시가 있으면 정상입니다.</li>
+      <li>너무 길거나 잘못된 방향 같으면 <b><code>Esc</code> 키</b>를 누르세요 — 현재 작업이 중단되고, 다시 지시할 수 있습니다. 망가지지 않으니 부담 없이 누르세요.</li>
+      <li>그래도 먹통이면 터미널 창을 닫고 새로 열어 <code>claude</code> 를 다시 실행하면 됩니다.</li>
+    </ul>
+  </div>
+
+  <div class="prob" id="runtime-approve">
+    <h3>5-b. 갑자기 뭔가 물어보는 화면이 떴다 — 승인 화면입니다</h3>
+    <p class="scs"><span class="k sym">증상</span>"이 작업을 실행할까요?" 식의 선택지가 떴는데 눌러도 되는지 모르겠다.</p>
+    <p class="scs"><span class="k why">원인</span>고장이 아니라 <b>안전장치</b>입니다. Claude Code는 파일을 <b>만들거나 수정·삭제하기 전에 반드시 먼저 보여주고 허락을 구합니다</b>. 읽기만 할 때는 묻지 않습니다.</p>
+    <p class="scs"><span class="k fix">해결</span>3가지 습관 (3회차 내용 그대로):</p>
+    <ol class="steps">
+      <li><b>무엇을 하겠다는 건지 읽어보고</b> 괜찮으면 예(Yes) 선택</li>
+      <li>의심되면 <b>거절(No)</b> — 그리고 한국어로 다시 지시하면 됩니다. 거절해도 아무것도 망가지지 않습니다.</li>
+      <li>애초에 <b>중요 폴더는 복사본으로</b> 실습하면 마음이 편합니다.</li>
+    </ol>
+  </div>
+
+  <div class="prob" id="runtime-limit">
+    <h3>5-c. "사용량 한도" 메시지가 나온다</h3>
+    <p class="scs"><span class="k sym">증상</span>usage limit / 한도 도달 같은 메시지와 함께 잠시 사용이 막힌다.</p>
+    <p class="scs"><span class="k why">원인</span>플랜마다 일정 시간 동안 쓸 수 있는 양이 정해져 있고, 그걸 다 쓴 상태입니다. 고장이 아닙니다.</p>
+    <p class="scs"><span class="k fix">해결</span>보통 <b>시간이 지나면 자동으로 풀립니다</b>(메시지에 언제 풀리는지 표시되는 경우가 많습니다). 업무상 자주 막힌다면 플랜 조정이 필요한 신호이니 <b>도입 담당자에게 문의</b>하세요.</p>
+  </div>
+
+  <div class="prob" id="runtime-undo">
+    <h3>5-d. 실수로 파일을 잘못 바꿨다</h3>
+    <p class="scs"><span class="k sym">증상</span>승인했더니 생각과 다르게 파일이 바뀌었거나 옮겨졌다.</p>
+    <p class="scs"><span class="k why">원인</span>지시가 모호했거나 승인 화면을 빠르게 넘긴 경우. 누구나 한 번씩 겪습니다.</p>
+    <p class="scs"><span class="k fix">해결</span></p>
+    <ol class="steps">
+      <li>당황하지 말고, 같은 대화에서 Claude에게 한국어로 부탁하세요:</li>
+    </ol>
+    <pre><code>방금 작업 되돌려줘. 어떤 파일을 어떻게 바꿨는지 먼저 보여줘.</code></pre>
+    <ol class="steps" start="2">
+      <li>Claude가 무엇을 바꿨는지 알고 있으므로 대부분 되돌릴 수 있습니다. 되돌리는 작업도 승인 화면을 읽고 진행하세요.</li>
+      <li>이래서 실습 원칙이 <b>"복사본으로 연습, 원본 보존"</b>입니다 — 복사본이었다면 그냥 지우고 다시 복사하면 끝.</li>
+      <li>중요한 원본이 걸려 있는데 되돌리기가 확실치 않으면, 거기서 멈추고 진행자에게 보여주세요.</li>
+    </ol>
+  </div>
+
+  <h2 id="lastresort">6. 그래도 안 되면 — 3단계 안전망</h2>
+  <ol class="steps">
+    <li><b>에러 메시지를 그대로 복사</b>해서 Claude 앱(claude.ai)에 붙여넣고 "이 에러 무슨 뜻이고 어떻게 고쳐?"라고 물어보세요. 의외로 여기서 대부분 끝납니다.</li>
+    <li>그래도 모르겠으면 <b>진행자 또는 도입 담당자에게 문의</b> — 에러 메시지 화면을 캡처해서 보내면 가장 빠릅니다.</li>
+    <li>세미나 중이라면 <b>옆 사람과 페어</b>로 진행하세요. 한 명 화면으로 같이 실습해도 배우는 건 똑같습니다.</li>
+  </ol>
+  <div class="callout tip">
+    <span class="label">마지막으로</span>
+    설치·로그인은 <b>처음 한 번만 넘으면 되는 문턱</b>입니다. 오늘 막혀도 3회차에 진행자와 함께 해결하면 되니,
+    안 되는 상태 그대로 오셔도 전혀 문제 없습니다.
+  </div>
+
+  <div class="foot">
+    AI Agent 활용 세미나 · 트러블슈팅 가이드 · 팅크웨어 선행개발부 ·
+    설치 절차는 <a href="setup_guide.html">사전 준비 가이드</a>, 실습 내용은 Session 3 자료를 참고하세요.
+  </div>
+
+</div>
+</body>
+</html>

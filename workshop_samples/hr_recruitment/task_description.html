@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop Task: Automated Candidate Screening &amp; Interview Prep — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+h1{font-size:2.3em;font-weight:800;line-height:1.2;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.2em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.b{font-weight:700}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+.steps{counter-reset:s;list-style:none;margin:.6em 0}
+.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid #1a2a3a}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:#4ecdc4;color:#04201d;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em}
+.prompt{background:#0d141d;border:1px solid #2a3a4a;border-left:4px solid #ffd93d;border-radius:10px;padding:.7em 1em;margin:.4em 0;color:#e3d9b8;font-size:1em;line-height:1.6}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}
+  code{background:#eef3f8;color:#0a5}.prompt{background:#fdfaf0;color:#333;border-color:#e8d98a}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span style="float:right;font-size:.9em"><a href="task_description_ko.html" style="color:#7eb8ff">한국어판 →</a></span>
+  <span class="tag">HR Recruitment 실습 · Level 1</span>
+  <h1>Workshop Task: Automated <span class="accent">Candidate Screening</span> &amp; Interview Prep</h1>
+
+  <h2>🎯 Objective</h2>
+  <p class="lead">Automate the initial stages of the recruitment process: screening candidates against a job description, creating a comparison matrix, and generating personalized interview questions.</p>
+
+  <h2>🛠️ Task Scenario</h2>
+  <p>You are an HR Associate at Thinkware. You have received a batch of resumes (provided in CSV format) and a Job Description. Your goal is to identify the best-fit candidates quickly and prepare for the interview stage.</p>
+
+  <h2>📝 Requirements</h2>
+
+  <h3>1. Candidate Screening &amp; Scoring</h3>
+  <p>Using the provided <code>job_description.txt</code>, analyze the <code>candidates_data.csv</code> and create a <b>Candidate Matching Report</b>.</p>
+  <ul>
+    <li><b>Scoring Criteria:</b> Assign a score (0-10) for each candidate based on:
+      <ul>
+        <li><b>Core Tech Match:</b> (Java, Spring, SQL, React/Vue)</li>
+        <li><b>Experience Level:</b> (Years of experience relative to the "Senior" requirement)</li>
+        <li><b>Cloud/DevOps Exposure:</b> (AWS, Docker, Kubernetes, etc.)</li>
+      </ul>
+    </li>
+    <li><b>Output:</b> A table showing: Name, Total Score, Top 3 Matching Skills, and "Match Fit" (High/Medium/Low).</li>
+  </ul>
+
+  <h3>2. Interview Preparation</h3>
+  <p>For the <b>Top 2 matching candidates</b>, generate a customized <b>Interview Question Set</b>.</p>
+  <ul>
+    <li>The questions should be specific to their actual experience listed in the data.</li>
+    <li>Include one "Behavioral" question and two "Technical" questions per candidate.</li>
+    <li>Example: If a candidate has strong Java experience, ask a question about Spring Boot microservices.</li>
+  </ul>
+
+  <h3>3. Communication Draft</h3>
+  <p>Draft a professional <b>Interview Invitation Email</b> for the #1 ranked candidate.</p>
+  <ul>
+    <li>The email must mention the specific role (Senior Fullstack Developer) and acknowledge their relevant experience (e.g., "Your experience with [Skill] caught our eye").</li>
+    <li>Tone: Professional, welcoming, and clear about the next steps.</li>
+  </ul>
+
+  <h2>📂 Files Provided</h2>
+  <ul>
+    <li><code>candidates_data.csv</code>: List of applicants with their key skills and experience.</li>
+    <li><code>job_description.txt</code>: The requirements for the Senior Fullstack Developer role.</li>
+  </ul>
+
+  <h2>🚀 Workflow (How to use Claude)</h2>
+  <ul class="steps">
+    <li><b>Read &amp; Understand:</b><div class="prompt">"Read the <code>job_description.txt</code> and <code>candidates_data.csv</code> files. Summarize the key requirements of the role."</div></li>
+    <li><b>Analysis:</b><div class="prompt">"Compare the candidates in <code>candidates_data.csv</code> against the job requirements. Create a comparison table with a score out of 10 for each candidate."</div></li>
+    <li><b>Generation:</b><div class="prompt">"Based on the top 2 candidates, generate a set of 3 tailored interview questions for each."</div></li>
+    <li><b>Communication:</b><div class="prompt">"Write a professional interview invitation email for the top candidate."</div></li>
+  </ul>
+
+  <div class="foot">AI Agent 활용 세미나 · HR Recruitment Workshop Sample — 데이터는 실습용 가상 데이터입니다.</div>
+</div>
+</body>
+</html>

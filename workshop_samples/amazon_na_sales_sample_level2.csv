@@ -1,0 +1,11 @@
+Date,SKU,Product_Name,Category,Units_Sold,Unit_Price,Revenue,Region,Customer_Segment,Market_Segment,Competitor_Price_Point
+2024-05-01,AMZ-101,Premium Dashcam X,Electronics,10,299.99,2999.90,North,Subscriber,Premium,High
+2024-05-01,AMZ-102,Budget Cam Lite,Electronics,50,45.00,2250.00,South,One-time,Budget,Low
+2024-05-02,AMZ-103,Mid-Range Pro,Electronics,25,149.00,3725.00,West,Subscriber,Mid,Mid
+2024-05-02,AMZ-104,Ultra 4K Pro,Electronics,12,349.00,4188.00,East,One-time,Premium,High
+2024-05-03,AMZ-105,Value Dash,Electronics,40,59.99,2399.60,North,Subscriber,Budget,Low
+2024-05-03,AMZ-106,Smart Cam Z,Electronics,15,189.00,2835.00,South,Subscriber,Mid,Mid
+2024-05-04,AMZ-107,Basic Eye,Electronics,60,39.99,2399.40,West,One-time,Budget,Low
+2024-05-04,AMZ-108,Pro Video S,Electronics,20,220.00,4400.00,East,Subscriber,Mid,Mid
+2024-05-05,AMZ-109,Elite View,Electronics,8,450.00,3600.00,North,One-time,Premium,High
+2024-05-05,AMZ-110,Essential Cam,Electronics,35,75.00,2625.00,South,Subscriber,Budget,Low

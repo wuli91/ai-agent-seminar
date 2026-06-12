@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 앱 기능 지도 — Claude 기준으로 보는 ChatGPT·Gemini·웍스AI</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+h1{font-size:2.6em;font-weight:800;line-height:1.15;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.25em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2em;margin:1em 0}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1.2em}
+.card h3{margin-top:0}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}
+.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.97em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .8em}
+td{padding:.5em .8em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+
+/* ── 기능 블록: 의도/언제/사례 ── */
+.feat{background:#101723;border:1px solid #1a2a3a;border-radius:12px;padding:1.1em 1.3em;margin:1.2em 0}
+.feat h3{margin-top:0}
+.feat .row{display:grid;grid-template-columns:7.5em 1fr;gap:.3em .8em;margin:.6em 0 0}
+.feat .k{color:#9fb4c8;font-weight:700;font-size:.95em}
+.feat .v{color:#ccc;font-size:.99em}
+.feat .v ul{margin:.1em 0 .2em 1.2em}
+.loc{display:inline-block;background:#2a2410;color:#ffd93d;border:1px solid #4d4318;border-radius:6px;padding:.05em .55em;font-size:.88em;font-weight:700}
+
+/* ── UI 모식도 ── */
+.mock{background:#0d141d;border:1px solid #2a3a4d;border-radius:12px;overflow:hidden;margin:1.2em 0;font-size:.83em}
+.mock .bar{display:flex;gap:.45em;padding:.55em .9em;background:#15202c;border-bottom:1px solid #1a2a3a;align-items:center}
+.mock .dot{width:10px;height:10px;border-radius:50%;background:#2a3a4d;flex:none}
+.mock .url{margin-left:.6em;background:#0a0a0a;border-radius:6px;padding:.1em .9em;color:#7a8ea3;font-size:.9em}
+.mock .body{display:flex;min-height:215px}
+.mock .side{width:175px;background:#0a1018;border-right:1px solid #1a2a3a;padding:.7em .6em;display:flex;flex-direction:column;gap:.3em;flex:none}
+.mock .side .it{padding:.34em .55em;border-radius:6px;color:#9fb4c8;display:flex;align-items:center;gap:.45em}
+.mock .side .it.on{background:#152233;color:#e6eef7;font-weight:700}
+.mock .side .hd{color:#5a6e83;font-size:.85em;margin:.5em .55em .1em;text-transform:uppercase;letter-spacing:.05em}
+.mock .main{flex:1;display:flex;flex-direction:column;padding:.9em 1em}
+.mock .panel{flex:1;background:#0a1018;border-left:1px solid #1a2a3a;padding:.9em 1em;display:flex;flex-direction:column;gap:.5em}
+.mock .msg{background:#13202e;border-radius:10px;padding:.5em .8em;color:#b9c8d8;margin:.25em 0;max-width:85%}
+.mock .msg.me{background:#1b2a1f;align-self:flex-end;color:#cfe3cf}
+.mock .input{margin-top:auto;background:#10161f;border:1px solid #2a3a4d;border-radius:12px;padding:.55em .8em;display:flex;align-items:center;gap:.7em;color:#7a8ea3}
+.mock .ghost{flex:1}
+.mock .chip{background:#15202c;border:1px solid #2a3a4d;border-radius:8px;padding:.12em .6em;color:#9fb4c8;font-size:.92em;display:inline-flex;align-items:center;gap:.4em}
+.mock .block{background:#10161f;border:1px solid #2a3a4d;border-radius:10px;padding:.55em .8em;color:#9fb4c8}
+.mk{display:inline-flex;width:1.55em;height:1.55em;background:#ffd93d;color:#3a2c00;border-radius:50%;font-weight:800;align-items:center;justify-content:center;font-size:.9em;flex:none;font-style:normal}
+.mock-cap{color:#8aa0b5;font-size:.92em;margin:-.6em 0 1.2em .2em}
+.shot{margin:.2em 0 1.4em}
+.shot img{width:100%;border:1px solid #2a3a4d;border-radius:12px;display:block}
+.shot figcaption{color:#8aa0b5;font-size:.9em;margin-top:.35em}
+.legend{list-style:none;margin:.3em 0 .8em;font-size:.97em}
+.legend li{padding:.18em 0;display:flex;gap:.6em;align-items:baseline;border-bottom:none}
+.toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5em;padding:.2em 0}
+.toolgrid .t{background:#13202e;border:1px solid #1a2a3a;border-radius:8px;padding:.55em .4em;text-align:center;color:#9fb4c8;font-size:.92em}
+
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li,td{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.gold{color:#a07800}
+  .card,.feat{background:#f5f8fc;border-color:#cdd8e6}code{background:#eef3f8;color:#0a5}
+  th{background:#e7eef7;color:#003366}.callout{background:#f3f7fb}
+  .feat .k{color:#456}
+  .mock{background:#f3f6fa;border-color:#c8d4e0}
+  .mock .bar{background:#e7eef7;border-color:#c8d4e0}.mock .url{background:#fff;color:#678}
+  .mock .side{background:#edf2f8;border-color:#c8d4e0}.mock .side .it{color:#456}.mock .side .it.on{background:#d8e4f0;color:#123}
+  .mock .main{}.mock .panel{background:#edf2f8;border-color:#c8d4e0}
+  .mock .msg{background:#e2eaf2;color:#234}.mock .msg.me{background:#ddeedd;color:#243}
+  .mock .input,.mock .block{background:#fff;border-color:#c8d4e0;color:#567}
+  .mock .chip{background:#eef3f8;border-color:#c8d4e0;color:#456}
+  .toolgrid .t{background:#e7eef7;border-color:#c8d4e0;color:#345}
+  .loc{background:#fff6d6;color:#7a5c00;border-color:#e0cf90}
+  .mock-cap{color:#678}
+  .shot img{border-color:#c8d4e0}.shot figcaption{color:#678}
+}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}.feat .row{grid-template-columns:1fr}.toolgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">Track A 비개발 세션 보조자료 · Session 2 연계</span>
+  <h1>AI 앱 <span class="accent">기능 지도</span></h1>
+  <p class="lead"><b>Claude 앱을 기준</b>으로 각 기능이 <b>왜 만들어졌고, 언제 쓰면 좋은지</b>를 익힌 뒤 —
+  같은 개념이 <b>ChatGPT·Gemini·웍스AI</b>에서는 어떤 이름으로 등장하는지 매핑합니다.
+  기능 이름은 앱마다 다르지만 <b class="accent">개념은 거의 같습니다.</b> 개념을 기억하면 어떤 앱을 만나도 길을 잃지 않습니다.</p>
+
+  <div class="callout tip">
+    <span class="label">읽는 법 — 기능마다 4가지를 묻습니다</span>
+    ① <b>개발 의도</b>: 이 기능은 어떤 불편을 없애려고 만들어졌나 →
+    ② <b>이럴 때</b>: 내 업무에서 언제 꺼내 쓰나 →
+    ③ <b>응용 사례</b>: 직무별 실제 예시 →
+    ④ <b>화면 위치</b>: 그림(모식도)의 <span class="mk" style="font-size:.8em">1</span> 번호로 표시.
+  </div>
+
+  <div class="callout warn">
+    <span class="label">⚠ 그림과 기능 정보에 대해</span>
+    화면 그림은 위치 설명용 <b>모식도</b>이며, 각 모식도 아래에는 <b>실제 화면 캡처가 들어갈 자리</b>가 있습니다 —
+    <code>assets/captures/</code> 폴더에 정해진 파일명으로 캡처(png)를 넣으면 자동으로 표시됩니다
+    (촬영 목록: <code>assets/captures/README.md</code>, 파일이 없으면 그 자리는 숨겨짐).
+    AI 앱 UI는 몇 달 단위로 바뀌므로 <b>세미나 직전에 캡처를 갱신</b>하세요(진행자 체크리스트 항목).
+    기능·플랜 정보는 <b>2026-06 기준</b>입니다.
+  </div>
+
+  <h2>0. 한눈에 — 기능 매핑 표</h2>
+  <p>이 표 한 장이 이 문서의 요약입니다. 왼쪽(Claude) 열의 개념을 기준으로 가로로 읽으세요.</p>
+  <table>
+    <tr><th>개념 (Claude 기준)</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th><th>웍스AI</th></tr>
+    <tr><td class="b">대화 + 모델 선택</td><td>채팅 · 모델 선택</td><td>채팅 · 모델 선택</td><td>채팅 · 모델 선택</td><td>채팅 · <b>멀티 LLM 선택</b>(GPT/Claude 등)</td></tr>
+    <tr><td class="b">내 자료 읽히기</td><td>파일 업로드</td><td>파일 업로드</td><td>파일 업로드 + Drive</td><td>문서 업로드 (요약·계약검토 도구)</td></tr>
+    <tr><td class="b">맥락 저장소</td><td><b>Projects</b></td><td>Projects · Custom GPTs</td><td><b>Gems</b></td><td>사내 챗봇 빌더(RAG)</td></tr>
+    <tr><td class="b">산출물 작업대</td><td><b>Artifacts</b></td><td>Canvas¹</td><td>Canvas</td><td>보고서·차트 생성 도구</td></tr>
+    <tr><td class="b">최신 정보</td><td>웹 검색(출처 표기)</td><td>웹 검색</td><td>Google 검색 통합</td><td>모델·도구별 상이</td></tr>
+    <tr><td class="b">깊은 조사 대행</td><td>리서치(Research)</td><td>Deep Research</td><td>Deep Research</td><td>DeepSearch 제휴(금융 특화 추진)</td></tr>
+    <tr><td class="b">기억</td><td>Memory</td><td>Memory</td><td>개인화·과거 대화 참조</td><td>—</td></tr>
+    <tr><td class="b">일하는 방법 패키지</td><td><b>Skills</b></td><td>Custom GPTs(공유형)</td><td>Gems(겸용)</td><td><b>업무 도구 40종</b>(완제품형)</td></tr>
+    <tr><td class="b">외부 시스템 연결</td><td>커넥터(MCP)</td><td>커넥터 · GPT Actions</td><td><b>Workspace 연동</b>(Gmail·Docs)</td><td>Drive·OneDrive 연동</td></tr>
+    <tr><td class="b">데이터 분석(코드 실행)</td><td>분석 도구</td><td>고급 데이터 분석</td><td>코드 실행</td><td>엑셀/차트 도구</td></tr>
+    <tr><td class="b">예약·자동 실행</td><td>(Claude Code 영역)</td><td><b>Tasks</b> · Agent 모드</td><td>Scheduled actions</td><td>—</td></tr>
+  </table>
+  <p style="color:#8aa0b5;font-size:.92em">¹ ChatGPT는 2026년 들어 Canvas를 별도 모드 대신 채팅 안 ‘writing/code 블록’으로 흡수하는 중 — 개념은 동일.</p>
+
+  <h2>1. 기준: Claude 앱 — 기능별 의도와 쓰임</h2>
+
+  <h3 style="color:#7eb8ff">📍 그림 A — 메인 화면 (시작점)</h3>
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">claude.ai</span></div>
+    <div class="body">
+      <div class="side">
+        <div class="it on"><span class="mk">1</span> ＋ 새 채팅</div>
+        <div class="it">💬 Chats (대화 목록)</div>
+        <div class="it"><span class="mk">2</span> 📁 Projects</div>
+        <div class="it">⭐ 즐겨찾기</div>
+        <div class="hd">하단</div>
+        <div class="it"><span class="mk">3</span> ⚙ 설정 (프로필)</div>
+      </div>
+      <div class="main">
+        <div class="msg me">지난주 회의록 요약해줘 (파일 첨부)</div>
+        <div class="msg">요약입니다. 결정사항 3건, 액션아이템 5건…</div>
+        <div class="input">
+          <span class="mk">4</span><span class="chip">＋ 첨부·연결</span>
+          <span class="mk">5</span><span class="chip">🔍 검색·리서치</span>
+          <span class="ghost">메시지를 입력하세요…</span>
+          <span class="mk">6</span><span class="chip">모델 ▾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul class="legend">
+    <li><span class="mk">1</span> 새 대화 시작 — 주제가 바뀌면 새 채팅(맥락 섞임 방지)</li>
+    <li><span class="mk">2</span> Projects 목록 — 업무별 맥락 저장소 (아래 F3)</li>
+    <li><span class="mk">3</span> 설정 — Memory·커넥터·기능 켜고 끄기 (그림 C)</li>
+    <li><span class="mk">4</span> ＋ 버튼 — 파일 업로드·연결된 앱의 자료 첨부 (F2·F9)</li>
+    <li><span class="mk">5</span> 검색/리서치 — 웹 검색과 깊은 조사 (F5·F6)</li>
+    <li><span class="mk">6</span> 모델 선택 — 빠른 답 vs 깊은 사고 (F1)</li>
+  </ul>
+  <figure class="shot"><img src="assets/captures/claude_main.png" alt="Claude 메인 화면 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (그림 A 대응) — 촬영 시점 UI 기준</figcaption></figure>
+
+  <div class="feat">
+    <h3>F1. 채팅 + 모델 선택 <span class="loc">그림 A-⑥</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">하나의 모델로 모든 일을 시키면 비싸거나 느립니다. <b>일의 무게에 맞는 두뇌를 고르게</b> 한 것 — 가벼운 질문은 빠른 모델, 전략·분석은 깊은 모델.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">평소엔 기본값 그대로. <b>중요한 분석·긴 문서·전략 검토</b>일 때만 상위 모델로 바꿉니다.</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v">메일 다듬기·요약 = 기본 모델 / 사업계획 리스크 검토·계약서 분석 = 상위 모델. 자세한 기준은 <a href="model_selection_guide.html">모델 선택 가이드</a>.</span></div>
+  </div>
+
+  <div class="feat">
+    <h3>F2. 파일 업로드 & 긴 문서 분석 <span class="loc">그림 A-④</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">AI가 <b>일반 지식으로 추측</b>하면 환각이 생깁니다. <b>내 자료를 직접 읽고 그 근거로만 답하게</b> 만들어 정확도를 끌어올리는 장치입니다. "검색 → 컨텍스트 주입 → 분석" 워크플로우의 핵심.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">보고서·PDF·엑셀·회의록 등 <b>"이 문서에 대해" 묻고 싶을 때</b>. 항상 일반 질문보다 자료 첨부 질문이 낫습니다.</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v"><ul>
+      <li>기획: 시장 보고서 PDF 3개 → "공통 트렌드와 우리 시사점"</li>
+      <li>HR: 채용 공고 + 이력서 → 요건 대비 스크리닝 (실습: <a href="workshop_samples/hr_recruitment/task_description_ko.html">HR 과제</a>)</li>
+      <li>영업: 판매 CSV → 주간 요약 (F10 분석 도구와 결합)</li>
+    </ul></span></div>
+    <div class="row"><span class="k">주의</span><span class="v warn">업로드 전 "이 자료 넣어도 되나?" — <a href="data_policy_template.html">데이터 정책</a> 기준 적용.</span></div>
+  </div>
+
+  <h3 style="color:#7eb8ff">📍 그림 B — Project 내부 (맥락 저장소)</h3>
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">claude.ai / project: 마케팅 카피 작업실</span></div>
+    <div class="body">
+      <div class="main">
+        <div class="block" style="margin-bottom:.5em"><span class="mk">1</span> <b>프로젝트 지침</b> — "우리는 내비게이션·대시캠 회사. 톤은 신뢰감 있게, 결과는 표로…" (한 번 저장하면 모든 대화에 자동 적용)</div>
+        <div class="msg me">신제품 출시 보도자료 초안 부탁해</div>
+        <div class="msg">(지침의 톤·회사 배경을 이미 알고 시작) 초안입니다…</div>
+        <div class="input"><span class="ghost">이 프로젝트 안에서 새 대화…</span></div>
+      </div>
+      <div class="panel">
+        <div><span class="mk">2</span> <b>지식 (파일)</b></div>
+        <div class="block">📄 브랜드 가이드.pdf</div>
+        <div class="block">📄 제품 스펙시트.md</div>
+        <div class="block">📄 잘 쓴 보도자료 예시.docx</div>
+        <div style="color:#5a6e83;font-size:.9em">올려둔 파일은 이 프로젝트의 모든 대화가 참조</div>
+      </div>
+    </div>
+  </div>
+  <p class="mock-cap">그림 B — Project = 지침(①) + 지식 파일(②) + 대화 묶음. 사이드바 Projects(그림 A-②)에서 생성.</p>
+  <figure class="shot"><img src="assets/captures/claude_project.png" alt="Claude Project 화면 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (그림 B 대응)</figcaption></figure>
+
+  <div class="feat">
+    <h3>F3. Projects — 맥락 저장소 <span class="loc">그림 A-② · 그림 B</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">매 대화마다 회사 소개·톤·양식을 다시 설명하는 낭비를 없애기 — <b>"설명은 한 번, 결과물은 매번"</b>. 채팅을 1회용 도구에서 <b>업무 작업실</b>로 바꾸는 기능입니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v"><b>반복되는 업무 주제</b>가 생기면 바로 Project로. 같은 설명을 두 번 타이핑하고 있다면 그게 신호입니다.</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v"><ul>
+      <li>"주간보고 작업실" — 보고 양식 + 지난 보고 2건을 지식으로</li>
+      <li>"채용 스크리닝" — 직무기술서·평가 기준 저장</li>
+      <li>"경쟁사 워치" — 경쟁사 목록·관전 포인트 저장</li>
+    </ul>지침 작성은 <a href="workshop_samples/practice_kit.html">실습 소재 모음</a>의 템플릿으로.</span></div>
+  </div>
+
+  <h3 style="color:#7eb8ff">📍 그림 C — 대화 + Artifacts 패널 (산출물 작업대)</h3>
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">claude.ai — 대화 중 결과물이 생기면 오른쪽 패널이 열림</span></div>
+    <div class="body">
+      <div class="main">
+        <div class="msg me">이 데이터로 부서 공지문 초안 만들어줘</div>
+        <div class="msg">오른쪽에 초안을 만들었습니다 →</div>
+        <div class="msg me">제목을 더 부드럽게, 표는 3열로</div>
+        <div class="input"><span class="ghost">계속 다듬기…</span></div>
+      </div>
+      <div class="panel" style="flex:1.2">
+        <div><span class="mk">1</span> <b>Artifact: 부서 공지문 v3</b></div>
+        <div class="block" style="flex:1">📄 (문서·표·웹페이지·간단한 앱이<br>여기서 실시간으로 고쳐짐)</div>
+        <div><span class="mk">2</span> <span class="chip">복사</span> <span class="chip">다운로드</span> <span class="chip">게시(링크 공유)</span> <span class="chip">버전 ▾</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="mock-cap">그림 C — 대화(과정)는 왼쪽, 산출물(결과)은 오른쪽. 산출물만 따로 복사·공유(②)할 수 있습니다.</p>
+  <figure class="shot"><img src="assets/captures/claude_artifacts.png" alt="Claude Artifacts 패널 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (그림 C 대응)</figcaption></figure>
+
+  <div class="feat">
+    <h3>F4. Artifacts — 산출물 작업대 <span class="loc">그림 C</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">채팅창에서는 결과물이 대화에 묻혀 스크롤 속으로 사라집니다. <b>"대화(과정)"와 "산출물(결과)"을 분리</b>해, 결과물을 옆에 두고 깎아 나가는 작업대를 준 것. 버전이 남고, 완성본만 내보낼 수 있습니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">답변이 아니라 <b>"가져갈 결과물"</b>이 필요할 때 — 문서·표·차트·웹페이지·간단한 계산기까지.</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v"><ul>
+      <li>경영지원: 사내 공지문 → 그대로 게시</li>
+      <li>마케팅: 랜딩 카피 A/B 두 버전을 나란히</li>
+      <li>기획: 견적 간이 계산기(입력하면 계산되는 작은 웹 도구) — 코딩 없이</li>
+    </ul></span></div>
+  </div>
+
+  <div class="feat">
+    <h3>F5. 웹 검색 <span class="loc">그림 A-⑤</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">모델 지식에는 <b>마감 시점(컷오프)</b>이 있습니다. 검색은 그 한계를 메우고, <b>출처 링크</b>를 달아 "어디서 나온 말인지" 확인 가능하게 만든 환각 대응 장치이기도 합니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">최신 뉴스·가격·경쟁사 동향 등 <b>시점이 중요한 질문</b>. 반대로 내부 자료 분석엔 검색이 필요 없습니다.</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v">"이번 분기 ○○ 시장 발표 정리해줘 — 출처 링크 포함" → 출처를 눌러 <b>원문 확인 후</b> 보고서에 인용.</span></div>
+  </div>
+
+  <div class="feat">
+    <h3>F6. 리서치 (Deep Research) <span class="loc">그림 A-⑤</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">검색 1번으로 안 끝나는 조사가 있습니다. <b>수십 페이지를 읽고 교차 검증해 보고서로 종합하는 "조사 인턴"</b>을 자동화한 것 — 몇 분~수십 분 걸리는 대신 출처 달린 리포트가 나옵니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">"반나절 걸릴 조사"를 시킬 때. 단순 질문에 쓰면 오히려 느립니다(검색과 구분).</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v">신규 시장 진입 전 경쟁 구도 조사, 도입 검토 중인 솔루션 비교 — 결과를 그대로 믿지 말고 <b>핵심 출처 2~3개는 직접 확인</b>.</span></div>
+  </div>
+
+  <h3 style="color:#7eb8ff">📍 그림 D — 설정 화면 (기억·연결 관리)</h3>
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">claude.ai / settings</span></div>
+    <div class="body" style="min-height:170px">
+      <div class="side">
+        <div class="it">프로필</div>
+        <div class="it on"><span class="mk">1</span> 기능 (Capabilities)</div>
+        <div class="it"><span class="mk">2</span> 커넥터 (Connectors)</div>
+        <div class="it">개인정보·데이터</div>
+      </div>
+      <div class="main">
+        <div class="block"><span class="mk">1</span> <b>Memory</b> — 대화에서 알게 된 내용 기억 <span class="chip">켬/끔</span> · <span class="chip">기억 보기·수정</span></div>
+        <div class="block" style="margin-top:.5em"><span class="mk">2</span> <b>연결된 앱</b> — Google Drive <span class="chip">연결됨</span> · 사내 도구(MCP) <span class="chip">＋ 추가</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="mock-cap">그림 D — 그림 A-③ 설정에서 진입. 기억(①)과 외부 연결(②)은 여기서 관리합니다.</p>
+  <figure class="shot"><img src="assets/captures/claude_settings.png" alt="Claude 설정 화면 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (그림 D 대응)</figcaption></figure>
+
+  <div class="feat">
+    <h3>F7. Memory — 기억 <span class="loc">그림 D-①</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">매번 "저는 마케팅 담당이고…"를 반복하지 않게, <b>나에 대한 사실을 대화에서 추려 다음 대화로 이어주는</b> 기능. Projects가 "업무별 기억"이라면 Memory는 "나에 대한 기억"입니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">직무·선호 양식·자주 쓰는 표현이 자동 반영되길 원할 때. <b>무엇이 기억됐는지 설정에서 보고 지울 수 있습니다.</b></span></div>
+    <div class="row"><span class="k">주의</span><span class="v warn">회사 계정에서는 기억 기능 사용 여부를 <b>사내 데이터 정책과 함께</b> 결정하세요(민감 정보가 기억에 남지 않게).</span></div>
+  </div>
+
+  <div class="feat">
+    <h3>F8. Skills — 일하는 방법 패키지 <span class="loc">그림 A-④ (＋메뉴)</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">"우리 회사 보고서는 이런 양식·이런 순서로"라는 <b>노하우를 폴더 하나로 패키징</b>해, 필요할 때 AI가 꺼내 쓰게 한 것. 프롬프트를 잘 쓰는 사람의 비법을 <b>팀 자산</b>으로 만드는 기능입니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">팀원 모두가 같은 품질의 산출물을 내야 할 때(보고 양식·브랜드 톤·체크리스트).</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v">"주간보고 스킬"을 한 명이 만들어 팀 배포 → 누가 시켜도 같은 양식. Session 4와 <a href="workflow_guide.html">워크플로우 가이드</a>에서 실습.</span></div>
+  </div>
+
+  <div class="feat">
+    <h3>F9. 커넥터 (MCP) — 외부 연결 <span class="loc">그림 D-② · 그림 A-④</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">파일을 일일이 업로드하는 대신 <b>AI가 직접 내 Drive·사내 시스템에 손을 뻗게</b> 하는 표준 연결구(MCP). "복사해서 갖다 주는 비서"에서 "직접 찾아 일하는 비서"로 가는 길목입니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">자료가 Google Drive 등 한곳에 모여 있고, 매번 업로드가 번거로울 때.</span></div>
+    <div class="row"><span class="k">주의</span><span class="v warn">연결 = 그 저장소를 AI가 읽을 수 있게 됨. <b>연결 범위는 도입 담당·보안팀과 결정</b>(Session 4·<a href="plans_security.html">보안 비교</a>).</span></div>
+  </div>
+
+  <div class="feat">
+    <h3>F10. 분석 도구 — 데이터를 코드로 계산 <span class="loc">자동 (CSV 첨부 시)</span></h3>
+    <div class="row"><span class="k">개발 의도</span><span class="v">언어모델은 암산이 약합니다. 숫자 작업은 <b>추측 대신 실제 코드를 실행해 계산</b>하게 만들어 정확도를 보장하는 기능 — 결과로 차트·통계가 나옵니다.</span></div>
+    <div class="row"><span class="k">이럴 때</span><span class="v">CSV·엑셀의 <b>합계·추이·비교</b>가 필요할 때. "대충 얼마야?"가 아니라 "정확히 계산해줘"라고 시키세요.</span></div>
+    <div class="row"><span class="k">응용 사례</span><span class="v">판매 CSV → 카테고리별 매출 차트 + 전주 대비 증감 (실습: <a href="amazon_na_weekly_report_lab.html">Amazon 주간 리포트</a> Level 1).</span></div>
+  </div>
+
+  <h2>2. ChatGPT — 같은 개념, 이런 이름</h2>
+  <p>위 F1~F10을 익혔다면 ChatGPT는 <b>이름만 바꿔 끼우면</b> 됩니다. 다른 점 위주로 봅니다.</p>
+
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">chatgpt.com</span></div>
+    <div class="body" style="min-height:185px">
+      <div class="side">
+        <div class="it on">＋ 새 채팅</div>
+        <div class="it">🔍 채팅 검색</div>
+        <div class="it"><span class="mk">1</span> 🧩 GPTs (스토어)</div>
+        <div class="it"><span class="mk">2</span> 📁 Projects</div>
+        <div class="it">🎬 Sora (영상)</div>
+      </div>
+      <div class="main">
+        <div class="msg">무엇을 도와드릴까요?</div>
+        <div class="input">
+          <span class="chip">＋ 첨부</span>
+          <span class="mk">3</span><span class="chip">도구 ▾ (검색·Deep Research·이미지·Canvas)</span>
+          <span class="ghost"></span>
+          <span class="chip">모델 ▾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="mock-cap">ChatGPT 모식도 — ① GPT 스토어(남이 만든 도우미 설치) ② Projects(Claude와 거의 동일) ③ 도구 메뉴(검색·리서치·이미지 생성).</p>
+  <figure class="shot"><img src="assets/captures/chatgpt_main.png" alt="ChatGPT 메인 화면 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (ChatGPT)</figcaption></figure>
+
+  <table>
+    <tr><th>Claude 개념</th><th>ChatGPT에서는</th><th>차이 포인트</th></tr>
+    <tr><td>Projects (F3)</td><td><b>Projects</b></td><td>거의 동일 — 지침+파일+대화 묶음, 프로젝트 전용 메모리.</td></tr>
+    <tr><td>Skills (F8)</td><td><b>Custom GPTs</b></td><td>지침+지식+도구를 묶어 <b>스토어로 공유/설치</b> 가능한 게 특징. "남이 만든 도우미를 설치한다"는 감각.</td></tr>
+    <tr><td>Artifacts (F4)</td><td><b>Canvas</b> → 채팅 내 블록</td><td>최근엔 별도 모드 대신 채팅 안 writing/code 블록으로 통합되는 중. 개념(결과물을 옆에 두고 다듬기)은 동일.</td></tr>
+    <tr><td>리서치 (F6)</td><td><b>Deep Research</b></td><td>동일 개념. 플랜별 월 사용 횟수 제한.</td></tr>
+    <tr><td>Memory (F7)</td><td><b>Memory</b></td><td>동일 개념 — 기억 검색·프로젝트별 메모리 설정.</td></tr>
+  </table>
+
+  <div class="card" style="margin:1em 0">
+    <h3>ChatGPT 고유 강점 — 이건 Claude에 없는/약한 것</h3>
+    <ul>
+      <li><b>이미지 생성 내장</b> — 시안·일러스트를 대화에서 바로. (Claude는 도표/SVG 중심)</li>
+      <li><b>Tasks(예약 실행)</b> — "매주 월 9시에 업계 뉴스 브리핑" 같은 정기 작업 예약.</li>
+      <li><b>Advanced Voice</b> — 자연스러운 음성 대화(이동 중 브레인스토밍).</li>
+      <li><b>Agent 모드</b> — 브라우저를 직접 조작해 작업 수행(예약·조사). 아직 검토 필수.</li>
+    </ul>
+    <p class="small" style="color:#8aa0b5">응용: 마케팅이라면 "카피는 Claude Projects, 시안 이미지는 ChatGPT" 같은 병행도 흔합니다.</p>
+  </div>
+
+  <h2>3. Gemini — Google 일터에 붙어 있는 AI</h2>
+
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gemini.google.com</span></div>
+    <div class="body" style="min-height:185px">
+      <div class="side">
+        <div class="it on">＋ 새 채팅</div>
+        <div class="it"><span class="mk">1</span> 💎 Gems</div>
+        <div class="it">📓 NotebookLM 연계</div>
+      </div>
+      <div class="main">
+        <div class="msg">안녕하세요!</div>
+        <div class="input">
+          <span class="chip">＋ 파일·Drive</span>
+          <span class="mk">2</span><span class="chip">도구 ▾ (Deep Research·Canvas·이미지)</span>
+          <span class="ghost"></span>
+          <span class="chip">모델 ▾</span>
+        </div>
+      </div>
+      <div class="panel" style="flex:.8">
+        <div><span class="mk">3</span> <b>@Workspace</b></div>
+        <div class="block">✉ Gmail에서 찾기</div>
+        <div class="block">📄 Docs·Sheets에서</div>
+        <div style="color:#5a6e83;font-size:.9em">구글 문서·메일을 직접 읽고 그 안에서 작동</div>
+      </div>
+    </div>
+  </div>
+  <p class="mock-cap">Gemini 모식도 — ① Gems(=Projects+Skills 겸용) ② 도구 메뉴 ③ Workspace 연동(Gmail·Docs를 소스로).</p>
+  <figure class="shot"><img src="assets/captures/gemini_main.png" alt="Gemini 메인 화면 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (Gemini)</figcaption></figure>
+
+  <table>
+    <tr><th>Claude 개념</th><th>Gemini에서는</th><th>차이 포인트</th></tr>
+    <tr><td>Projects+Skills (F3·F8)</td><td><b>Gems</b></td><td>지침+파일을 가진 맞춤 도우미 — Projects와 Skills 역할을 하나로 합친 형태. 미리 만든 Gem(작문 코치 등) 제공.</td></tr>
+    <tr><td>Artifacts (F4)</td><td><b>Canvas</b></td><td>동일 개념 + 인포그래픽·퀴즈·웹앱 프로토타입 생성에 강점.</td></tr>
+    <tr><td>리서치 (F6)</td><td><b>Deep Research</b></td><td>웹뿐 아니라 <b>Gmail·Drive·NotebookLM을 조사 소스로</b> 추가 가능한 게 차별점.</td></tr>
+    <tr><td>커넥터 (F9)</td><td><b>Workspace 연동</b></td><td>별도 연결 설정 없이 Gmail·Docs·Sheets·Meet <b>안에서</b> 바로 작동(유료 Workspace 플랜).</td></tr>
+  </table>
+
+  <div class="card" style="margin:1em 0">
+    <h3>Gemini 고유 강점</h3>
+    <ul>
+      <li><b>Google Workspace 밀착</b> — 회사가 Gmail·Docs 기반이라면 "메일함에서 ○○ 찾아 요약"이 그냥 됩니다.</li>
+      <li><b>NotebookLM</b> — 자료 수백 건을 노트북에 넣고 그 안에서만 답하게(출처 고정) + 오디오 요약. "자료 기반 학습·온보딩"에 탁월.</li>
+      <li><b>영상·이미지 생성(Veo 등)</b> — 콘텐츠 팀의 시안 제작.</li>
+    </ul>
+    <p class="small" style="color:#8aa0b5">판단 기준: <b>회사 메일·문서가 Google이면 Gemini의 체감 가치가 급상승</b>합니다. 아니라면 장점이 절반으로.</p>
+  </div>
+
+  <h2>4. 웍스AI — 회사가 검토 중인 한국형 업무 포털</h2>
+  <p>웍스AI(wrks.ai)는 위 세 앱과 <b>철학이 다릅니다</b>. Claude·ChatGPT·Gemini가 "빈 채팅창에서 대화로 만들어가는" 도구라면,
+  웍스AI는 <b>미리 만들어진 업무 도구 40여 종을 골라 쓰는 포털</b>입니다. 빈 화면이 부담스러운 사용자를 위해 <b>시작점을 메뉴로</b> 제공하는 설계입니다.</p>
+
+  <div class="mock">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">wrks.ai (사내 포털)</span></div>
+    <div class="body" style="min-height:200px">
+      <div class="side">
+        <div class="it on">🏠 홈</div>
+        <div class="it"><span class="mk">1</span> 🧰 업무 도구</div>
+        <div class="it"><span class="mk">2</span> 🤖 사내 챗봇</div>
+        <div class="it">💬 자유 대화</div>
+      </div>
+      <div class="main">
+        <div style="color:#9fb4c8;margin-bottom:.4em"><span class="mk">1</span> <b>업무 도구 고르기</b> (40여 종)</div>
+        <div class="toolgrid">
+          <div class="t">📝 회의록 정리</div><div class="t">📑 계약서 검토</div><div class="t">🌐 번역</div><div class="t">📊 엑셀 분석</div>
+          <div class="t">📋 보고서 작성</div><div class="t">🖼 이미지</div><div class="t">📈 차트</div><div class="t">… 더보기</div>
+        </div>
+        <div class="input"><span class="ghost">또는 자유롭게 질문…</span><span class="mk">3</span><span class="chip">모델: GPT/Claude ▾</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="mock-cap">웍스AI 모식도 — ① 업무 도구 그리드(완제품 스킬) ② 사내 자료 기반 챗봇(RAG) ③ 기능별 멀티 LLM 선택.</p>
+  <figure class="shot"><img src="assets/captures/wrksai_main.png" alt="웍스AI 포털 실제 캡처" loading="lazy" onerror="this.parentElement.style.display='none'"><figcaption>▲ 실제 화면 캡처 (웍스AI — 도입 검토용 데모/공식 자료 캡처)</figcaption></figure>
+
+  <table>
+    <tr><th>Claude 개념</th><th>웍스AI에서는</th><th>차이 포인트</th></tr>
+    <tr><td>Skills (F8)</td><td><b>업무 도구 40여 종</b></td><td>회의록·계약검토·번역·보고서 등 — <b>이미 만들어진 완제품 스킬</b>. 직접 만들 필요 없이 고르기만 하면 됨. 대신 우리 회사 양식으로의 커스텀 폭은 좁음.</td></tr>
+    <tr><td>Projects (F3)</td><td><b>사내 챗봇 빌더(RAG)</b></td><td>사내 규정·매뉴얼을 올려 <b>전사 공용 챗봇</b>을 만드는 회사판 Projects. 개인 작업실이 아니라 조직 단위.</td></tr>
+    <tr><td>모델 선택 (F1)</td><td><b>멀티 LLM 라우팅</b></td><td>GPT·Claude·DeepL 등을 <b>기능별로 골라</b> 씀 — 특정 벤더에 안 묶임.</td></tr>
+    <tr><td>리서치 (F6)</td><td>DeepSearch 제휴(추진)</td><td>금융 특화 에이전트 출시 추진 중 — 범용 Deep Research는 아직 글로벌 앱이 앞섬.</td></tr>
+    <tr><td>요금</td><td><b>토큰 종량제</b></td><td>좌석당 정액($20~30/인)이 아닌 쓴 만큼 — <b>가볍게 쓰는 다수 인원</b>에게 유리한 구조.</td></tr>
+  </table>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 class="accent">웍스AI가 맞는 경우</h3>
+      <ul>
+        <li>정형 업무(회의록·번역·요약) 중심의 <b>비개발 직군 다수</b>에게 일괄 보급</li>
+        <li>한국어 UI·국내 컨설팅·교육이 필요할 때</li>
+        <li>사용량이 들쭉날쭉해 <b>종량제로 비용 통제</b>하고 싶을 때</li>
+        <li>사내 규정 챗봇을 빨리 세우고 싶을 때(RAG 빌더)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="blue">Claude 앱이 맞는 경우</h3>
+      <ul>
+        <li><b>비정형·깊은 분석</b> — 전략 검토, 긴 문서 추론, 맞춤 산출물</li>
+        <li>Projects·Skills로 <b>내 업무에 맞게 깎아 쓰는</b> 헤비 유저</li>
+        <li>에이전트·자동화로 발전시킬 사람(→ Claude Code, Session 3)</li>
+        <li>최신 모델을 제약 없이 직접 쓰고 싶을 때</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="label">현실적 조합 — 둘은 경쟁이 아니라 역할 분담</span>
+    가벼운 정형 업무 다수 인원 = <b>웍스AI 포털</b>, 깊게 쓰는 사람·개발팀 = <b>Claude 직접</b>(앱+Code)이 자연스러운 구도입니다.
+    도입 검토 시 확인할 보안·계약 조건(데이터가 웍스AI를 거쳐 글로벌 LLM으로 가는 경로의 학습 미사용 보장 등)은
+    <a href="korea_ai_ai3.html">한국 AI 분석(AI3/웍스AI)</a>과 <a href="enterprise_agents.html">기업용 AI 에이전트 비교</a>를 참고하세요.
+  </div>
+
+  <h2>5. 정리 — 앱이 아니라 개념을 기억하세요</h2>
+  <table>
+    <tr><th>내 상황</th><th>꺼낼 개념</th><th>어느 앱이든</th></tr>
+    <tr><td>같은 설명을 두 번 타이핑하고 있다</td><td>맥락 저장소</td><td>Projects / Gems / 사내 챗봇</td></tr>
+    <tr><td>대화가 아니라 "가져갈 결과물"이 필요하다</td><td>산출물 작업대</td><td>Artifacts / Canvas / 보고서 도구</td></tr>
+    <tr><td>최신 정보·사실 확인이 필요하다</td><td>웹 검색 (+출처 클릭)</td><td>전 앱 공통</td></tr>
+    <tr><td>반나절짜리 조사를 맡기고 싶다</td><td>딥 리서치</td><td>Research / Deep Research</td></tr>
+    <tr><td>숫자는 정확해야 한다</td><td>코드 실행 분석</td><td>분석 도구 / 고급 데이터 분석</td></tr>
+    <tr><td>팀 전체가 같은 품질을 내야 한다</td><td>일하는 방법 패키지</td><td>Skills / Custom GPTs / 업무 도구</td></tr>
+  </table>
+
+  <div class="callout tip">
+    <span class="label">세미나 진행자에게</span>
+    이 문서는 Session 2(Claude 앱) 후반 또는 Q&A에서 "ChatGPT/Gemini랑 뭐가 달라요?", "웍스AI 도입하면 이건 왜 배워요?"
+    질문이 나올 때 화면에 띄우기 좋습니다. 세미나 전에 <code>assets/captures/README.md</code>의 촬영 목록대로
+    <b>실제 화면 캡처를 떠서 폴더에 넣으면</b> 각 모식도 아래에 자동으로 함께 표시됩니다(UI 변경 대비).
+  </div>
+
+  <div class="foot">
+    AI Agent 활용 세미나 · 팅크웨어 선행개발부 — 기능·플랜 정보는 2026-06 기준이며 빠르게 바뀝니다. 분기마다 재확인하세요.<br>
+    참고: 각 서비스 공식 도움말(claude.ai · chatgpt.com · gemini.google.com · wrks.ai) 및 저장소 내 <a href="korea_ai_ai3.html">한국 AI 분석</a>, <a href="agents_landscape.html">에이전트 지형도</a>.
+  </div>
+
+</div>
+</body>
+</html>

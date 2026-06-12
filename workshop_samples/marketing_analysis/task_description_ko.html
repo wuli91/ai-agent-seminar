@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>워크숍 과제: Amazon 대시캠 경쟁 포지셔닝 분석 — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+.lang{float:right;font-size:.9em}
+h1{font-size:2.3em;font-weight:800;line-height:1.2;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.2em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.b{font-weight:700}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+.steps{counter-reset:s;list-style:none;margin:.6em 0}
+.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid #1a2a3a}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:#4ecdc4;color:#04201d;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em}
+.prompt{background:#0d141d;border:1px solid #2a3a4a;border-left:4px solid #ffd93d;border-radius:10px;padding:.7em 1em;margin:.4em 0;color:#e3d9b8;font-size:1em;line-height:1.6}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}
+  code{background:#eef3f8;color:#0a5}.prompt{background:#fdfaf0;color:#333;border-color:#e8d98a}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="lang"><a href="task_description.html">English version →</a></span>
+  <span class="tag">Marketing Analysis 실습 · Level 2 · 한국어판</span>
+  <h1>워크숍 과제: Amazon 대시캠 <span class="accent">경쟁 포지셔닝</span> 분석</h1>
+
+  <h2>🎯 목표</h2>
+  <p class="lead">Amazon에서 판매 중인 대시캠 제품들이 <b>가격</b>과 <b>핵심 기능</b> 기준으로 어떻게 포지셔닝되어 있는지 다각도로 분석합니다. Claude를 활용한 실제 마케팅 리서치 업무를 시뮬레이션하는 실습입니다.</p>
+
+  <h2>🛠️ 과제 시나리오</h2>
+  <p>당신은 테크 기업의 마케팅 분석가입니다. 우리 회사의 (가상의) 신제품 대시캠이 현재 시장에서 어디에 위치할 수 있는지 파악해야 합니다.</p>
+
+  <h2>📝 요구사항</h2>
+
+  <h3>1. 분석 차원 ("축" 정하기)</h3>
+  <p>다음 기준으로 제품을 분석하세요:</p>
+  <ul>
+    <li><b>가격대:</b> (보급형 vs 중급형 vs 프리미엄)</li>
+    <li><b>핵심 기능:</b>
+      <ul>
+        <li>해상도 (예: 1080p, 2K, 4K)</li>
+        <li>야간 촬영(나이트 비전) 성능</li>
+        <li>주차 모드 (G센서/상시전원 필요 여부)</li>
+        <li>특수 기능 (예: 클라우드 저장, GPS, 전·후방 듀얼 채널)</li>
+      </ul>
+    </li>
+    <li><b>브랜드 인식:</b> (가성비 중심 vs 기능·하이엔드 중심)</li>
+  </ul>
+
+  <h3>2. 기대 산출물 (리포트 구성)</h3>
+  <p>최종 리포트에 다음이 포함되어야 합니다:</p>
+  <ol>
+    <li><b>경쟁사 매트릭스:</b> 베스트셀러 대시캠 5개 이상을 위 기준으로 비교한 표.</li>
+    <li><b>퍼셉추얼 맵 (텍스트 기반):</b> 제품들이 어떻게 군집을 이루는지 설명 (예: "고가/고기능" vs "저가/기본기능").</li>
+    <li><b>시장 공백(Gap) 분석:</b> 충족되지 않은 세그먼트 식별 (예: "중간 가격대에 클라우드 저장이 쉬운 4K 카메라가 없다").</li>
+    <li><b>전략 제안:</b> 신제품이 시장 점유율을 가져올 수 있는 구체적인 기능 또는 가격 전략 1가지.</li>
+  </ol>
+
+  <h3>3. 진행 순서 (Claude에게 이렇게 시키세요)</h3>
+  <ul class="steps">
+    <li><b>데이터 수집:</b> Claude에게 Amazon 인기 대시캠 검색을 시키거나, 검색 결과를 "시뮬레이션"하게 합니다.</li>
+    <li><b>데이터 추출:</b> 검색 결과에서 구체적인 스펙과 가격을 뽑아냅니다.</li>
+    <li><b>분석:</b> "이 데이터를 경쟁 포지셔닝 매트릭스로 종합해줘"라고 요청합니다.</li>
+    <li><b>리포트 작성:</b> 다음과 같은 프롬프트를 사용합니다:<div class="prompt">"이 매트릭스를 바탕으로, 신규 대시캠 출시를 위한 시장 공백과 전략 제안이 담긴 전문적인 마케팅 리포트를 작성해줘."</div></li>
+  </ul>
+
+  <p>완성 후 <a href="model_answer_report_ko.html">모범 답안 리포트(한국어판)</a>와 비교해 보세요.</p>
+
+  <div class="foot">AI Agent 활용 세미나 · Marketing Analysis Workshop Sample</div>
+</div>
+</body>
+</html>

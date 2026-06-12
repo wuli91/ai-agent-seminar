@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실습 소재 모음 (Practice Kit) — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+.badge{display:inline-block;font-size:.6em;vertical-align:middle;padding:.25em .7em;border-radius:99px;font-weight:700;margin-left:.4em}
+.badge.s1{background:#15293d;color:#7eb8ff}.badge.s2{background:#0c2a26;color:#4ecdc4}.badge.s3{background:#2a210c;color:#ffd93d}.badge.s4{background:#2a1530;color:#d8a6ff}
+h1{font-size:2.4em;font-weight:800;line-height:1.2;margin-bottom:.3em}
+h2{font-size:1.55em;color:#7eb8ff;margin:3.5vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.15em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.2em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.gold{color:#ffd93d}.warn{color:#ff6b6b}.b{font-weight:700}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:10px;padding:1em 1.2em;margin:.6em 0;overflow:auto;max-height:60vh}
+pre code{background:none;color:#d6e3ee;padding:0;display:block;white-space:pre-wrap;line-height:1.7}
+.callout{border-radius:10px;padding:.9em 1.1em;margin:1em 0;border-left:4px solid #7eb8ff;background:#0e1722}
+.callout.tip{border-left-color:#4ecdc4;background:#0c1a18}
+.callout.warn{border-left-color:#ff6b6b;background:#1a0e0e}
+.callout .label{display:block;font-weight:700;margin-bottom:.2em;color:#7eb8ff}
+.callout.tip .label{color:#4ecdc4}.callout.warn .label{color:#ff6b6b}
+table{width:100%;border-collapse:collapse;margin:1em 0}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .8em}
+td{padding:.5em .8em;border-bottom:1px solid #1a2a3a;color:#ccc;vertical-align:top}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li,td{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}.gold{color:#7a5c00}
+  code{background:#eef3f8;color:#0a5}pre{background:#f6f8fa;border-color:#dde;max-height:none}pre code{color:#222}
+  th{background:#e7eef7;color:#003366}.callout{background:#f3f7fb}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">세미나 실습용 · 전 세션 공통</span>
+  <h1>실습 소재 <span class="accent">모음</span> (Practice Kit)</h1>
+  <p class="lead">"연습할 자료가 마땅치 않을 때" 바로 쓰는 가상 데이터·템플릿입니다.
+  전부 <b>실습용 가상 자료</b>이니 기밀 걱정 없이 복사해서 쓰세요.</p>
+
+  <h2>① 샘플 회의록 <span class="badge s1">Session 1</span><span class="badge s2">Session 2</span></h2>
+  <p>일부러 정리 안 된 "원본 그대로"의 회의 메모입니다. Session 1의 프롬프트 연습
+  ("결정사항/담당자/기한을 표로")이나 Session 2의 Project 참고 자료 업로드용으로 쓰세요.
+  파일로 받기: <a href="common/sample_meeting_notes.md"><code>common/sample_meeting_notes.md</code></a></p>
+  <div class="callout tip"><span class="label">추천 연습</span>
+  아래 전체를 복사해 Claude에 붙여넣고 — "이 회의록을 정리해줘. 결정사항/담당자/기한은 표로, 미해결 이슈는 불릿으로, 임원 보고용 한 페이지" — 그 다음 "빠뜨린 위험 요소가 있는지도 짚어줘"라고 이어서 물어보세요. (숨겨진 함정이 하나 있습니다.)</div>
+  <pre><code>5/12 월 신제품 TF 주간회의, 14:00~15:20, 3층 회의실 + 화상
+참석: 김PM, 이마케팅, 박개발, 최디자인, 정QA (윤재무 불참, 자료만 공유)
+
+김PM: 지난주 액션 먼저. 패키지 시안 어떻게 됐나
+최디자인: 시안 3종 나왔고 내부 투표는 B안이 우세. 근데 인쇄 단가가 A안보다 12% 높음
+이마케팅: B안이 온라인 썸네일에서도 잘 보임. 단가는 물량 늘리면 협상 여지 있다고 함
+김PM: 그럼 B안으로 가되, 단가 재견적은 이마케팅이 이번 주 금요일까지 받아오는 걸로
+
+박개발: 펌웨어 1.2 베타 일정 공유. 5/23 예정이었는데 블루투스 모듈 수급 이슈로 일주일 밀릴 듯
+정QA: 밀리면 QA 기간이 2주에서 1주로 줄어드는데, 그건 위험함. 출시일을 미루든가 QA 범위를 줄이든가 해야 함
+김PM: 출시일(6/30)은 일단 유지. QA 범위 조정안을 정QA가 수요일까지 초안 작성, 목요일 별도 회의에서 결정
+박개발: 수급 이슈는 구매팀이랑 얘기 중. 대체 모듈 쓰면 일정은 맞추는데 인증을 다시 받아야 할 수도 있음 → 이건 다음 주에 확정
+
+이마케팅: 사전예약 프로모션 기획안 초안 공유함 (메일 참조). 핵심은 얼리버드 15% 할인 + 거치대 증정
+윤재무(서면): 15% 할인 시 마진이 목표치 아래로 내려감. 10%로 조정 검토 요청
+이마케팅: 10%면 경쟁사 프로모션 대비 약함. 거치대 증정을 빼고 15% 유지하는 안도 있음
+김PM: 두 안(10%+증정 vs 15%만) 비교표를 이마케팅이 만들어서 윤재무와 협의 후 다음 회의에서 결정
+
+최디자인: 제품 상세페이지 촬영 일정 잡아야 함. 시제품 나오는 날짜 따라 달라짐
+박개발: 시제품은 5/26 주에 나옴
+최디자인: 그럼 6월 첫째 주 촬영으로 스튜디오 예약하겠음
+
+기타:
+- 정QA가 고객 베타테스터 모집 공지 문구 검토 요청 → 김PM이 내일까지 피드백
+- 다음 회의 5/19 월 14:00, 안건: 프로모션 확정, QA 범위 결정 결과 공유
+- (메모 누락: 박개발이 말한 인증 재취득 비용은 아직 아무도 확인 안 함)</code></pre>
+
+  <h2>② Projects 지침 템플릿 <span class="badge s2">Session 2</span></h2>
+  <p>Project를 만들고 "프로젝트 지침"에 아래 템플릿을 채워 넣으세요.
+  직무별 작성 예시 2종(마케팅·HR)은 <a href="common/project_instructions_template.md"><code>common/project_instructions_template.md</code></a>에 있습니다.</p>
+  <pre><code>[역할]
+너는 [회사/부서]의 [직무] 업무를 돕는 어시스턴트야.
+
+[배경]
+- 우리 팀: [무슨 일을 하는 팀인지 1~2줄]
+- 주요 산출물: [보고서/카피/규정 검토 등]
+- 대상 독자: [임원/고객/팀 내부 등]
+
+[톤과 형식]
+- 톤: [정중한 보고체 / 친근한 안내체 등]
+- 기본 형식: [표 위주 / 불릿 / 분량 제한 등]
+- 항상 지킬 것: 확실하지 않은 내용은 [확인 필요]로 표시
+
+[금지]
+- 사실/숫자를 지어내지 말 것 (모르면 모른다고)
+- [회사 고유 금지사항: 예) 경쟁사 비방 표현 금지]</code></pre>
+
+  <h2>③ 직무별 "반복 업무" 예시 <span class="badge s1">Session 1 과제</span><span class="badge s4">Session 4</span></h2>
+  <p>"내 직무에서 반복되는 업무"가 잘 안 떠오를 때 참고하세요. Session 4 실행계획의 <code>[적기]</code> 칸에 그대로 넣어도 됩니다.</p>
+  <table>
+    <tr><th>직무</th><th>반복 업무 예시</th></tr>
+    <tr><td>기획·PM</td><td>주간 보고 취합·요약 / 회의록 정리·액션 추적 / 경쟁 동향 스크랩 정리</td></tr>
+    <tr><td>마케팅·영업</td><td>채널별 카피 변형 제작 / 캠페인 결과 리포트 / 고객 문의 답변 초안</td></tr>
+    <tr><td>디자인·콘텐츠</td><td>콘텐츠 리퍼포징(블로그→SNS) / 촬영·작업 일정표 정리 / 시안 설명 문서화</td></tr>
+    <tr><td>경영지원·HR·재무</td><td>지원서 1차 분류 / 사내 공지문 작성 / 월말 데이터 취합·형식 통일</td></tr>
+    <tr><td>개발</td><td>릴리스 노트 작성 / 테스트 로그 요약 / 코드리뷰 사전 점검</td></tr>
+  </table>
+
+  <h2>④ Claude Code 실습 폴더 안내 <span class="badge s3">Session 3</span></h2>
+  <p>Session 3 핸즈온의 "샘플 폴더"는 이 저장소의 <code>workshop_samples</code> 폴더입니다.
+  진행자가 배포한 ZIP을 받아 <b>바탕화면에 압축 해제</b>하거나, 안내받은 저장소 주소로 내려받으세요.</p>
+  <table>
+    <tr><th>파일/폴더</th><th>내용</th><th>쓰는 실습</th></tr>
+    <tr><td><code>amazon_na_sales_sample_level1.csv</code> 외</td><td>가상 매출 데이터 (10~50행)</td><td>CSV → 리포트 자동화</td></tr>
+    <tr><td><code>marketing_analysis/</code></td><td>경쟁 분석 과제 + 모범답안</td><td>Level 2 전략 분석</td></tr>
+    <tr><td><code>hr_recruitment/</code></td><td>채용 과제 + 후보자 CSV + JD</td><td>Level 1 스크리닝</td></tr>
+    <tr><td><code>hr_advanced/</code></td><td>취업규칙 + 법령 + 가이드</td><td>Level 2/3 규정 검토</td></tr>
+    <tr><td><code>common/</code></td><td>샘플 회의록, 지침 템플릿</td><td>Session 1·2 공통</td></tr>
+  </table>
+  <h3>추천 첫 명령 (폴더에서 <code>claude</code> 실행 후, 한국어로)</h3>
+  <ol>
+    <li>"이 폴더에 뭐가 있는지 알려줘" — 구조 파악</li>
+    <li>"amazon_na_sales_sample_level1.csv를 읽고 카테고리별 매출 요약을 마크다운 리포트로 만들어줘"</li>
+    <li>"hr_recruitment 폴더의 과제 문서를 읽고, 시키는 대로 후보자 비교표를 만들어줘"</li>
+  </ol>
+  <div class="callout warn"><span class="label">안전 수칙</span>
+  실습은 항상 <b>복사본 폴더</b>에서. 삭제·이동 승인 화면은 반드시 읽고 진행하세요.</div>
+
+  <div class="foot">AI Agent 활용 세미나 · 실습 소재 모음 — 모든 데이터는 가상이며 실존 인물·회사와 무관합니다.</div>
+</div>
+</body>
+</html>

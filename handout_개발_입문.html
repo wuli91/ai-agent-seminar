@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개발 · SW 입문 — 직무별 핸드아웃 — AI Agent 활용 세미나</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:940px;margin:0 auto;padding:5vh 6vw 10vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+.tag a{color:#ffd93d}
+h1{font-size:2.3em;font-weight:800;line-height:1.15}
+.sub{color:#aaa;font-size:1.12em;margin:.5em 0 2vh}
+h2{font-size:1.4em;color:#7eb8ff;margin:3vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.4vh}
+h3{font-size:1.08em;color:#4ecdc4;margin:1.2vh 0 .4vh}
+p,li,td{color:#ccc;font-size:1.0em}
+ul,ol{margin:.4em 0 .8em 1.3em}li{margin:.28em 0}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.card{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em 1.2em;margin:.7em 0}
+.card.warn{border-color:#ff6b6b}.card.tip{border-color:#4ecdc4}
+.scn{border-left:3px solid #4ecdc4;padding:.5em 0 .5em 1em;margin:.7em 0;background:#0c1a18;border-radius:0 8px 8px 0}
+.scn .t{color:#4ecdc4;font-weight:700}
+pre{background:#0d141d;border:1px solid #1a2a3a;border-radius:8px;padding:.8em 1em;margin:.4em 0;overflow:auto}
+pre code{color:#d6e3ee;font-family:'D2Coding','Consolas','Menlo',monospace;font-size:.9em;white-space:pre-wrap;display:block;line-height:1.6}
+code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.95em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:left;padding:.5em .7em;vertical-align:top}
+td{padding:.5em .7em;border-bottom:1px solid #1a2a3a;vertical-align:top}
+.badge{display:inline-block;font-size:.78em;font-weight:700;padding:.15em .6em;border-radius:5px}
+.badge.app{background:#11233a;color:#7eb8ff;border:1px solid #7eb8ff}
+.badge.code{background:#2a210c;color:#ffd93d;border:1px solid #ffd93d}
+a{color:#7eb8ff}
+.foot{margin-top:4vh;border-top:1px solid #1a2a3a;padding-top:1.6vh;color:#667;font-size:.82em}
+.foot a{color:#5a7da0}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}p,li,td{color:#222}.card{background:#f5f8fc;border-color:#cdd8e6}.scn{background:#eef7f5}pre{background:#f6f8fa;border-color:#dde}pre code{color:#222}code{background:#eef3f8;color:#0a5}th{background:#e7eef7;color:#003366}.accent{color:#0a8a7d}.blue{color:#0055aa}.warn{color:#c0392b}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">직무별 핸드아웃 · 개발(SW) — 입문편 — 이미 쓰는 팀은 <a href="handout_개발_sw.html">고급편</a>을 보세요</span>
+  <h1>개발 · SW <span class="accent">×</span> Claude — 첫 1주</h1>
+  <p class="sub">"코드를 대신 짜주는 도구"이기 전에 <b>코드베이스를 읽고 설명하고 검증해 주는 동료</b>입니다. 읽기 작업부터 시작해 신뢰를 쌓아가세요.</p>
+
+  <h2>① 바로 쓰는 대표 시나리오 6</h2>
+  <div class="scn"><span class="t">1. 낯선 코드베이스 파악 (온보딩)</span><p>새 프로젝트·인수인계 코드에서 구조, 핵심 모듈, 데이터 흐름을 설명받기. 며칠 걸리던 온보딩을 반나절로.</p></div>
+  <div class="scn"><span class="t">2. 버그 원인 추적</span><p>에러 로그를 주고 관련 코드를 찾아 원인 후보를 가능성 순으로 받기. "바로 고치지 말고 원인부터"가 요령.</p></div>
+  <div class="scn"><span class="t">3. 테스트 코드 작성</span><p>기존 테스트 컨벤션을 따르는 단위 테스트 생성 + 직접 실행해 통과 확인까지.</p></div>
+  <div class="scn"><span class="t">4. 작은 리팩토링</span><p>긴 함수 분리, 중복 제거, 네이밍 개선 등 범위가 명확한 정리 작업. 테스트가 있는 코드부터.</p></div>
+  <div class="scn"><span class="t">5. 릴리스 노트 · 커밋 메시지 · 문서화</span><p>diff/커밋 이력으로 릴리스 노트 초안, 커밋 메시지, README·주석 정리.</p></div>
+  <div class="scn"><span class="t">6. 코드리뷰 사전 점검</span><p>PR 올리기 전 내 diff를 먼저 리뷰시켜 명백한 실수·누락을 잡고, 리뷰어의 시간을 아끼기.</p></div>
+
+  <h2>② 첫 1주 루틴 — 읽기에서 쓰기로</h2>
+  <table>
+    <tr><th>일정</th><th>할 일</th></tr>
+    <tr><td class="b">Day 1 · 설치</td><td>설치 + 로그인 — <a href="setup_guide.html">사전 준비 가이드</a>의 명령 그대로 (<code>claude --version</code> 확인까지)</td></tr>
+    <tr><td class="b">Day 1 · 첫 실행</td><td><b>본인 프로젝트 복사본</b> 폴더에서 <code>claude</code> 실행 → <code>/init</code>으로 <code>CLAUDE.md</code> 생성 → "이 코드베이스 구조를 설명해줘"</td></tr>
+    <tr><td class="b">Day 2~3 · 읽기 전용</td><td>설명·리뷰·테스트 제안 등 <b>코드를 바꾸지 않는 작업</b>만. 답이 코드와 맞는지 직접 대조하며 감 잡기</td></tr>
+    <tr><td class="b">Day 4~5 · 작은 수정</td><td>함수 하나, 버그 하나 수준의 수정 → <b>diff를 확인하고 승인</b>하는 습관 들이기</td></tr>
+  </table>
+  <div class="card tip"><p class="b">습관 하나만 들인다면: "바꾸기 전에 계획을 보여줘."</p><p>수정 요청 앞에 이 한 문장을 붙이면 Claude가 먼저 계획을 제시하고, 당신이 검토 후 진행합니다. 엉뚱한 방향으로 가는 것을 가장 싸게 막는 방법입니다.</p></div>
+
+  <h2>③ 복사해서 쓰는 프롬프트</h2>
+  <h3>온보딩 — 코드베이스 파악</h3>
+  <pre><code>이 저장소의 전체 구조와 핵심 모듈, 데이터 흐름을
+신규 입사자에게 설명하듯 정리해줘. 아키텍처 다이어그램은 텍스트로.</code></pre>
+  <h3>버그 추적 — 원인 먼저, 수정은 나중</h3>
+  <pre><code>다음 에러가 발생한다: [에러 로그]
+관련 코드를 찾아 원인 후보를 가능성 순으로 제시하고,
+가장 유력한 원인에 대한 수정안을 diff로 보여줘. 바로 고치지는 마.</code></pre>
+  <h3>테스트 — 작성하고 실행까지</h3>
+  <pre><code>[파일/함수]에 대한 단위 테스트를 작성해줘.
+엣지 케이스를 포함하고, 기존 테스트 컨벤션을 따라줘.
+작성 후 실행해서 통과를 확인해줘.</code></pre>
+
+  <h2>④ 언제 앱, 언제 Code</h2>
+  <table>
+    <tr><th>상황</th><th>도구</th></tr>
+    <tr><td>설계 토론, 기술 선택 고민 (대화로)</td><td><span class="badge app">Claude 앱</span></td></tr>
+    <tr><td>에러 메시지 해석, 개념 질문</td><td><span class="badge app">Claude 앱</span></td></tr>
+    <tr><td>코드 조각 하나 붙여넣고 리뷰</td><td><span class="badge app">Claude 앱</span></td></tr>
+    <tr><td>저장소 전체 탐색 · 구조 파악</td><td><span class="badge code">Claude Code</span></td></tr>
+    <tr><td>여러 파일에 걸친 수정 · 리팩토링</td><td><span class="badge code">Claude Code</span></td></tr>
+    <tr><td>테스트 실행 · 빌드 확인 · git 작업</td><td><span class="badge code">Claude Code</span></td></tr>
+  </table>
+
+  <h2>⑤ 주의 · 검증</h2>
+  <div class="card warn">
+    <p>· 생성 코드는 <b class="warn">반드시 diff 리뷰 + 테스트 실행 후</b> 머지. "돌아가니까 머지"는 금지.</p>
+    <p>· <b class="warn">비밀키·인증서가 있는 폴더</b>에서 실행하지 않기 (<code>.env</code>, 키 파일 등은 사본에서 제외).</p>
+    <p>· 사내 코드 반출 정책 확인 — <b>회사가 발급한 계정</b>으로만 사용.</p>
+    <p>· "AI는 자신 있게 틀린다." 설명이 그럴듯해도 기준은 <b>실제 동작 확인</b>(테스트·실행)입니다.</p>
+  </div>
+
+  <h2>⑥ 다음 한 걸음</h2>
+  <div class="card tip"><p>이번 주 목표: 내 프로젝트에 <b>CLAUDE.md 1개</b> 만들기 + <b>반복 작업 1개</b>(커밋 메시지, 테스트 작성 등) Claude에게 맡겨보기.
+  익숙해지면 <a href="handout_개발_sw.html">고급편(팀 도입·베스트프랙티스)</a>과 <a href="workflow_guide.html">워크플로우 가이드</a>, <a href="workshop_samples/hr_advanced/dev_guide.html">HR 심화 개발 가이드</a>로 넘어가세요.</p></div>
+
+  <div class="foot">AI Agent 활용 세미나 · 직무별 핸드아웃 · 개발(SW) 입문편 · 팅크웨어 선행개발부 · 고급편: <a href="handout_개발_sw.html">handout_개발_sw.html</a></div>
+</div>
+</body>
+</html>

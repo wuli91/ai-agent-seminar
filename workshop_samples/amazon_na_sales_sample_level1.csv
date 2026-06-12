@@ -1,0 +1,11 @@
+Date,SKU,Product_Name,Category,Units_Sold,Unit_Price,Revenue,Region,Customer_Segment
+2024-05-01,AMZ-001,Organic Coffee Beans,Grocery,50,15.99,799.50,North,Subscriber
+2024-05-01,AMZ-002,Eco-Friendly Mug,Home,30,12.50,375.00,South,One-time
+2024-05-02,AMZ-003,Bamboo Straws,Kitchen,100,5.00,500.00,West,Subscriber
+2024-05-02,AMZ-001,Organic Coffee Beans,Grocery,45,15.99,719.55,East,One-time
+2024-05-03,AMZ-004,Reusable Water Bottle,Sports,25,22.00,550.00,North,Subscriber
+2024-05-03,AMZ-005,Cotton Tote Bag,Fashion,60,8.50,510.00,South,One-time
+2024-05-04,AMZ-002,Eco-Friendly Mug,Home,35,12.50,437.50,West,Subscriber
+2024-05-04,AMZ-006,Yoga Mat,Sports,15,35.00,525.00,East,One-time
+2024-05-05,AMZ-003,Bamboo Straws,Kitchen,80,5.00,400.00,North,Subscriber
+2024-05-05,AMZ-001,Organic Coffee Beans,Grocery,55,15.99,879.45,South,Subscriber

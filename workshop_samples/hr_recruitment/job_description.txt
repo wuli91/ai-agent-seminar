@@ -1,0 +1,25 @@
+# Job Description: Senior Fullstack Developer (Backend Focus)
+
+## Overview
+Thinkware is looking for a Senior Fullstack Developer to join our Core Platform team. You will be responsible for designing scalable backend services and ensuring seamless integration with our frontend applications.
+
+## Key Requirements
+- **Technical Skills:**
+    - Expert proficiency in **Java** and **Spring Boot**.
+    - Strong experience with **SQL** databases (e.g., MySQL, PostgreSQL).
+    - Proficiency in modern frontend frameworks, specifically **React** or **Vue.js**.
+    - Experience with **Cloud environments** (AWS/Azure/GCP).
+    - Understanding of **Microservices** architecture and **Docker/Kubernetes**.
+- **Soft Skills:**
+    - Ability to lead small teams and mentor junior developers.
+    - Excellent problem-solving skills and architectural thinking.
+    - Strong communication skills for cross-functional collaboration.
+
+## Preferred Qualifications
+- Experience with **TypeScript** and **Node.js**.
+- Familiarity with **Agile/Scrum** methodologies.
+- Experience with **DevOps** practices (CI/CD pipelines).
+
+## Work Conditions
+- **Location:** Seoul (Hybrid)
+- **Notice Period:** Ideally 1 month or less.

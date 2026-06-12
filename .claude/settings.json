@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-context.sh\"",
+            "timeout": 15,
+            "statusMessage": "컨텍스트 사용량 확인 중..."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/load-handoff.sh\"",
+            "timeout": 15,
+            "statusMessage": "handoff.md 로드 중..."
+          }
+        ]
+      }
+    ]
+  }
+}

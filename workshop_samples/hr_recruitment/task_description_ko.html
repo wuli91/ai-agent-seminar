@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>워크숍 과제: 후보자 스크리닝 & 면접 준비 자동화 — AI Agent 활용 세미나</title>
+<style>
+/* 자체 완결형: 단독 배포/인쇄 가능하도록 CSS 인라인 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
+  background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:6vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.8em}
+.lang{float:right;font-size:.9em}
+h1{font-size:2.3em;font-weight:800;line-height:1.2;margin-bottom:.3em}
+h2{font-size:1.6em;color:#7eb8ff;margin:3vh 0 1vh;padding-top:1vh;border-top:1px solid #1a2a3a}
+h3{font-size:1.2em;color:#4ecdc4;margin:1.6vh 0 .6vh}
+p,li{color:#ccc;font-size:1.05em}
+ul,ol{margin:.4em 0 .8em 1.4em}li{margin:.3em 0}
+.lead{font-size:1.2em;color:#bbb;margin:1vh 0 2vh}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.b{font-weight:700}
+code{font-family:'D2Coding','Consolas','Menlo',monospace;background:#15202c;color:#9fe6dd;padding:.12em .45em;border-radius:4px;font-size:.92em}
+.steps{counter-reset:s;list-style:none;margin:.6em 0}
+.steps li{counter-increment:s;position:relative;padding:.55em 0 .55em 2.4em;border-bottom:1px solid #1a2a3a}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.5em;width:1.7em;height:1.7em;background:#4ecdc4;color:#04201d;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9em}
+.prompt{background:#0d141d;border:1px solid #2a3a4a;border-left:4px solid #ffd93d;border-radius:10px;padding:.7em 1em;margin:.4em 0;color:#e3d9b8;font-size:1em;line-height:1.6}
+a{color:#7eb8ff}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#667;font-size:.9em}
+@media print{
+  body{background:#fff;color:#111}
+  h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}h3{color:#0a8a7d}
+  p,li{color:#222}.accent{color:#0a8a7d}.blue{color:#0055aa}
+  code{background:#eef3f8;color:#0a5}.prompt{background:#fdfaf0;color:#333;border-color:#e8d98a}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="lang"><a href="task_description.html">English version →</a></span>
+  <span class="tag">HR Recruitment 실습 · Level 1 · 한국어판</span>
+  <h1>워크숍 과제: <span class="accent">후보자 스크리닝</span> &amp; 면접 준비 자동화</h1>
+
+  <h2>🎯 목표</h2>
+  <p class="lead">채용 초기 단계를 자동화합니다: 직무기술서(JD) 기준으로 후보자를 선별하고, 비교표를 만들고, 맞춤형 면접 질문을 생성합니다.</p>
+
+  <h2>🛠️ 과제 시나리오</h2>
+  <p>당신은 팅크웨어의 HR 담당자입니다. 지원자 이력 데이터(CSV)와 직무기술서를 받았습니다. 적합한 후보자를 빠르게 가려내고 면접 단계를 준비하는 것이 목표입니다.</p>
+
+  <h2>📝 요구사항</h2>
+
+  <h3>1. 후보자 선별 &amp; 점수화</h3>
+  <p>제공된 <code>job_description.txt</code>를 기준으로 <code>candidates_data.csv</code>를 분석해 <b>후보자 매칭 리포트</b>를 만드세요.</p>
+  <ul>
+    <li><b>점수 기준:</b> 후보자별 0~10점, 다음 항목 기반:
+      <ul>
+        <li><b>핵심 기술 일치도:</b> (Java, Spring, SQL, React/Vue)</li>
+        <li><b>경력 수준:</b> ("시니어" 요건 대비 경력 연수)</li>
+        <li><b>클라우드/DevOps 경험:</b> (AWS, Docker, Kubernetes 등)</li>
+      </ul>
+    </li>
+    <li><b>산출물:</b> 이름, 총점, 일치 기술 Top 3, 적합도("High/Medium/Low")가 들어간 표.</li>
+  </ul>
+
+  <h3>2. 면접 준비</h3>
+  <p><b>상위 2명</b>의 후보자에 대해 맞춤형 <b>면접 질문 세트</b>를 생성하세요.</p>
+  <ul>
+    <li>질문은 데이터에 적힌 그 후보자의 실제 경력에 기반해야 합니다.</li>
+    <li>후보자당 "행동(Behavioral)" 질문 1개 + "기술(Technical)" 질문 2개.</li>
+    <li>예: Java 경력이 강한 후보자라면 Spring Boot 마이크로서비스 관련 질문.</li>
+  </ul>
+
+  <h3>3. 커뮤니케이션 초안</h3>
+  <p>1순위 후보자에게 보낼 <b>면접 안내 이메일</b> 초안을 작성하세요.</p>
+  <ul>
+    <li>채용 직무(Senior Fullstack Developer)를 명시하고, 그 후보자의 관련 경력을 언급할 것 (예: "OO 기술 경험이 인상적이었습니다").</li>
+    <li>톤: 전문적이고 환영하는 느낌, 다음 절차를 명확하게.</li>
+  </ul>
+
+  <h2>📂 제공 파일</h2>
+  <ul>
+    <li><code>candidates_data.csv</code>: 지원자별 핵심 기술·경력 목록.</li>
+    <li><code>job_description.txt</code>: Senior Fullstack Developer 직무 요건.</li>
+  </ul>
+
+  <h2>🚀 진행 순서 (Claude에게 이렇게 시키세요)</h2>
+  <ul class="steps">
+    <li><b>읽고 이해:</b><div class="prompt">"<code>job_description.txt</code>와 <code>candidates_data.csv</code> 파일을 읽고, 이 직무의 핵심 요건을 요약해줘."</div></li>
+    <li><b>분석:</b><div class="prompt">"<code>candidates_data.csv</code>의 후보자들을 직무 요건과 비교해서, 후보자별 10점 만점 점수가 들어간 비교표를 만들어줘."</div></li>
+    <li><b>생성:</b><div class="prompt">"상위 2명의 후보자에 대해 각각 맞춤 면접 질문 3개씩 만들어줘."</div></li>
+    <li><b>커뮤니케이션:</b><div class="prompt">"1순위 후보자에게 보낼 전문적인 면접 안내 이메일을 써줘."</div></li>
+  </ul>
+
+  <div class="foot">AI Agent 활용 세미나 · HR Recruitment Workshop Sample — 데이터는 실습용 가상 데이터입니다.</div>
+</div>
+</body>
+</html>
