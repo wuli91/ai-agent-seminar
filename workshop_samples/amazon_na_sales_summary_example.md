@@ -1,4 +1,4 @@
-# Weekly Sales Report Summary (Sample)
+# Sales CSV Summary (Intro Sample)
 **Period:** 2024-05-01 to 2024-05-05
 **Prepared by:** Claude AI (Workshop Example)
 

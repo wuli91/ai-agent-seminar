@@ -1,4 +1,4 @@
-# 주간 매출 리포트 요약 (예시 · 한국어판)
+# 매출 CSV 요약 (입문 예시 · 한국어판)
 
 > English version: `amazon_na_sales_summary_example.md`
 
