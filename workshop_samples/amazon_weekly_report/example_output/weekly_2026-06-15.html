@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon 주간 성과 리포트 — 2026-06-08 ~ 06-14</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;background:#0a0a0a;color:#e8e8e8;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:5vh 6vw 12vh}
+.tag{display:inline-block;background:#1a2a3a;color:#7eb8ff;padding:.3em 1em;border-radius:4px;font-size:.85em;margin-bottom:.6em}
+h1{font-size:2.1em;font-weight:800;line-height:1.18}
+.sub{color:#aaa;font-size:1.08em;margin:.5em 0 1vh}
+h2{font-size:1.32em;color:#7eb8ff;margin:3.4vh 0 1vh;border-top:1px solid #1a2a3a;padding-top:1.6vh}
+p,li,td{color:#ccc;font-size:1.0em}
+.accent{color:#4ecdc4}.blue{color:#7eb8ff}.warn{color:#ff6b6b}.gold{color:#ffd93d}.b{font-weight:700}
+.up{color:#4ecdc4;font-weight:700}.down{color:#ff6b6b;font-weight:700}
+.muted{color:#8aa}
+/* 요약 카드 */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.9em;margin:1.2em 0}
+.kpi{background:#111825;border:1px solid #1a2a3a;border-radius:12px;padding:1em}
+.kpi .lab{color:#8aa;font-size:.82em}
+.kpi .val{font-size:1.5em;font-weight:800;color:#fff;margin:.15em 0}
+.kpi .chg{font-size:.86em}
+.lead{background:#0e1722;border-left:4px solid #7eb8ff;border-radius:0 8px 8px 0;padding:.9em 1.1em;margin:1em 0}
+.lead ol{margin:.2em 0 0 1.2em}.lead li{margin:.35em 0}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.9em}
+th{background:#1a2a3a;color:#7eb8ff;text-align:right;padding:.5em .6em}
+th:first-child,td:first-child{text-align:left}
+td{padding:.5em .6em;border-bottom:1px solid #1a2a3a;text-align:right;vertical-align:middle}
+tr.tot td{border-top:2px solid #2a3a4a;font-weight:700;color:#fff;background:#0e1722}
+.sku{font-weight:700;color:#e8e8e8}.skud{color:#8aa;font-size:.82em;font-weight:400}
+/* 막대 차트 */
+.bars{margin:.6em 0 1.4em}
+.bar-row{display:grid;grid-template-columns:130px 1fr 88px;align-items:center;gap:.6em;margin:.32em 0}
+.bar-row .nm{font-size:.86em;color:#ccd}
+.track{background:#0e1722;border-radius:6px;height:18px;overflow:hidden;border:1px solid #1a2a3a}
+.fill{height:100%;border-radius:6px 0 0 6px}
+.bar-row .vv{font-size:.84em;text-align:right;color:#cdd}
+.f-teal{background:linear-gradient(90deg,#1f7a70,#4ecdc4)}
+.f-gold{background:linear-gradient(90deg,#9c7b12,#ffd93d)}
+.f-red{background:linear-gradient(90deg,#a03030,#ff6b6b)}
+.thresh{font-size:.8em;color:#8aa;margin:.2em 0 0}
+/* 신호 박스 */
+.sig{border-radius:10px;padding:.85em 1.05em;margin:.7em 0}
+.sig.bad{border-left:4px solid #ff6b6b;background:#1a0e0e}
+.sig.good{border-left:4px solid #4ecdc4;background:#0c1a18}
+.sig .t{font-weight:700;margin-bottom:.15em}
+.sig.bad .t{color:#ff6b6b}.sig.good .t{color:#4ecdc4}
+.foot{margin-top:5vh;border-top:1px solid #1a2a3a;padding-top:2vh;color:#778;font-size:.82em}
+.foot code{background:#15202c;color:#9fe6dd;padding:.1em .4em;border-radius:4px;font-family:'D2Coding','Consolas',monospace;font-size:.92em}
+@media (max-width:680px){.kpis{grid-template-columns:1fr 1fr}.bar-row{grid-template-columns:96px 1fr 72px}}
+@media print{body{background:#fff;color:#111}h1{color:#0b2545}h2{color:#0055aa;border-color:#cdd8e6}p,li,td{color:#222}
+.kpi{background:#f5f8fc;border-color:#cdd8e6}.kpi .val{color:#0b2545}.lead{background:#eef3f8}
+tr.tot td{background:#eef3f8;color:#0b2545}.track{background:#e9eef4;border-color:#cdd8e6}
+.sig.bad{background:#fcefef}.sig.good{background:#edf8f5}.up{color:#0a8a7d}.down{color:#c0392b}.muted{color:#667}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">Amazon.com (US) · THINKWARE Store · 주간 성과</span>
+  <h1>주간 성과 리포트 <span class="accent">2026-06-08 ~ 06-14</span></h1>
+  <p class="sub">전주(2026-06-01 ~ 06-07) 대비 · 6개 SKU · 자동 생성 by <b class="gold">Claude Code</b>
+  · <span class="muted">⚠️ 세미나용 샘플(가짜) 데이터</span></p>
+
+  <!-- ===== 1. 요약 ===== -->
+  <h2>① 요약</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="lab">총매출</div><div class="val">$175,576</div>
+      <div class="chg"><span class="up">▲ 7.2%</span> <span class="muted">($163,786)</span></div></div>
+    <div class="kpi"><div class="lab">총 주문수량</div><div class="val">1,436</div>
+      <div class="chg"><span class="up">▲ 2.8%</span> <span class="muted">(1,397)</span></div></div>
+    <div class="kpi"><div class="lab">블렌디드 ACoS</div><div class="val">21.6%</div>
+      <div class="chg"><span class="down">▲ 2.5%p</span> <span class="muted">(19.2%)</span></div></div>
+    <div class="kpi"><div class="lab">총 반품률</div><div class="val">4.6%</div>
+      <div class="chg"><span class="down">▲ 2.2%p</span> <span class="muted">(2.4%)</span></div></div>
+  </div>
+  <div class="lead"><b class="blue">핵심 변화 3줄</b>
+    <ol>
+      <li>매출은 <b class="up">+7.2%</b> 성장했지만, 광고비가 <b class="down">+20.4%</b>로 매출보다 빠르게 늘어 <b>블렌디드 ACoS 19.2% → 21.6%</b>로 악화. 주범은 <b>U3000·F70</b>.</li>
+      <li><b class="warn">256GB microSD 반품률이 4.3% → 12.1%로 급등</b>(반품 18 → 47건, 불량 사유 집중) + 바이박스 88% → 70% 하락 — <b>품질/리스팅 즉시 점검 필요</b>.</li>
+      <li><b class="warn">F70 ACoS 43% → 51%</b>로 손익분기 위협, 매출·세션 동반 하락. 반면 <b class="up">Q200·하드와이어링 킷</b>은 효율·부착 판매 모두 견조.</li>
+    </ol>
+  </div>
+
+  <!-- ===== 2. SKU별 표 ===== -->
+  <h2>② SKU별 성과 (전주 대비)</h2>
+  <table>
+    <tr>
+      <th>SKU</th><th>매출</th><th>주문</th><th>전환율</th><th>ACoS</th><th>반품률</th><th>매출 WoW</th>
+    </tr>
+    <tr>
+      <td><span class="sku">U3000</span><br><span class="skud">TW-U3000-FR</span></td>
+      <td>$81,998</td><td>205</td><td>4.41%</td>
+      <td>20.1% <span class="down">▲4.6%p</span></td><td>2.0%</td><td><span class="up">▲ 12.6%</span></td>
+    </tr>
+    <tr>
+      <td><span class="sku">Q200</span><br><span class="skud">TW-Q200-2CH</span></td>
+      <td>$52,397</td><td>262</td><td>7.82%</td>
+      <td>14.5% <span class="up">▼1.0%p</span></td><td>2.3%</td><td><span class="up">▲ 9.2%</span></td>
+    </tr>
+    <tr>
+      <td><span class="sku">F70</span><br><span class="skud">TW-F70-1CH</span></td>
+      <td>$13,199</td><td>132</td><td>5.08%</td>
+      <td><span class="warn">51.5%</span> <span class="down">▲8.2%p</span></td><td>3.8%</td><td><span class="down">▼ 12.0%</span></td>
+    </tr>
+    <tr>
+      <td><span class="sku">하드와이어링 킷</span><br><span class="skud">TW-ACC-HWK</span></td>
+      <td>$10,347</td><td>345</td><td>16.83%</td>
+      <td>13.0% <span class="up">▼0.7%p</span></td><td>0.9%</td><td><span class="up">▲ 11.3%</span></td>
+    </tr>
+    <tr>
+      <td><span class="sku">256GB microSD</span><br><span class="skud">TW-ACC-SD256</span></td>
+      <td>$15,596</td><td>390</td><td>15.60%</td>
+      <td>18.3% <span class="down">▲2.2%p</span></td><td><span class="warn">12.1%</span> <span class="down">▲7.8%p</span></td><td><span class="down">▼ 7.1%</span></td>
+    </tr>
+    <tr>
+      <td><span class="sku">CPL 필터</span><br><span class="skud">TW-ACC-CPL</span></td>
+      <td>$2,039</td><td>102</td><td>10.74%</td>
+      <td>21.1% <span class="muted">▲0.2%p</span></td><td>1.0%</td><td><span class="up">▲ 7.4%</span></td>
+    </tr>
+    <tr class="tot">
+      <td>합계 / 평균</td><td>$175,576</td><td>1,436</td><td>—</td><td>21.6%</td><td>4.6%</td><td><span class="up">▲ 7.2%</span></td>
+    </tr>
+  </table>
+  <p class="muted" style="font-size:.84em">전환율 = business_report의 Unit Session % · ACoS = 광고비 ÷ 광고매출 · 반품률 = 반품건수 ÷ 주문수량. 합계행의 ACoS·반품률은 블렌디드(총합 기준).</p>
+
+  <!-- ===== 3. 차트 ===== -->
+  <h2>③ 차트</h2>
+  <p class="b" style="color:#cdd;margin-bottom:.2em">매출 비중 (이번 주)</p>
+  <div class="bars">
+    <div class="bar-row"><span class="nm">U3000</span><div class="track"><div class="fill f-teal" style="width:100.0%"></div></div><span class="vv">$81,998</span></div>
+    <div class="bar-row"><span class="nm">Q200</span><div class="track"><div class="fill f-teal" style="width:63.9%"></div></div><span class="vv">$52,397</span></div>
+    <div class="bar-row"><span class="nm">256GB SD</span><div class="track"><div class="fill f-teal" style="width:19.0%"></div></div><span class="vv">$15,596</span></div>
+    <div class="bar-row"><span class="nm">F70</span><div class="track"><div class="fill f-teal" style="width:16.1%"></div></div><span class="vv">$13,199</span></div>
+    <div class="bar-row"><span class="nm">하드와이어링</span><div class="track"><div class="fill f-teal" style="width:12.6%"></div></div><span class="vv">$10,347</span></div>
+    <div class="bar-row"><span class="nm">CPL 필터</span><div class="track"><div class="fill f-teal" style="width:2.5%"></div></div><span class="vv">$2,039</span></div>
+  </div>
+
+  <p class="b" style="color:#cdd;margin-bottom:.2em">SKU별 ACoS (낮을수록 좋음)</p>
+  <div class="bars">
+    <div class="bar-row"><span class="nm">F70</span><div class="track"><div class="fill f-red" style="width:85.8%"></div></div><span class="vv">51.5%</span></div>
+    <div class="bar-row"><span class="nm">CPL 필터</span><div class="track"><div class="fill f-gold" style="width:35.1%"></div></div><span class="vv">21.1%</span></div>
+    <div class="bar-row"><span class="nm">U3000</span><div class="track"><div class="fill f-gold" style="width:33.5%"></div></div><span class="vv">20.1%</span></div>
+    <div class="bar-row"><span class="nm">256GB SD</span><div class="track"><div class="fill f-gold" style="width:30.5%"></div></div><span class="vv">18.3%</span></div>
+    <div class="bar-row"><span class="nm">Q200</span><div class="track"><div class="fill f-teal" style="width:24.2%"></div></div><span class="vv">14.5%</span></div>
+    <div class="bar-row"><span class="nm">하드와이어링</span><div class="track"><div class="fill f-teal" style="width:21.7%"></div></div><span class="vv">13.0%</span></div>
+  </div>
+  <p class="thresh">기준선: <span class="accent">~20% 이하 양호</span> · <span class="gold">20~40% 주의</span> · <span class="warn">40% 초과 손익 위협</span> (스케일 0~60%)</p>
+
+  <!-- ===== 4. 주의 신호 ===== -->
+  <h2>④ 주의 신호 (자동 코멘트)</h2>
+  <div class="sig bad"><div class="t">🔴 256GB microSD — 반품 급증 + 바이박스 하락</div>
+    반품률 <b>4.3% → 12.1%</b> (18 → 47건), 반품 사유가 <code>DEFECTIVE</code>/<code>NOT_AS_DESCRIBED</code>에 집중.
+    동시에 바이박스 점유율 <b>88% → 70%</b> 하락. <b>불량 배치 의심</b> → 입고 로트 확인, 리스팅 사양/이미지 점검, 부정 리뷰 모니터링 권장.</div>
+  <div class="sig bad"><div class="t">🔴 F70 — ACoS 손익분기 위협</div>
+    ACoS <b>43.2% → 51.5%</b>로 50% 초과(광고비 $3,500 vs 광고매출 $6,800). 매출 −12%, 세션도 감소.
+    <b>입찰가·검색어 타겟 재점검</b> 또는 광고 비중 축소 검토. 마진 구조상 지속 시 적자 광고 가능성.</div>
+  <div class="sig bad"><div class="t">🟠 U3000 — 광고 효율 악화</div>
+    광고비 <b>+41%</b>($4,100→$5,800) 대비 광고매출 <b>+9%</b>($26,500→$28,900)에 그쳐 ACoS <b>15.5% → 20.1%</b>.
+    매출 성장의 상당 부분이 광고 의존. <b>입찰 상한·일예산</b> 점검으로 효율 회복 필요.</div>
+  <div class="sig good"><div class="t">🟢 견조한 신호</div>
+    <b>Q200</b>: 매출 +9.2% & ACoS 15.5%→14.5%로 효율까지 개선(가장 건강한 성장).
+    <b>하드와이어링 킷</b>: 부착 판매 +11.3%, 반품률 0.9%로 안정 — 본체 판매와 함께 끌어올림.</div>
+
+  <div class="foot">
+    <b>데이터 출처</b> — <code>data/this_week/</code>, <code>data/last_week/</code>의
+    <code>business_report.csv</code>(매출·트래픽) · <code>advertising_report.csv</code>(스폰서 광고) · <code>returns_report.csv</code>(FBA 반품 건별).<br>
+    <b>계산식</b> — ACoS = 광고비 ÷ 광고매출 · 반품률 = 반품건수 ÷ 주문수량 · 전환율 = Unit Session % · WoW = (이번주 − 전주) ÷ 전주.
+    블렌디드 ACoS·총 반품률은 SKU 합계 기준. 금액은 USD, 반올림 표기(표 내 일부 $ 정수 반올림).<br>
+    AI Agent 활용 세미나 · 팅크웨어 선행개발부 · <b>Claude Code 자동 생성 리포트 예시</b> — 실제 데이터로 교체 시 git 커밋 금지.
+  </div>
+</div>
+</body>
+</html>
