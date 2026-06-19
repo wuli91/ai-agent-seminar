@@ -2,8 +2,8 @@
 .remember/
 handoff.md
 
-# Claude Code 개인 로컬 설정 (프로젝트 공통 settings.json·hooks는 커밋)
-.claude/settings.local.json
+# Claude Code 개인 로컬 설정·세션 핸드오프 훅 (세미나 자료와 무관, 공개 repo 제외)
+.claude/
 
 # 자격증명 / API 키
 .env
