@@ -20,21 +20,24 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
+html{scroll-behavior:smooth;overflow-x:hidden}
+html,body{min-height:100%}
 body{
   font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif;
-  background:var(--bg);color:var(--text);overflow:hidden;
+  background:var(--bg);color:var(--text);
   -webkit-font-smoothing:antialiased;
 }
 
-/* ---------- 슬라이드 골격 ---------- */
+/* ---------- 슬라이드 골격(상하 스크롤 덱) ---------- */
+/* 각 슬라이드는 한 화면(min 100vh)을 채우되 내용이 길면 늘어나며,
+   전체 문서를 위→아래로 스크롤해 순서대로 본다. */
 .slide{
-  width:100vw;height:100vh;display:none;
+  width:100%;min-height:100vh;display:flex;
   flex-direction:column;justify-content:center;
-  padding:4.5% 7%;position:absolute;top:0;left:0;background:var(--bg);
+  padding:4.5% 7%;position:relative;background:var(--bg);
+  border-bottom:1px solid var(--line);
 }
-.slide.active{display:flex;animation:fade .4s ease}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+.slide:last-of-type{border-bottom:none}
 
 /* ---------- 타이포 ---------- */
 h1{font-size:3em;font-weight:800;line-height:1.15;margin-bottom:.3em}
